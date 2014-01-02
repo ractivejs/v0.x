@@ -1,11 +1,11 @@
 [Home](ractive-js-documentation) > [[API Reference]] > [[Ractive.events]]
 
-If you're using [proxy events](Events#proxy-events), you can either use the standard DOM events that an element can listen to (e.g. `click`, `mouseover`, `touchmove`, `load`, whatever) or you can use custom event definitions.
+If you're using [proxy events](Events#on-events), you can either use the standard DOM events that an element can listen to (e.g. `click`, `mouseover`, `touchmove`, `load`, whatever) or you can use custom event definitions.
 
 These allow you to define more complex events than the native ones, but still treat them as first class citizens. For example the `tap` event abstracts away differences between mouse and touch interfaces, eliminating the 300ms delay users would experience on a touch device if you were only listening for `click` events:
 
 ```html
-<a class='button' proxy-tap='select'>Tap me!</a>
+<a class='button' on-tap='select'>Tap me!</a>
 ```
 
 You could also use the event definition API to normalise browser behaviour (e.g. with `mouseenter` and `mouseleave`, which are handy and widely-used events, but non-standard ones), or to implement swiping and other gestures.
@@ -15,7 +15,7 @@ Future versions of Ractive may include more event definitions 'out of the box' -
 
 ## The event definition API
 
-When Ractive sees a `proxy-[eventName]` directive, it first looks in `Ractive.eventDefinitions` for an `[eventName]` property, and if it finds one it *applies the definition*. (If not, it assumes that `[eventName]` refers to a native DOM event.)
+When Ractive sees a `on-[eventName]` directive, it first looks in `Ractive.eventDefinitions` for an `[eventName]` property, and if it finds one it *applies the definition*. (If not, it assumes that `[eventName]` refers to a native DOM event.)
 
 Event definitions receive two arguments - `node`, and `fire`. `node` is the element to which the definition is being applied, and `fire` is the function that must be called when the event has taken place.
 
@@ -146,7 +146,7 @@ Ractive.eventDefinitions.menu = function ( node, fire ) {
 You can now use the `menu` event in Ractive instances:
 
 ```html
-<div proxy-menu='showMenu'>This element has its own context menu</div>
+<div on-menu='showMenu'>This element has its own context menu</div>
 ```
 
 ```js
