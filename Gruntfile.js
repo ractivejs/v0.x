@@ -69,38 +69,6 @@ module.exports = function ( grunt ) {
 
 		Ractive = require( 'ractive' );
 
-		function renderPage ( version, page ) {
-			render( 'page', { page: page }, version, page.slug );
-		}
-
-		function writeFile ( version, fileName, content ) {
-			var path = [ 'build' ];
-			if ( version ) {
-				path.push( version );
-			}
-			path.push( fileName + '.html' );
-			grunt.file.write( path.join( '/' ), content );
-		}
-
-		function render ( templateName, data, version, fileName ) {
-			var cache, template, rendered;
-			cache = render.cache || ( render.cache = {} );
-			template = cache[ templateName ] ||
-				( cache[ templateName ] = grunt.file.read( 'templates/' + templateName + '.html' ) );
-			rendered = new Ractive({
-				template: template,
-				data: data,
-				delimiters: [ '[[', ']]' ],
-				tripleDelimiters: [ '[[[', ']]]' ],
-				preserveWhitespace: true
-			}).toHTML();
-
-			writeFile( version, fileName, rendered );
-			if ( version === grunt.config( 'latest' ) ) {
-				writeFile( 'latest', fileName, rendered );
-			}
-		}
-
 		docs = grunt.file.readJSON( 'tmp/docs.json' );
 
 		// render index page
@@ -134,6 +102,39 @@ module.exports = function ( grunt ) {
 			// render page list
 			render('pages', { pages: pages }, version, 'pages');
 		}
+
+		function renderPage ( version, page ) {
+			render( 'page', { page: page }, version, page.slug );
+		}
+
+		function writeFile ( version, fileName, content ) {
+			var path = [ 'build' ];
+			if ( version ) {
+				path.push( version );
+			}
+			path.push( fileName + '.html' );
+			grunt.file.write( path.join( '/' ), content );
+		}
+
+		function render ( templateName, data, version, fileName ) {
+			var cache, template, rendered;
+			cache = render.cache || ( render.cache = {} );
+			template = cache[ templateName ] ||
+				( cache[ templateName ] = grunt.file.read( 'templates/' + templateName + '.html' ) );
+			rendered = new Ractive({
+				template: template,
+				data: data,
+				delimiters: [ '[[', ']]' ],
+				tripleDelimiters: [ '[[[', ']]]' ],
+				preserveWhitespace: true
+			}).toHTML();
+
+			writeFile( version, fileName, rendered );
+			if ( version === grunt.config( 'latest' ) ) {
+				writeFile( 'latest', fileName, rendered );
+			}
+		}
+
 	});
 
 
