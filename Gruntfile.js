@@ -72,7 +72,7 @@ module.exports = function ( grunt ) {
 		docs = grunt.file.readJSON( 'tmp/docs.json' );
 
 		// render index page
-		render('index', {}, null, 'index');
+		render( 'index', {}, null, 'index' );
 
 		for ( version in docs ) {
 			versionedDocs = docs[ version ];
@@ -97,10 +97,10 @@ module.exports = function ( grunt ) {
 			pages.forEach( renderPage.bind( null, version ) );
 
 			// render index
-			render('version-index', { home: versionedDocs._home }, version, 'index');
+			render( 'version-index', { home: versionedDocs._home }, version, 'index' );
 
 			// render page list
-			render('pages', { pages: pages }, version, 'pages');
+			render( 'pages', { pages: pages }, version, 'pages' );
 		}
 
 		function renderPage ( version, page ) {
@@ -117,7 +117,16 @@ module.exports = function ( grunt ) {
 		}
 
 		function render ( templateName, data, version, fileName ) {
-			var cache, template, rendered;
+			var cache, template, rendered, logMessage;
+
+			logMessage = [ "Rendering " ];
+			if ( version ) {
+				logMessage.push( version + "/" );
+			}
+			logMessage = logMessage.concat( fileName + ".html", " as [ ", templateName, " ]" );
+			console.log( logMessage.join( '' ) );
+
+
 			cache = render.cache || ( render.cache = {} );
 			template = cache[ templateName ] ||
 				( cache[ templateName ] = grunt.file.read( 'templates/' + templateName + '.html' ) );
