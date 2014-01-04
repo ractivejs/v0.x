@@ -70,7 +70,7 @@ module.exports = function ( grunt ) {
 		Ractive = require( 'ractive' );
 
 		function renderPage ( version, page ) {
-			render('page', { page: page }, version, page.slug);
+			render( 'page', { page: page }, version, page.slug );
 		}
 
 		function writeFile ( version, fileName, content ) {
