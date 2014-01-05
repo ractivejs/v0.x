@@ -181,7 +181,7 @@ function preprocessMarkdown ( markdown, homePath ) {
 	});
 
 	// specially treat [[Home]] link
-	markdown = markdown.replace( '[[Home]]', '[Home](' + homePath + ')' );
+	markdown = markdown.replace( /\[\[Home\]\]/g, '[Home](' + homePath + ')' );
 
 	// turn [[My link]] into [My link](my-link)
 	markdown = markdown.replace( /\[\[([^\]]+)\]\]/g, function ( match, link ) {
