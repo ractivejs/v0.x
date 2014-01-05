@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.get()]]
+[[Home]] > [[API reference]] > [[ractive.get()]]
 
 > ### ractive.get( keypath )
 > Returns the value at `keypath` (see [[Keypaths]])

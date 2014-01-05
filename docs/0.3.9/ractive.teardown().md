@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.teardown()]]
+[[Home]] > [[API reference]] > [[ractive.teardown()]]
 
 Unrenders this Ractive instance, removing any event handlers that were bound automatically by Ractive.
 

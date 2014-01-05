@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[References]]
+[[Home]] > [[Glossary]] > [[References]]
 
 Within this documentation, and within Ractive's code, a *reference* is a string that refers to a piece of data - in other words, within a `{{name}}` [mustache](mustaches), `name` is the reference.
 

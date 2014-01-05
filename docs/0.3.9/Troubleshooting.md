@@ -1,3 +1,3 @@
-[Home](ractive-js-documentation) > [[Troubleshooting]]
+[[Home]] > [[Troubleshooting]]
 
 * [[SVG and older browsers]]

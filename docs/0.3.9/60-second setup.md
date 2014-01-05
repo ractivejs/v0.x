@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[60-second setup]]
+[[Home]] > [[60-second setup]]
 
 Create a folder with a blank `index.html` page:
 

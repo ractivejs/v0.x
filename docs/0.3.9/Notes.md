@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Notes]]
+[[Home]] > [[Notes]]
 
 * [[Valid selectors]]
 * [[Preparsing]]

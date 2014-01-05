@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API Reference]] > [[Ractive.events]]
+[[Home]] > [[API Reference]] > [[Ractive.events]]
 
 If you're using [proxy events](Events#on-events), you can either use the standard DOM events that an element can listen to (e.g. `click`, `mouseover`, `touchmove`, `load`, whatever) or you can use custom event definitions.
 

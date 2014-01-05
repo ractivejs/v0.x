@@ -196,6 +196,9 @@ function preprocessMarkdown ( markdown ) {
 		return '<div class="breadcrumbs">' + breadcrumbs.replace( / > /g, ' &raquo; ' ) + '</div>';
 	});
 
+	// specially treat [[Home]] link
+	markdown = markdown.replace( '[[Home]]', '[Home](ractive-js-documentation)' );
+
 	// turn [[My link]] into [My link](my-link)
 	markdown = markdown.replace( /\[\[([^\]]+)\]\]/g, function ( match, link ) {
 		return '[' + link + '](' + slugify( link ) + ')';

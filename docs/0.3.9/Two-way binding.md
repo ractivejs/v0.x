@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Two‐way binding]]
+[[Home]] > [[Glossary]] > [[Two‐way binding]]
 
 By default, a Ractive instance will update its internal model based on user input, if you have `<input>`, `<textarea>` or `<select>` elements.
 

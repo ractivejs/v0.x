@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Magic mode]]
+[[Home]] > [[Glossary]] > [[Magic mode]]
 
 Normally, you would update data using [[ractive.set()]], [[ractive.animate()]], or the [array mutator methods](array-modification).
 

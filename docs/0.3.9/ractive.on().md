@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.on()]]
+[[Home]] > [[API reference]] > [[ractive.on()]]
 
 Subscribe to [[events]].
 

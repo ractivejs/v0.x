@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]]
+[[Home]] > [[API reference]]
 
 ### ractive = new Ractive( *options* )
 

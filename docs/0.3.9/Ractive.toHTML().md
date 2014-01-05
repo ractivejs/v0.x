@@ -1,3 +1,3 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.toHTML()]]
+[[Home]] > [[API reference]] > [[ractive.toHTML()]]
 
 TODO...

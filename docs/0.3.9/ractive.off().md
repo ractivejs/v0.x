@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.off()]]
+[[Home]] > [[API reference]] > [[ractive.off()]]
 
 Removes an event handler, several event handlers, or all event handlers.
 

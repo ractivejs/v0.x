@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Plugins]] > [[Components]]
+[[Home]] > [[Plugins]] > [[Components]]
 
 In many situations, you want to encapsulate behaviour and markup into a single reusable *component*, which can be dropped in to Ractive applications.
 

@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation)
+[[Home]]
 
 These pages aim to provide all the information you need to master Ractive, including details on how to extend the library with plugins.
 

@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.updateModel()]]
+[[Home]] > [[API reference]] > [[ractive.updateModel()]]
 
 If you programmatically manipulate inputs and other elements that have [[two‐way binding]] set up, your model can get out of sync. In these cases, we need to force a resync with `ractive.updateModel()`:
 

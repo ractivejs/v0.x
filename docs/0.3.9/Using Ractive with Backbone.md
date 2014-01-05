@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Tips]] > [[Using Ractive with Backbone]]
+[[Home]] > [[Tips]] > [[Using Ractive with Backbone]]
 
 If your app uses Backbone to manage your models and collections, you can use them seamlessly with Ractive by using an [adaptor](Ractive.adaptors).
 

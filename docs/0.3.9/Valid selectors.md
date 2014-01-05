@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Notes]] > [[Valid selectors]]
+[[Home]] > [[Notes]] > [[Valid selectors]]
 
 When creating a new Ractive instance, the `el` option can be an element, a jQuery (or equivalent) collection, or a string.
 

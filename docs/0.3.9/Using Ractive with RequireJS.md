@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Tips]] > [[Using Ractive with RequireJS]]
+[[Home]] > [[Tips]] > [[Using Ractive with RequireJS]]
 
 *Psst! Looking for the [Ractive + RequireJS sample application](https://github.com/RactiveJS/requirejs-ractive/tree/master/sample)?*
 

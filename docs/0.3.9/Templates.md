@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Templates]]
+[[Home]] > [[Glossary]] > [[Templates]]
 
 In Ractive, templates (until they get [parsed](ractive-parse), at least) are just snippets of HTML, with a few differences. A template should be *well-formed* - Ractive's parser is not quite as forgiving as the HTML parsers found in browsers (though it does allow things like implicitly closed elements).
 

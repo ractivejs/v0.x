@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Array modification]]
+[[Home]] > [[Glossary]] > [[Array modification]]
 
 By default, Ractive will intercept the *mutator methods* (`pop`, `push`, `shift`, `unshift`, `splice`, `sort` and `reverse`) of arrays that it [depends on](dependants) for more convenient data binding.
 
