@@ -65,32 +65,19 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'render', function () {
 
-		var Ractive, docs, version, versionedDocs, pageName, slug, page, pages, rendered, pageTemplate, slugs, home;
+		var Ractive, docs, version, versionedDocs, pageName, slug, page, pages, slugs;
 
 		Ractive = require( 'ractive' );
 
 		docs = grunt.file.readJSON( 'tmp/docs.json' );
-		pageTemplate = grunt.file.read( 'templates/page.html' );
 
 		// render index page
-		rendered = new Ractive({
-			template: grunt.file.read( 'templates/index.html' ),
-			data: {
-
-			},
-			delimiters: [ '[[', ']]' ],
-			tripleDelimiters: [ '[[[', ']]]' ],
-			preserveWhitespace: true
-		}).toHTML();
-
-		grunt.file.write( 'build/index.html', rendered );
+		render( 'index', {}, null, 'index' );
 
 		for ( version in docs ) {
 			versionedDocs = docs[ version ];
 			pages = [];
 			slugs = {};
-
-			home = versionedDocs._home;
 
 			for ( pageName in versionedDocs ) {
 				if ( pageName.charAt( 0 ) !== '_' ) {
@@ -107,58 +94,56 @@ module.exports = function ( grunt ) {
 			pages.reverse();
 
 			// render individual posts
-			pages.forEach( function ( page ) {
-				var rendered = new Ractive({
-					template: pageTemplate,
-					data: {
-						page: page
-					},
-					delimiters: [ '[[', ']]' ],
-					tripleDelimiters: [ '[[[', ']]]' ],
-					preserveWhitespace: true
-				}).toHTML();
-
-				grunt.file.write( 'build/' + version + '/' + page.slug + '.html', rendered );
-
-				if ( version === grunt.config( 'latest' ) ) {
-					grunt.file.write( 'build/latest/' + page.slug + '.html', rendered );
-				}
-			});
+			pages.forEach( renderPage.bind( null, version ) );
 
 			// render index
-			rendered = new Ractive({
-				template: grunt.file.read( 'templates/version-index.html' ),
-				data: {
-					home: versionedDocs._home
-				},
-				delimiters: [ '[[', ']]' ],
-				tripleDelimiters: [ '[[[', ']]]' ],
-				preserveWhitespace: true
-			}).toHTML();
-
-			grunt.file.write( 'build/' + version + '/index.html', rendered );
-
-			if ( version === grunt.config( 'latest' ) ) {
-				grunt.file.write( 'build/latest/index.html', rendered );
-			}
+			render( 'version-index', { home: versionedDocs._home }, version, 'index' );
 
 			// render page list
+			render( 'pages', { pages: pages }, version, 'pages' );
+		}
+
+		function renderPage ( version, page ) {
+			render( 'page', { page: page }, version, page.slug );
+		}
+
+		function writeFile ( version, fileName, content ) {
+			var path = [ 'build' ];
+			if ( version ) {
+				path.push( version );
+			}
+			path.push( fileName + '.html' );
+			grunt.file.write( path.join( '/' ), content );
+		}
+
+		function render ( templateName, data, version, fileName ) {
+			var cache, template, rendered, logMessage;
+
+			logMessage = [ "Rendering " ];
+			if ( version ) {
+				logMessage.push( version + "/" );
+			}
+			logMessage = logMessage.concat( fileName + ".html", " as [ ", templateName, " ]" );
+			console.log( logMessage.join( '' ) );
+
+
+			cache = render.cache || ( render.cache = {} );
+			template = cache[ templateName ] ||
+				( cache[ templateName ] = grunt.file.read( 'templates/' + templateName + '.html' ) );
 			rendered = new Ractive({
-				template: grunt.file.read( 'templates/pages.html' ),
-				data: {
-					pages: pages
-				},
+				template: template,
+				data: data,
 				delimiters: [ '[[', ']]' ],
 				tripleDelimiters: [ '[[[', ']]]' ],
 				preserveWhitespace: true
 			}).toHTML();
 
-			grunt.file.write( 'build/' + version + '/pages.html', rendered );
-
+			writeFile( version, fileName, rendered );
 			if ( version === grunt.config( 'latest' ) ) {
-				grunt.file.write( 'build/latest/pages.html', rendered );
+				writeFile( 'latest', fileName, rendered );
 			}
 		}
+
 	});
 
 
@@ -174,7 +159,6 @@ module.exports = function ( grunt ) {
 		'sass',
 		'copy'
 	]);
-
 
 };
 
@@ -203,9 +187,10 @@ function preprocessMarkdown ( markdown ) {
 
 	// process github-style code blocks
 	markdown = markdown.replace( /```([a-z]+)?\n([\s\S]+?)\n```/g, function ( match, language, content ) {
-		content = content.replace( /\t/g, '  ' )
-		                 .replace( /</g, '&lt;' )
-		                 .replace( />/g, '&gt;' );
+		content = content
+			.replace( /\t/g, '  ' )
+			.replace( /</g, '&lt;' )
+			.replace( />/g, '&gt;' );
 
 		return '<pre' + ( language ? ' class="prettyprint lang-' + language + '"' : '' ) + '>' + content + '</pre>';
 	});
@@ -221,5 +206,9 @@ function slugify ( str ) {
 	if ( !str ) {
 		return '';
 	}
-	return str.toLowerCase().replace( /[^a-z]/g, '-' ).replace( /-{2,}/g, '-' ).replace( /^-/, '' ).replace( /-$/, '' );
+	return str.toLowerCase()
+		.replace( /[^a-z]/g, '-' )
+		.replace( /-{2,}/g, '-' )
+		.replace( /^-/, '' )
+		.replace( /-$/, '' );
 }
