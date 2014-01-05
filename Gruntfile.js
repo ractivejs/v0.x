@@ -94,7 +94,7 @@ module.exports = function ( grunt ) {
 
 			for ( pageName in versionedDocs ) {
 				if ( pageName.charAt( 0 ) !== '_' ) {
-					page = processPage( versionedDocs[ pageName ], version, pageName );
+					page = processPage( versionedDocs[ pageName ], version, pageName, versionedDocs._home );
 					pages.push( page );
 
 					if ( slugs[ page.slug ] ) {
@@ -178,18 +178,18 @@ module.exports = function ( grunt ) {
 
 };
 
-function processPage ( page, version, name ) {
+function processPage ( page, version, name, homePath ) {
 	var markdown;
 
 	return {
 		version: version,
 		name: name,
 		slug: slugify( name ),
-		html: postprocess( require( 'marked' )( preprocessMarkdown( page ) ) )
+		html: postprocess( require( 'marked' )( preprocessMarkdown( page, homePath ) ) )
 	};
 }
 
-function preprocessMarkdown ( markdown ) {
+function preprocessMarkdown ( markdown, homePath ) {
 
 	// breadcrumbs
 	markdown = markdown.replace( /^(.+)$/m, function ( match, breadcrumbs ) {
@@ -197,7 +197,7 @@ function preprocessMarkdown ( markdown ) {
 	});
 
 	// specially treat [[Home]] link
-	markdown = markdown.replace( '[[Home]]', '[Home](ractive-js-documentation)' );
+	markdown = markdown.replace( '[[Home]]', '[Home](' + homePath + ')' );
 
 	// turn [[My link]] into [My link](my-link)
 	markdown = markdown.replace( /\[\[([^\]]+)\]\]/g, function ( match, link ) {
