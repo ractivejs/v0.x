@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Tips]]
+[[Home]] > [[Tips]]
 
 Using Ractive with...
 ---------------------

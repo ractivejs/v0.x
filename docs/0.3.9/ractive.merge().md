@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.merge()]]
+[[Home]] > [[API reference]] > [[ractive.merge()]]
 
 Merges data from one array into another, inserting and removing nodes from the DOM as necessary. This is an efficient way to (for example) handle data from a server.
 

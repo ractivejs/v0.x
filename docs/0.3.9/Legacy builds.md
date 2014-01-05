@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Legacy builds]]
+[[Home]] > [[Glossary]] > [[Legacy builds]]
 
 In a perfect world, every copy of Internet Explorer below version ~~10~~ 11 would be living out its days in a pleasant retirement home, playing bingo and fighting over the remote control with Lotus Notes, and the IE dev team would adopt a modern release cycle so that newer versions weren't constantly playing catch-up with the browsers built on open source.
 

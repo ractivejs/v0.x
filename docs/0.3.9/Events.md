@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API Reference]] > [[Events]]
+[[Home]] > [[API Reference]] > [[Events]]
 
 Like many libraries, Ractive implements the [publish/subscribe](http://addyosmani.com/blog/understanding-the-publishsubscribe-pattern-for-greater-javascript-scalability/) mechanism to allow you to trigger behaviour at certain points.
 

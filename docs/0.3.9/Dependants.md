@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Dependants]]
+[[Home]] > [[Glossary]] > [[Dependants]]
 
 Ractive maintains a *dependency graph* in order to do the minimum amount of work necessary to keep the DOM up-to-date.
 

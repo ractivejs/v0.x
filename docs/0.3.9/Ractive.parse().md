@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[Ractive.parse()]]
+[[Home]] > [[API reference]] > [[Ractive.parse()]]
 
 Before templates can be used, they must be parsed. Parsing involves reading in a template string and converting it to a tree-like data structure, much like a browser's parser would.
 

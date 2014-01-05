@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.findAll()]]
+[[Home]] > [[API reference]] > [[ractive.findAll()]]
 
 This method is similar to [[ractive.find()]], with two important differences. Firstly, it returns a list of elements matching the selector, rather than a single node. Secondly, it can return a *live* list, which will stay in sync with the DOM as it continues to update.
 

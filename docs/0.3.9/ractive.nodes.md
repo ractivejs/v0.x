@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.nodes]]
+[[Home]] > [[API reference]] > [[ractive.nodes]]
 
 Each Ractive instance has a `nodes` property, which is a hash of all the elements within a Ractive that have an `id` attribute:
 

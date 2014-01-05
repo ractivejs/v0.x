@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Troubleshooting]] > [[SVG and older browsers]]
+[[Home]] > [[Troubleshooting]] > [[SVG and older browsers]]
 
 Ractive doesn't mind whether you're rendering HTML or SVG - it treats both the same way. Unfortunately, some browsers (notably IE8 and below, and Android 2.3 and below) *do* care.
 

@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.observe()]]
+[[Home]] > [[API reference]] > [[ractive.observe()]]
 
 Observes the data at a particular [keypath](keypaths). Unless specified otherwise, the *observer* will be *initialised* once as soon as you create the observer, with `undefined` as `oldValue`. Thereafter it will be *notified* whenever the *observed keypath* changes.
 

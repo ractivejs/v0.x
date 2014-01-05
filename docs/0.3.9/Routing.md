@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Tips]] > [[Routing]]
+[[Home]] > [[Tips]] > [[Routing]]
 
 Client-side routing allows you to navigate around a web app without having to reload the page, using the [HTML5 history API](http://diveintohtml5.info/history.html) (or hash fragments at the end of a URL, in older browsers).
 

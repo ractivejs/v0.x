@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]]
+[[Home]] > [[Glossary]]
 
 Ractive aims to be as self-explanatory as possible - you shouldn't have to trawl through documentation in order to be productive with it.
 

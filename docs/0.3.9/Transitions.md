@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Plugins]] > [[Transitions]]
+[[Home]] > [[Plugins]] > [[Transitions]]
 
 Transitions allow you to control how elements are first rendered and how they are removed from the DOM. They are added with `intro` and `outro` directives, which look like attributes within a template (but are not rendered to the DOM as attributes):
 

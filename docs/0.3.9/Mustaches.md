@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Mustaches]]
+[[Home]] > [[Glossary]] > [[Mustaches]]
 
 
 ## What is Mustache?

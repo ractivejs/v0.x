@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[Ractive.extend()]]
+[[Home]] > [[API reference]] > [[Ractive.extend()]]
 
 Ractive is more than a library; it is a platform. It makes it easier to create reusable, but specialised, blocks of functionality such as to-do lists, slideshows, bar charts, text editors, and so on.
 

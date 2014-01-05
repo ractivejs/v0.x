@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Observers]]
+[[Home]] > [[Glossary]] > [[Observers]]
 
 ## Like publish/subscribe, but different
 

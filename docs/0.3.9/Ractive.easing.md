@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[Ractive.easing]]
+[[Home]] > [[API reference]] > [[Ractive.easing]]
 
 This is a set of globally available easing functions, which are used with [[ractive.animate()]] and in some [[transitions]].
 

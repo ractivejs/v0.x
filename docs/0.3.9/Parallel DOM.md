@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Parallel DOM]]
+[[Home]] > [[Glossary]] > [[Parallel DOM]]
 
 Ractive works by maintaining a simplified model of the part of the DOM that it's responsible for. This model contains all the information - about data-binding, event handling and so on - that it needs to keep things up-to-date.
 

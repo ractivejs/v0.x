@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API Reference]] > [[Ractive.adaptors]]
+[[Home]] > [[API Reference]] > [[Ractive.adaptors]]
 
 [[Adaptors]] are a way of teaching Ractive to communicate with other libraries, such as Backbone.
 

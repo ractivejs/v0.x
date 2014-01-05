@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.animate()]]
+[[Home]] > [[API reference]] > [[ractive.animate()]]
 
 Similar to [[ractive.set()]], this will update the data and re-render any affected mustaches (and notify [[observers]]).
 

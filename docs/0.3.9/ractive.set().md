@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[ractive.set()]]
+[[Home]] > [[API reference]] > [[ractive.set()]]
 
 Updates data and triggers a re-render of any mustaches that are affected (directly or indirectly) by the change. Any [[observers]] of affected [[keypaths]] will be notified.
 

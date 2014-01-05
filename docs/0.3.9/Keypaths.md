@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Glossary]] > [[Keypaths]]
+[[Home]] > [[Glossary]] > [[Keypaths]]
 
 The main way to interact with a Ractive instance is by setting *keypaths*. A keypath is a string representing the location of a piece of data:
 

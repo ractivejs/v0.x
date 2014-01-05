@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[API reference]] > [[Initialisation options]]
+[[Home]] > [[API reference]] > [[Initialisation options]]
 
 Create a new Ractive instance using the specified options. For example:
 

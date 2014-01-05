@@ -1,4 +1,4 @@
-[Home](ractive-js-documentation) > [[Plugins]]
+[[Home]] > [[Plugins]]
 
 Plugins allow you to augment Ractive with extra functionality. You can create your own plugins - see the [[Plugin APIs]] page and the [plugin template](https://github.com/RactiveJS/Plugin-template) to get started.
 
