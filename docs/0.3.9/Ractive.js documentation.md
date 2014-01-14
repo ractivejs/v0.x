@@ -9,6 +9,7 @@ If you see something wrong, out of date, or missing from this documentation, ple
 * [[Tips]]
 * [[Plugins]]
 * [[API reference]]
+* [[Mustaches]] (templating)
 * [[Troubleshooting]]
 
 Other links
