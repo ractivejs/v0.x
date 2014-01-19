@@ -1,7 +1,7 @@
 docs.ractivejs.org
 ==================
 
-The documentation for [http://ractivejs.org](Ractive.js).
+The documentation for [Ractive.js](http://ractivejs.org).
 
 
 Building
