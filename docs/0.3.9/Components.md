@@ -82,7 +82,60 @@ ractive.on( 'doSomething', function () {
 
 (The same goes for any events that are fired programmatically by the component, rather than as a result of user interaction.)
 
+## Psuedo Dynamic Templating
 
+In some cases you want to render a different template depending on the data that is passed in.
+
+### Form Element Component
+```js
+var formElement = Ractive.extend({
+  template: '{{>element}}',
+  setTemplate: function(options) {
+    options.partials.element = options.data.template;
+  },
+  beforeInit: function(options) {
+    this.setTemplate(options)
+  }
+});
+```
+
+### Form Template
+```html
+{{#items}}
+<formElement value="{{value}}" template="{{template}}"/>
+{{/items}}
+```
+### Ractive Form
+```js
+var ractive = new Ractive({
+  el: 'body',
+  template: formTemplate,
+  components: {
+    formElement: formElement
+  }
+  data: {
+    items: [
+        {
+          template: '<h1>{{value}}</h1>',
+          value: 'This is a title'
+        },
+        {
+          template: '<input type="text" value="{{value}}" style="display:block; clear: both;" />',
+          value: 'Input Value'
+        },
+        {
+          template: '<textarea value="{{value}}"></textarea>',
+          value: 'Textarea Value'
+        }
+    ]
+  }
+
+});
+
+ractive.observe('items.*.value', function(newValue, oldValue, keypath) {
+  console.log(keypath + ' ' + newValue);
+});
+```
 ## Caveat
 
 Components are a stable feature, but still relatively new - certain aspects have yet to be implemented. Pardon the dust! There is a [long-running GitHub issue](https://github.com/RactiveJS/Ractive/issues/74), which may be of interest.
