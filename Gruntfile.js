@@ -65,7 +65,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'render', function () {
 
-		var Ractive, docs, version, versionedDocs, pageName, slug, page, pages, slugs;
+		var Ractive, docs, version, versionedDocs, pageName, slug, page, pages, slugs, nav;
 
 		Ractive = require( 'ractive' );
 
@@ -78,23 +78,24 @@ module.exports = function ( grunt ) {
 			versionedDocs = docs[ version ];
 			pages = [];
 			slugs = {};
-
 			for ( pageName in versionedDocs ) {
 				if ( pageName.charAt( 0 ) !== '_' ) {
-					page = processPage( versionedDocs[ pageName ], version, pageName, versionedDocs._home );
+					page = processPage( versionedDocs[ pageName ], version, pageName, versionedDocs._home);
 					pages.push( page );
 
 					if ( slugs[ page.slug ] ) {
 						throw new Error( 'You cannot have multiple pages with the same slug (' + page.slug + ')' );
 					}
 					slugs[ page.slug ] = true;
+				} else if ( pageName == '_nav') {
+					nav = processPage(versionedDocs[pageName], version, pageName)
 				}
 			}
 
 			pages.reverse();
 
 			// render individual posts
-			pages.forEach( renderPage.bind( null, version ) );
+			pages.forEach( renderPage.bind( null, version, nav) );
 
 			// render index
 			render( 'version-index', { home: versionedDocs._home }, version, 'index' );
@@ -103,8 +104,8 @@ module.exports = function ( grunt ) {
 			render( 'pages', { pages: pages }, version, 'pages' );
 		}
 
-		function renderPage ( version, page ) {
-			render( 'page', { page: page }, version, page.slug );
+		function renderPage ( version, nav, page ) {
+			render( 'page', { page: page, nav: nav }, version, page.slug );
 		}
 
 		function writeFile ( version, fileName, content ) {
@@ -130,6 +131,7 @@ module.exports = function ( grunt ) {
 			cache = render.cache || ( render.cache = {} );
 			template = cache[ templateName ] ||
 				( cache[ templateName ] = grunt.file.read( 'templates/' + templateName + '.html' ) );
+
 			rendered = new Ractive({
 				template: template,
 				data: data,
