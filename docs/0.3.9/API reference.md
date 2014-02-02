@@ -6,22 +6,6 @@ Create a new Ractive instance. See [[Initialisation options]] for a breakdown of
 
 ## Instance methods
 
-* [[ractive.animate()]]
-* [[ractive.find()]]
-* [[ractive.findAll()]]
-* [[ractive.fire()]]
-* [[ractive.get()]]
-* [[ractive.merge()]]
-* [[ractive.observe()]]
-* [[ractive.off()]]
-* [[ractive.on()]]
-* [[ractive.set()]]
-* [[ractive.teardown()]]
-* [[ractive.toHTML()]]
-* [[ractive.update()]]
-* [[ractive.updateModel()]]
-
-
 ## Instance properties
 
 * [[ractive.nodes]]

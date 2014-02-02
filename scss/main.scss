@@ -9,8 +9,6 @@ body {
 	font-family: 'Baskerville', 'Book Antiqua', 'Georgia';
 
 	width: 100%;
-	max-width: 48em;
-	margin: 0 auto;
 	@include border-box;
 }
 
@@ -22,7 +20,6 @@ main {
 	}
 
 	@media (min-width: 50em) {
-		margin: 0 auto;
 
 		p {
 			padding-right: 18em;
@@ -69,3 +66,7 @@ p {
 @import "menu";
 @import "title";
 @import "docs";
+
+
+@import "layout";
+@import "left_menu";
