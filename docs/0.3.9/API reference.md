@@ -25,8 +25,8 @@ Create a new Ractive instance. See [[Initialisation options]] for a breakdown of
 ## Instance properties
 
 * [[ractive.nodes]]
-* [ractive.transitions](ractive.transitions %28instance%29)
-* [ractive.partials](ractive.partials %28instance%29)
+* [[ractive.transitions (instance)]]
+* [[Ractive.partials (instance)]]
 
 
 ## Instance events
@@ -44,6 +44,6 @@ See [[Events]].
 * [[Ractive.adaptors]]
 * [[Ractive.eventDefinitions]]
 * [[Ractive.easing]]
-* [Ractive.partials](Ractive.partials %28global%29)
-* [Ractive.transitions](Ractive.transitions %28global%29)
+* [[Ractive.partials (globals)]]
+* [[Ractive.transitions (globals)]]
 ...more to come...
