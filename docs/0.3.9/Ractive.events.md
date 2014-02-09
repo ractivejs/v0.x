@@ -1,8 +1,8 @@
 [[Home]] > [[API Reference]] > [[Ractive.events]]
 
-If you're using [proxy events](events#on-events), you can either use the standard DOM events that an element can listen to (e.g. `click`, `mouseover`, `touchmove`, `load`, whatever) or you can use custom event definitions.
+If you're using [proxy events](events#on-events), you can either use the standard DOM events that an element can listen to (e.g. `click`, `mouseover`, `touchmove`, `load`, whatever) or you can use [custom event plugins](plugins#events).
 
-These allow you to define more complex events than the native ones, but still treat them as first class citizens. For example the `tap` event abstracts away differences between mouse and touch interfaces, eliminating the 300ms delay users would experience on a touch device if you were only listening for `click` events:
+These allow you to define more complex events than the native ones, but still treat them as first class citizens. For example the [tap plugin](ractivejs.github.io/Ractive-events-tap/) abstracts away differences between mouse and touch interfaces, eliminating the 300ms delay users would experience on a touch device if you were only listening for `click` events:
 
 ```html
 <a class='button' on-tap='select'>Tap me!</a>
@@ -10,12 +10,10 @@ These allow you to define more complex events than the native ones, but still tr
 
 You could also use the event definition API to normalise browser behaviour (e.g. with `mouseenter` and `mouseleave`, which are handy and widely-used events, but non-standard ones), or to implement swiping and other gestures.
 
-Future versions of Ractive may include more event definitions 'out of the box' - for now, there is just the `tap` event.
-
 
 ## The event definition API
 
-When Ractive sees a `on-[eventName]` directive, it first looks in `Ractive.eventDefinitions` for an `[eventName]` property, and if it finds one it *applies the definition*. (If not, it assumes that `[eventName]` refers to a native DOM event.)
+When Ractive sees a `on-[eventName]` directive, it first looks in `Ractive.events` for an `[eventName]` property, and if it finds one it *applies the definition*. (If not, it assumes that `[eventName]` refers to a native DOM event.)
 
 Event definitions receive two arguments - `node`, and `fire`. `node` is the element to which the definition is being applied, and `fire` is the function that must be called when the event has taken place.
 
@@ -38,7 +36,7 @@ All this will make more sense with an example. Let's define a `menu` event, whic
 If the user is using a mouse, we want to intercept the `contextmenu` event (which is generally fired on right-click). On touch devices, we'll use a long press to signal that the user wants to open the menu, as that is a common interaction within apps.
 
 ```js
-Ractive.eventDefinitions.menu = function ( node, fire ) {
+Ractive.events.menu = function ( node, fire ) {
   var longpressDuration = 500, threshold = 5, contextmenuHandler, touchstartHandler;
 
   // intercept contextmenu events and suppress them
