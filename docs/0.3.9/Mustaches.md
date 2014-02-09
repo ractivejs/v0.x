@@ -81,7 +81,7 @@ We can iterate over the users object with the following:
 
 ### Restricted references
 
-Normally, references are resolved according to a specific algorithm, which involves *moving up the context stack* until a property matching the reference is found. In the vast majority of cases this is exactly what you want, but occasionally (for example when dealing with [recursive partials](Partials#recursive-partials)) it is useful to be able to specify that a property must exist *in the current context*.
+Normally, references are resolved according to a specific algorithm, which involves *moving up the context stack* until a property matching the reference is found. In the vast majority of cases this is exactly what you want, but occasionally (for example when dealing with [recursive partials](partials#recursive-partials)) it is useful to be able to specify that a property must exist *in the current context*.
 
 To restrict a reference to the current context, prefix it with a `.`, e.g. `{{#.bar}}`:
 
@@ -141,7 +141,7 @@ By using `../../name` instead of `name`, we're saying 'go up one level (to `post
 
 ### Expressions
 
-Expressions are a big topic, so they have a [page of their own](Expressions). But this section is about explaining the difference between vanilla Mustache and Ractive Mustache, so they deserve a mention here.
+Expressions are a big topic, so they have a [page of their own](expressions). But this section is about explaining the difference between vanilla Mustache and Ractive Mustache, so they deserve a mention here.
 
 Expressions look like any normal mustache. For example this expression converts `num` to a percentage:
 

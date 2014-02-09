@@ -2,7 +2,7 @@
 
 By default, a Ractive instance will update its internal model based on user input, if you have `<input>`, `<textarea>` or `<select>` elements.
 
-If that's unhelpful for your app, you can disable it by passing `twoway: false` as an [initialisation option](Initialisation-options).
+If that's unhelpful for your app, you can disable it by passing `twoway: false` as an [initialisation option](initialisation-options).
 
 
 ## `<input>` elements

@@ -1,6 +1,6 @@
 [[Home]] > [[Glossary]] > [[Expressions]]
 
-Expressions allow you to use logic within a template. At their simplest, that may just mean a basic arithmetic operation, such as converting to percentages, or making your [index references](Mustaches#index-references) start at 1 rather than 0:
+Expressions allow you to use logic within a template. At their simplest, that may just mean a basic arithmetic operation, such as converting to percentages, or making your [index references](mustaches#index-references) start at 1 rather than 0:
 
 ```html
 <div class='bar-chart'>
@@ -44,7 +44,7 @@ These are, of course, JavaScript expressions. Almost any valid JavaScript expres
 * No function literals (i.e. anything that involves the `function` keyword)
 * No regular expression literals (this may change in future!)
 
-Aside from a subset of global objects (e.g. `Math`, `Array`, `parseInt`, `encodeURIComponent` - full list below), any references must be to properties (however deeply nested) of the Ractive instance's data, rather than arbitrary variables. Reference resolution follows the [normal process](References).
+Aside from a subset of global objects (e.g. `Math`, `Array`, `parseInt`, `encodeURIComponent` - full list below), any references must be to properties (however deeply nested) of the Ractive instance's data, rather than arbitrary variables. Reference resolution follows the [normal process](references).
 
 
 ## Does this use `eval`?
