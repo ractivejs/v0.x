@@ -1,4 +1,4 @@
-[[Home]] > [[Plugins]] > [APIs](Plugin APIs)
+[[Home]] > [[Plugins]] > [APIs](plugin-apis)
 
 You can create plugins for Ractive that add new features. The plugin APIs are documented on these pages:
 
