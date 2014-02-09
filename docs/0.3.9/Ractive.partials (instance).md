@@ -1,4 +1,4 @@
-[[Home]] > [[API reference]] > [ractive.partials](Ractive.partials-instance)
+[[Home]] > [[API reference]] > [ractive.partials](ractive-partials-instance)
 
 Instance-specific [[partials]] exist as properties of `ractive.partials`.
 
