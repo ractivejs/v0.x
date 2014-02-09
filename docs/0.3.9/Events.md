@@ -73,7 +73,7 @@ Proxy event handlers receive an `event` argument. This isn't the same as the `ev
 
 Because of the way proxy events work, they more or less eliminate the need for event delegation.
 
-Any standard DOM event that an element supports can be used (e.g. `on-mouseover='highlight'`, `on-touchstart='dragstart'`, `on-blur='submit'`, `on-error='loadFallbackImage'`, and so on), as can non-standard events defined in [[ractive-events-global]] such as `on-tap`.
+Any standard DOM event that an element supports can be used (e.g. `on-mouseover='highlight'`, `on-touchstart='dragstart'`, `on-blur='submit'`, `on-error='loadFallbackImage'`, and so on), as can non-standard events defined in [[ractive-events]] such as `on-tap`.
 
 *TODO - chained proxy events, additional arguments in custom event definitions*
 
