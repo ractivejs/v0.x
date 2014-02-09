@@ -42,8 +42,8 @@ See [[Events]].
 ## Plugins and shared properties
 
 * [[Ractive.adaptors]]
-* [[Ractive.eventDefinitions]]
+* [[Ractive.events]]
 * [[Ractive.easing]]
-* [[Ractive.partials (globals)]]
-* [[Ractive.transitions (globals)]]
+* [[Ractive.partials (global)]]
+* [[Ractive.transitions (global)]]
 ...more to come...
