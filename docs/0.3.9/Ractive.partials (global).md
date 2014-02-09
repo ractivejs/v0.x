@@ -1,4 +1,4 @@
-[[Home]] > [[API reference]] > [Ractive.partials](Ractive.partials-global)
+[[Home]] > [[API reference]] > [Ractive.partials](ractive-partials-global)
 
 [[Partials]] can be made globally available to Ractive instances by adding them to `Ractive.partials`:
 
