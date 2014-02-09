@@ -14,6 +14,7 @@ Plugins allow you to augment Ractive with extra functionality. You can create yo
 ## [[Decorators]]
 
 * [Sortable](http://ractivejs.github.io/Ractive-decorators-sortable/)
+* [Slip](http://lluchs.github.io/Ractive-decorators-Slip/) - contributed by [@lluchs](https://github.com/lluchs)
 
 
 ## [[Events]]
