@@ -1,4 +1,4 @@
-[[Home]] > [[API reference]] > [ractive.transitions](ractive.transitions-instance)
+[[Home]] > [[API reference]] > [ractive.transitions](ractive-transitions-instance)
 
 Each Ractive instance has a `transitions` property, which contains [transition functions](transitions) specific to that instance.
 
