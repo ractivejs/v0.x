@@ -24,7 +24,7 @@ ractive = new Ractive({
 list.push( 'd' ); // adds a new list item - <li>d</li>
 ```
 
-You can disable this behaviour by passing in `modifyArrays: false` as an [initialisation option](Initialisation options).
+You can disable this behaviour by passing in `modifyArrays: false` as an [initialisation option](initialisation-options).
 
 
 ## How it works
