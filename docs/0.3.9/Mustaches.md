@@ -141,7 +141,7 @@ By using `../../name` instead of `name`, we're saying 'go up one level (to `post
 
 ### Expressions
 
-Expressions are a big topic, so they have a [page of their own](Expressions). But this section is about explaining the difference between vanilla Mustache and Ractive Mustache, so they deserve a mention here.
+Expressions are a big topic, so they have a [page of their own](expressions). But this section is about explaining the difference between vanilla Mustache and Ractive Mustache, so they deserve a mention here.
 
 Expressions look like any normal mustache. For example this expression converts `num` to a percentage:
 
