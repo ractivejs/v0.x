@@ -104,10 +104,10 @@ Modal = Ractive.extend({
 
     // horizontal centring is taken care of by CSS, but we need to
     // vertically centre
-    outerHeight = this.background.clientHeight;
+    outerHeight = this.outer.clientHeight;
     modalHeight = this.modal.clientHeight;
 
-    verticalSpace = ( backgroundHeight - modalHeight ) / 2;
+    verticalSpace = ( outerHeight - modalHeight ) / 2;
 
     this.modal.style.top = verticalSpace + 'px';
   }
