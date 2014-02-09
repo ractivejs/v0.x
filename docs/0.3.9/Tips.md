@@ -18,6 +18,6 @@ Ractive can take care of your UI, and for simple applications it can take care o
 
 Unlike mega-frameworks like Angular and Ember, Ractive doesn't have an opinion about these things - you're encouraged to build your app from loosely coupled modules. It means you're not beholden to a particular framework's way of doing things, and you can swap out (for example) your routing library for something better later on, but it does mean that you're now responsible for making those decisions.
 
-This section is designed to help with that, by collecting tips and advice. If you think your experience can help other developers, please add it to the wiki!
+This section is designed to help with that, by collecting tips and advice. If you think your experience can help other developers, please add a page to the docs by [forking this repo](https://github.com/RactiveJS/docs.ractivejs.org)!
 
 * [[Routing]]
