@@ -1,4 +1,4 @@
-[[Home]] > [[API reference]] > [Ractive.transitions](Ractive.transitions %28global%29)
+[[Home]] > [[API reference]] > [Ractive.transitions](Ractive.transitions-global)
 
 This is a set of globally-available (i.e, shared between all Ractive instances) [transition functions](transitions). If an element with a specified `intro` or `outro` is added or removed, Ractive will first try to find the transition function on [ractive.transitions](ractive-transitions-instance) - if it fails, it will then look in `Ractive.transitions`.
 
