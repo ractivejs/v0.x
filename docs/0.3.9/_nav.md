@@ -1,5 +1,6 @@
+  
+### API Reference
 
-API Reference
 * [[Initialisation options]]
 * [[ractive.animate()]]
 * [[ractive.find()]]
@@ -16,7 +17,7 @@ API Reference
 * [[ractive.update()]]
 * [[ractive.updateModel()]]
 
-Concepts
+###Concepts
 * [[Dependats]]
 * [[Events]]
 * [[Ractive.events]]
@@ -27,7 +28,7 @@ Concepts
 * [[Routing]]
 * [[Tips]]
 
-Templating
+###Templating
 * [[Templates]]
 * [[Mustaches]]
 * [[Expressions]]
@@ -39,15 +40,15 @@ Templating
 * [[SVG and older browsers]]
 * [[Decorators]]
 
-Plugins
+###Plugins
 * [[Plugins]]
 * [[Plugin APIs]]
 
-Components
+###Components
 * [[Components]]
 * [[Ractive.extend()]]
 
-Adaptors
+###Adaptors
 * [[Adaptors]]
 * [[Ractive.adaptors]]
 * [[Using Ractive With Backbone]]
@@ -56,19 +57,19 @@ Adaptors
 * [[Using Ractive with promises and deferreds]]
 * [[Using Ractive with RequireJS]]
 
-Modifying/Accessing Data
+###Modifying/Accessing Data
 * [[Array modification]]
 * [[Keypaths]]
 * [[Observers]]
 * [[Two-way binding]]
 
-Transitions 
+###Transitions 
 * [[Transitions]]
 * [[Ractive.transitions (global)]]
 * [[Ractive.transitions (instance)]]
 * [[Ractive.easing]]
 
-Other
+###Other
 * [[Troubleshooting]]
 * [[ractive.nodes]]
 * [[Valid selectors]]

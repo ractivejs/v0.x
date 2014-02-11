@@ -1,12 +1,23 @@
+
 .left_menu {
 	
 	ul {
 		list-style: none;
+		padding: 0;
+		border: 1px solid #DDD;
+		border-bottom: none;
+		border-radius: 4px;
 
 		li {
-			padding: 3px 5px;
-			&:hover {
+			border-bottom: 1px solid #DDD;
+			&:hover, .selected {
 				background-color: #F5f5f5
+			}
+			cursor: pointer;
+			a {
+				padding: 3px 5px;
+				display: block;
+				text-decoration: none;
 			}
 		}
 	}

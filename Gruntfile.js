@@ -178,6 +178,7 @@ function processPage ( page, version, name, homePath ) {
 function preprocessMarkdown ( markdown, homePath ) {
 
 	// breadcrumbs
+
 	markdown = markdown.replace( /^(.+)$/m, function ( match, breadcrumbs ) {
 		return '<div class="breadcrumbs">' + breadcrumbs.replace( / > /g, ' &raquo; ' ) + '</div>';
 	});
