@@ -19,3 +19,4 @@ That said, if you're curious about some of the inner workings of Ractive, and wa
 * [[Array modification]]
 * [[Magic mode]]
 * [[Components]]
+* [[Decorators]]
