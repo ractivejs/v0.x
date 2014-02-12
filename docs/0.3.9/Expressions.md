@@ -1,6 +1,12 @@
 [[Home]] > [[Glossary]] > [[Expressions]]
 
-Expressions allow you to use logic within a template. At their simplest, that may just mean a basic arithmetic operation, such as converting to percentages, or making your [index references](mustaches#index-references) start at 1 rather than 0:
+Expressions allow you to use logic within a template. At their simplest, that may just mean a basic arithmetic operation, such as converting to percentages, but there are a variety of more complex uses, such as the examples below.
+
+These examples are plucked from the air - whether they would be useful or not in real life depends on what you're trying to do. The point is that you can include more of your view logic at the declarative layer - the template - where it's easier to *reason about*.
+
+## Examples
+
+### Making your [index references](mustaches#index-references) start at 1 rather than 0:
 
 ```html
 <div class='bar-chart'>
@@ -10,19 +16,29 @@ Expressions allow you to use logic within a template. At their simplest, that ma
 </div>
 ```
 
-Or it could mean formatting a currency so that `1.79` renders as `£1.79p`:
+### Formatting a currency
+
+In this case, so that `1.79` renders as `£1.79p`
 
 ```html
 <p>Price: <strong>{{ format( price ) }}</strong></p>
 ```
 
-Or it could mean adding a class based on some condition:
+### Adding a class to an element based on a condition
 
 ```html
 <a class='button {{ active ? "on" : "off" }}'>switch</a>
 ```
 
-Or it could mean filtering a list to exclude certain records:
+### A template section that depends on a condition
+
+```
+{{# status === 'running' }}
+   <p>Running</p>
+{{/ end of filter }}
+```
+
+### Filtering a list to exclude certain records
 
 ```html
 <ul>
@@ -31,9 +47,6 @@ Or it could mean filtering a list to exclude certain records:
 {{/ end of filter }}
 </ul>
 ```
-
-These are all examples casually plucked from the air - whether they would be useful or not in real life depends on what you're trying to do. The point is that you can include more of your view logic at the declarative layer - the template - where it's easier to *reason about*.
-
 
 ## Valid expressions
 
