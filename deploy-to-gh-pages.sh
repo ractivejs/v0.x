@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # deploy script based on https://medium.com/philosophy-logic/53a8270e87db
-if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 	echo "Deploy script running..."
 	( cd build
 		# grunt copy task doesn't seem to work here...
-		cp -r ../root/* ./
+		# cp -r ../root/* ./
 
 		git init
 		git config user.name "Travis-CI"
