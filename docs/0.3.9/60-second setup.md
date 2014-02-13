@@ -79,7 +79,7 @@ Everything is in place to create a Ractive. Add another script tag at the bottom
 
 Open the page in a browser. You should see a 'Hello, world!' message. If you open the console and type `ractive.set('recipient', 'Jim')` the text will update.
 
-That's it - you're in business.
+That's it - you're in business!
 
 ### Next steps
 
