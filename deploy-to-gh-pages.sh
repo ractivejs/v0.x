@@ -5,7 +5,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
 	echo "Deploy script running..."
 	( cd build
 		# grunt copy task doesn't seem to work here...
-		cp ../root/* ./
+		cp -r ../root/* ./
 
 		git init
 		git config user.name "Travis-CI"
