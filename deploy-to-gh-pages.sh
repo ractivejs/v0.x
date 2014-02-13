@@ -3,6 +3,8 @@
 # deploy script based on https://medium.com/philosophy-logic/53a8270e87db
 echo "Deploy script running..."
 ( cd build
+	# grunt copy task doesn't seem to work here...
+	cp ../root/* ./
 	ls
 #	git init
 #	git config user.name "Travis-CI"
