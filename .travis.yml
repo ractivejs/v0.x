@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+	- "0.10"
+script: npm run-script deploy
+env:
+	global:
+	- GH_REF: github.com/RactiveJS/docs.ractivejs.org.git
+	- secure: Nzi13/WnJKeZHAQivEWGiB0SnjgG5ywyTz+S/bD7qcQdiuksCu7I9faJWjvc7RLU2VwaXSOmI00gjb7X1S2bz0AZ3uxV8F8n1YYeOVbDaJQOU+I5332B0dpNnl09pXBcR7Tl9SWgEd2sy76N5M0zRDX4u+HZ4dsYFN5zlYsSdo8=
