@@ -1,7 +1,7 @@
 language: node_js
 node_js:
  - "0.10"
-script: npm run-script deploy
+script: npm run-script build; npm run-script deploy
 env:
  global:
   - GH_REF: github.com/RactiveJS/docs.ractivejs.org.git

@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # deploy script based on https://medium.com/philosophy-logic/53a8270e87db
-rm -rf build || exit 0;
-mkdir build;
-grunt build
+echo "Deploy script running..."
 ( cd build
 	git init
 	git config user.name "Travis-CI"
