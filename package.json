@@ -12,6 +12,6 @@
     "grunt-spelunk": "~0.1.0"
   },
   "scripts": {
-    "deploy": "./deploy-to-gh-pages.sh"
+    "deploy": "chmod u+x deploy-to-gh-pages.sh; ./deploy-to-gh-pages.sh"
   }
 }
