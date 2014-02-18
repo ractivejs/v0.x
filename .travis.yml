@@ -7,4 +7,4 @@ script: ./deploy-to-gh-pages.sh
 env:
  global:
   - GH_REF: github.com/RactiveJS/docs.ractivejs.org.git
-  - secure: Nzi13/WnJKeZHAQivEWGiB0SnjgG5ywyTz+S/bD7qcQdiuksCu7I9faJWjvc7RLU2VwaXSOmI00gjb7X1S2bz0AZ3uxV8F8n1YYeOVbDaJQOU+I5332B0dpNnl09pXBcR7Tl9SWgEd2sy76N5M0zRDX4u+HZ4dsYFN5zlYsSdo8=
+  - secure: AXOggwbE9d5bcLlAXQrpjc7EQz0qgpkYI8JICzNFwh9I7pqDy1BAg1nC8nc0c1Pyd/HTZH+4hkSO3vjuffTEdV7Nb/gEqo2Wu8lnB/NfAx6bNvMPK0rp54qc9kLr93m0i0ttDDnT3XoLdY7c9T3AFWHTF4c8y9ihvAqx+f4LaB8=
