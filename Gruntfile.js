@@ -52,15 +52,6 @@ module.exports = function ( grunt ) {
 					src: '**/*',
 					dest: 'build'
 				}]
-			},
-			node_modules: {
-				files: [{
-					expand: true,
-					flatten: true,
-					cwd: 'node_modules',
-					src: 'ractive/build/Ractive-legacy.min.js',
-					dest: 'build/js'
-				}]
 			}
 		}
 	});
