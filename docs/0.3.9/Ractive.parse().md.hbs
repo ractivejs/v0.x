@@ -9,13 +9,13 @@ The output of `Ractive.parse()` is an array or object (depending on whether the 
 
 ```html
 <div class='gallery'>
-  {{#items}}
+  \{{#items}}
     <!-- comments get stripped out of the template -->
     <figure proxy-tap='select' intro='staggered'>
-      <img class='thumbnail' src='assets/images/{{id}}.jpg'>
-      <figcaption>{{( i+1 )}}: {{description}}</figcaption>
+      <img class='thumbnail' src='assets/images/\{{id}}.jpg'>
+      <figcaption>\{{( i+1 )}}: \{{description}}</figcaption>
     </figure>
-  {{/items}}
+  \{{/items}}
 </div>
 ```
 

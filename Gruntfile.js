@@ -52,9 +52,12 @@ module.exports = function ( grunt ) {
 					layout: 'templates/page.hbs',
 					partials: 'templates/partials/*.hbs'
 				},
-				files: {
-					'dest' : ['/docs/**/*.hbs']
-				}
+				files:[{
+					expand: true,
+					flatten: true,
+					src : ['docs/0.3.9/*.md.hbs'],
+					dest: 'build'
+				}]
 			}
 		},
 

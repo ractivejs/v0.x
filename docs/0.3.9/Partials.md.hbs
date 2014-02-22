@@ -1,22 +1,22 @@
 ---
 title: Partials
 ---
-A partial is a template snippet which can be inserted into templates, or indeed other partials. They help to keep templates uncluttered and easy to read. In this example, we're creating a `{{>thumbnail}}` partial:
+A partial is a template snippet which can be inserted into templates, or indeed other partials. They help to keep templates uncluttered and easy to read. In this example, we're creating a `\{{>thumbnail}}` partial:
 
 ```html
 <!-- the main template -->
 <div class='gallery'>
-  {{#items}}
-    {{>thumbnail}}
-  {{/items}}
+  \{{#items}}
+    \{{>thumbnail}}
+  \{{/items}}
 </div>
 ```
 
 ```html
 <!-- the partial -->
 <figure class='thumbnail'>
-  <img src='assets/thumbnails/{{id}}.jpg'>
-  <figcaption>{{description}}</figcaption>
+  <img src='assets/thumbnails/\{{id}}.jpg'>
+  <figcaption>\{{description}}</figcaption>
 </figure>
 ```
 
@@ -57,15 +57,15 @@ This method is particularly convenient if you don't want to load templates via A
 ```html
 <script id='thumbnail' type='text/ractive'>
   <figure class='thumbnail'>
-    <img src='assets/thumbnails/{{id}}.jpg'>
-    <figcaption>{{description}}</figcaption>
+    <img src='assets/thumbnails/\{{id}}.jpg'>
+    <figcaption>\{{description}}</figcaption>
   </figure>
 </script>
 ```
 
 The `type` attribute isn't important, as long as it exists and isn't `text/javascript`. All that matters is that it's a script tag whose `id` attribute matches the name of the partial.
 
-Internally, when a template requests the `{{>thumbnail}}` partial, Ractive will look for it on [ractive.partials](ractive-partials-instance), then [Ractive.partials](ractive-partials-global), and if both of those fail it will then look for an element with an `id` of `thumbnail`. If it exists, it will parse its content and store it on [Ractive.partials](ractive-partials-global), to make subsequent lookups quicker.
+Internally, when a template requests the `\{{>thumbnail}}` partial, Ractive will look for it on [ractive.partials](ractive-partials-instance), then [Ractive.partials](ractive-partials-global), and if both of those fail it will then look for an element with an `id` of `thumbnail`. If it exists, it will parse its content and store it on [Ractive.partials](ractive-partials-global), to make subsequent lookups quicker.
 
 
 ### Inline partials
@@ -74,17 +74,17 @@ It is also possible to embed partials within templates. Suppose you have a singl
 
 ```html
 <div class='gallery'>
-  {{#items}}
-    {{>thumbnail}}
-  {{/items}}
+  \{{#items}}
+    \{{>thumbnail}}
+  \{{/items}}
 </div>
 
-<!-- {{>thumbnail}} -->
+<!-- \{{>thumbnail}} -->
 <figure class='thumbnail'>
-  <img src='assets/thumbnails/{{id}}.jpg'>
-  <figcaption>{{description}}</figcaption>
+  <img src='assets/thumbnails/\{{id}}.jpg'>
+  <figcaption>\{{description}}</figcaption>
 </figure>
-<!-- {{/thumbnail}} -->
+<!-- \{{/thumbnail}} -->
 ```
 
 In this case, the `thumbnail` partial won't be globally available - it will only be available to Ractive instances that use this template.
@@ -96,30 +96,30 @@ Partials can be used *recursively*:
 
 ```html
 <div class='fileSystem'>
-  {{#root}}
-    {{>folder}}
-  {{/root}}
+  \{{#root}}
+    \{{>folder}}
+  \{{/root}}
 </div>
 
-<!-- {{>folder}} -->
+<!-- \{{>folder}} -->
 <ul class='folder'>
-  {{#files}}
-    {{>file}}
-  {{/files}}
+  \{{#files}}
+    \{{>file}}
+  \{{/files}}
 </ul>
-<!-- {{/folder}} -->
+<!-- \{{/folder}} -->
 
-<!-- {{>file}} -->
+<!-- \{{>file}} -->
 <li class='file'>
-  <img class='icon-{{type}}'>
-  <span>{{filename}}</span>
+  <img class='icon-\{{type}}'>
+  <span>\{{filename}}</span>
 
   <!-- if this is actually a folder, embed the folder partial -->
-  {{# type === 'folder' }}
-    {{>folder}}
-  {{/ type === 'folder' }}
+  \{{# type === 'folder' }}
+    \{{>folder}}
+  \{{/ type === 'folder' }}
 </li>
-<!-- {{/file}} -->
+<!-- \{{/file}} -->
 ```
 
 ```js
@@ -143,7 +143,7 @@ rv = new Ractive({
 });
 ```
 
-In the example above, subfolders use the `{{>folder}}` partial, which uses the `{{>file}}` partial for each file, and if any of those files are folders, the `{{>folder}}` partial will be invoked again, and so on until there are no more files.
+In the example above, subfolders use the `\{{>folder}}` partial, which uses the `\{{>file}}` partial for each file, and if any of those files are folders, the `\{{>folder}}` partial will be invoked again, and so on until there are no more files.
 
 Beware of cyclical data structures! Ractive makes no attempt to detect cyclicality, and will happily continue rendering partials until the [Big Crunch](http://en.wikipedia.org/wiki/Big_Crunch) (or your browser exceeds its maximum call stack size. Whichever is sooner).
 
@@ -157,11 +157,11 @@ For example, you might offer a different view to mobile users:
 ```html
 <div class='main'>
   <div class='content'>
-    {{>content}}
+    \{{>content}}
   </div>
 
   <div class='sidebar'>
-    {{>sidebar}}
+    \{{>sidebar}}
   </div>
 </div>
 ```
@@ -184,7 +184,7 @@ Or you might make it possible to [extend](ractive-extend) a subclass without ove
 ```html
 <div class='modal-background'>
   <div class='modal'>
-    {{>modalContent}}
+    \{{>modalContent}}
   </div>
 </div>
 ```

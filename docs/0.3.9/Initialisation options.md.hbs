@@ -6,7 +6,7 @@ Create a new Ractive instance using the specified options. For example:
 ```js
 ractive = new Ractive({
   el: 'container',
-  template: '<p>{{greeting}}, {{recipient}}!</p>',
+  template: '<p>\{{greeting}}, \{{recipient}}!</p>',
   data: { greeting: 'Hello', recipient: 'world' }
 });
 ```
@@ -28,7 +28,7 @@ ractive = new Ractive({
 > the data to initialise with
 
 > ### partials *`Object`*
-> a `key: value` hash of partials that are specific to this instance, where `key` is the name of the partial (as referenced within templates as `{{>myPartial}}`), and `value` is either a valid template string or the output of [[Ractive.parse()]]. See [[Partials]] for more info
+> a `key: value` hash of partials that are specific to this instance, where `key` is the name of the partial (as referenced within templates as `\{{>myPartial}}`), and `value` is either a valid template string or the output of [[Ractive.parse()]]. See [[Partials]] for more info
 
 > ### transitions *`Object`*
 > a hash of transition functions specific to this instance, referenced within templates using `intro` and `outro` attributes on elements. See [[Transitions]] for more info

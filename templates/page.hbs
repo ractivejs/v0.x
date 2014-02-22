@@ -21,7 +21,9 @@
 		{{> left-nav}}
 	</aside>
 	<main class="main-content">
-		{{> body}}
+		{{# markdown}}
+			{{> body}}
+		{{/markdown}}
 	</main>
 </body>
 </html>

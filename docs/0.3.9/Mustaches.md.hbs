@@ -10,13 +10,13 @@ Other templating languages borrow liberally from Mustache. [Handlebars](http://h
 
 ## What are mustaches?
 
-Within this documentation, and within Ractive's code, 'mustache' means two things - a snippet of a template which uses mustache delimiters, such as `{{name}}`, and the object within our [[parallel DOM]] that is responsible for listening to data changes and updating the (real) DOM.
+Within this documentation, and within Ractive's code, 'mustache' means two things - a snippet of a template which uses mustache delimiters, such as `\{{name}}`, and the object within our [[parallel DOM]] that is responsible for listening to data changes and updating the (real) DOM.
 
-We say that the `{{name}}` mustache has a *[reference](references)* of `name`. When it gets rendered, and we create the object whose job it is to represent `name` in the DOM, we attempt to *resolve the reference according to the current context stack*. For example if we're in the `user` context, and `user` has a property of `name`, `name` will resolve to a [keypath](keypaths) of `user.name`.
+We say that the `\{{name}}` mustache has a *[reference](references)* of `name`. When it gets rendered, and we create the object whose job it is to represent `name` in the DOM, we attempt to *resolve the reference according to the current context stack*. For example if we're in the `user` context, and `user` has a property of `name`, `name` will resolve to a [keypath](keypaths) of `user.name`.
 
 As soon as the mustache knows what its keypath is (which may not be at render time, if data has not yet been set), it registers itself as a *[dependant](dependants)* of the keypath. Then, whenever data changes, Ractive scans the dependency graph to see which mustaches need to update, and notifies them accordingly.
 
-As well as simple *interpolators* like `{{name}}`, the other mustaches types - sections, partials, and even delimiter changes - are supported. Consult the [tutorials](http://learn.ractivejs.org) to learn about these.
+As well as simple *interpolators* like `\{{name}}`, the other mustaches types - sections, partials, and even delimiter changes - are supported. Consult the [tutorials](http://learn.ractivejs.org) to learn about these.
 
 
 ## Extensions
@@ -29,10 +29,10 @@ Ractive is 99% backwards-compatible with Mustache, but adds five additional feat
 Index references are a way of determining where we are within a list section. It's best explained with an example:
 
 ```html
-{{#items:i}}
-  <!-- within here, {{i}} refers to the current index -->
-  <p>Item {{i}}: {{content}}</p>
-{{/items}}
+\{{#items:i}}
+  <!-- within here, \{{i}} refers to the current index -->
+  <p>Item \{{i}}: \{{content}}</p>
+\{{/items}}
 ```
 
 If you then set `items` to `[{content: 'zero'}, {content: 'one'}, {content: 'two'}]`, the result would be
@@ -43,7 +43,7 @@ If you then set `items` to `[{content: 'zero'}, {content: 'one'}, {content: 'two
 <p>Item 2: two</p>
 ```
 
-This is particularly useful when you need to respond to user interaction. For example you could add a `data-index='{{i}}'` attribute, then easily find which item a user clicked on.
+This is particularly useful when you need to respond to user interaction. For example you could add a `data-index='\{{i}}'` attribute, then easily find which item a user clicked on.
 
 ### Object Iteration
 
@@ -67,9 +67,9 @@ We can iterate over the users object with the following:
 
 ```html
 <ul>
-  {{#users:email}}
-    <li>{{email}}: {{name}}</li>
-  {{/users}}
+  \{{#users:email}}
+    <li>\{{email}}: \{{name}}</li>
+  \{{/users}}
 </ul>
 
 <!-- becomes... -->
@@ -84,13 +84,13 @@ We can iterate over the users object with the following:
 
 Normally, references are resolved according to a specific algorithm, which involves *moving up the context stack* until a property matching the reference is found. In the vast majority of cases this is exactly what you want, but occasionally (for example when dealing with [recursive partials](Partials#recursive-partials)) it is useful to be able to specify that a property must exist *in the current context*.
 
-To restrict a reference to the current context, prefix it with a `.`, e.g. `{{#.bar}}`:
+To restrict a reference to the current context, prefix it with a `.`, e.g. `\{{#.bar}}`:
 
 ```html
-{{#foo}}
-  {{#bar}}This section will render, because it will resolve to 'bar'{{/bar}}
-  {{#.bar}}This section will NOT render, because it resolves to 'foo.bar'{{/.bar}}
-{{/foo}}
+\{{#foo}}
+  \{{#bar}}This section will render, because it will resolve to 'bar'\{{/bar}}
+  \{{#.bar}}This section will NOT render, because it resolves to 'foo.bar'\{{/.bar}}
+\{{/foo}}
 ```
 
 ```js
@@ -107,12 +107,12 @@ ractive = new Ractive({
 Very occasionally, you might need to refer explicitly to a property higher up in the tree to avoid naming conflicts. You can do that by prefixing references with `../` (or `../../`, or `../../../`...):
 
 ```html
-<h1>Blog posts by {{name}}</p>
+<h1>Blog posts by \{{name}}</p>
 
 <ul class='blog-posts'>
-  {{#posts}}
-    <li><a href='{{ slugify(../../name) }}/{{ slugify(name) }}'>{{name}}</a></li>
-  {{/posts}}
+  \{{#posts}}
+    <li><a href='\{{ slugify(../../name) }}/\{{ slugify(name) }}'>\{{name}}</a></li>
+  \{{/posts}}
 </ul>
 ```
 
@@ -147,7 +147,7 @@ Expressions are a big topic, so they have a [page of their own](Expressions). Bu
 Expressions look like any normal mustache. For example this expression converts `num` to a percentage:
 
 ```html
-<p>{{ num * 100 }}%</p>
+<p>\{{ num * 100 }}%</p>
 ```
 
 The neat part is that this expression will recognise it has a dependency on whatever keypath `num` resolves to, and will re-evaluate whenever the value of `num` changes.

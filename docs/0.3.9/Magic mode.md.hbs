@@ -10,7 +10,7 @@ var model = { message: 'hello' };
 
 var ractive = new Ractive({
   el: container,
-  template: 'message: {{message}}',
+  template: 'message: \{{message}}',
   magic: true,
   data: model
 });
@@ -41,7 +41,7 @@ In the vast majority of cases this won't matter - we're talking fractions of mil
 Also, be aware that if you have a situation like this...
 
 ```html
-<div style='color: {{color}}; opacity: {{opacity}};'>some content</div>
+<div style='color: \{{color}}; opacity: \{{opacity}};'>some content</div>
 ```
 
 ...then using `ractive.set({ color: 'red', opacity: 0.5 })` would only cause one DOM update, whereas `ractive.data.color = 'red'` followed by `ractive.data.opacity = 0.5` would cause two. Again, in most real-world situations that's not a problem.
@@ -54,9 +54,9 @@ Magic mode only works with properties that Ractive already knows about. Which me
 
 ```html
 <ul>
-  {{#items}}
-    <li>{{.}}</li>
-  {{/items}}
+  \{{#items}}
+    <li>\{{.}}</li>
+  \{{/items}}
 </ul>
 ```
 

@@ -7,7 +7,7 @@ First, you need to **create the component** with [[Ractive.extend()]], which all
 
 ```js
 var MyWidget = Ractive.extend({
-  template: '<div on-click="activate">{{message}}</p>',
+  template: '<div on-click="activate">\{{message}}</p>',
   init: function () {
     this.on( 'activate', function () {
       alert( 'Activating!' );
@@ -62,7 +62,7 @@ new MyWidget({
 Instead of passing a static message ('Click to activate!') through, we could have passed a dynamic one:
 
 ```html
-<widget message='{{foo}}'/>
+<widget message='\{{foo}}'/>
 ```
 
 In this case, the value of `message` within the component would be bound to the value of `foo` in the parent Ractive instance. When the value of parent-`foo` changes, the value of child-`message` also changes, and vice-versa.
@@ -90,7 +90,7 @@ In some cases you want to render a different template depending on the data that
 ### Form Element Component
 ```js
 var formElement = Ractive.extend({
-  template: '{{>element}}',
+  template: '\{{&gt;element}}',
   setTemplate: function(options) {
     options.partials.element = options.data.template;
   },
@@ -102,9 +102,9 @@ var formElement = Ractive.extend({
 
 ### Form Template
 ```html
-{{#items}}
-<formElement value="{{value}}" template="{{template}}"/>
-{{/items}}
+\{{#items}}
+<formElement value="\{{value}}" template="\{{template}}"/>
+\{{/items}}
 ```
 ### Ractive Form
 ```js
@@ -117,15 +117,15 @@ var ractive = new Ractive({
   data: {
     items: [
         {
-          template: '<h1>{{value}}</h1>',
+          template: '<h1>\{{value}}</h1>',
           value: 'This is a title'
         },
         {
-          template: '<input type="text" value="{{value}}" style="display:block; clear: both;" />',
+          template: '<input type="text" value="\{{value}}" style="display:block; clear: both;" />',
           value: 'Input Value'
         },
         {
-          template: '<textarea value="{{value}}"></textarea>',
+          template: '<textarea value="\{{value}}"></textarea>',
           value: 'Textarea Value'
         }
     ]
