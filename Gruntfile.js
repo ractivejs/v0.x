@@ -26,7 +26,7 @@ module.exports = function ( grunt ) {
 		sass: {
 			main: {
 				src: 'scss/main.scss',
-				dest: 'build/assets/min.css'
+				dest: 'build/min.css'
 			},
 			options: {
 				style: 'compressed'
@@ -55,8 +55,9 @@ module.exports = function ( grunt ) {
 				files:[{
 					expand: true,
 					flatten: true,
-					src : ['docs/0.3.9/*.md.hbs'],
-					dest: 'build'
+					src : ['docs/0.3.9/*'],
+					dest: 'build/latest',
+					rename: slugify,
 				}]
 			}
 		},
@@ -99,4 +100,11 @@ module.exports = function ( grunt ) {
 		'copy'
 	]);
 
+	function slugify(dest, src, ref) {
+		return dest + '/' + src.replace('.md.hbs','').toLowerCase()
+		.replace( /[^a-z]/g, '-' )
+		.replace( /-{2,}/g, '-' )
+		.replace( /^-/, '' )
+		.replace( /-$/, '' );
+	}
 };
