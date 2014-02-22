@@ -61,7 +61,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-dir2json' );
-
+	grunt.loadNpmTasks('assemble');
 
 	grunt.registerTask( 'render', function () {
 

@@ -1,14 +1,15 @@
 {
-	"name": "docs.ractivejs.org",
-	"author": "Rich Harris",
-	"devDependencies": {
-		"grunt": "~0.4.2",
-		"grunt-contrib-sass": "~0.6.0",
-		"grunt-dir2json": "~0.1.5",
-		"grunt-contrib-clean": "~0.5.0",
-		"grunt-contrib-copy": "~0.5.0",
-		"grunt-contrib-watch": "~0.5.3",
-		"ractive": "~0.3.9",
-		"marked": "~0.3.0"
-	}
+  "name": "docs.ractivejs.org",
+  "author": "Rich Harris",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-sass": "~0.6.0",
+    "grunt-dir2json": "~0.1.5",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "ractive": "~0.3.9",
+    "marked": "~0.3.0",
+    "assemble": "~0.4.36"
+  }
 }
