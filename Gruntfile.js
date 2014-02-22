@@ -43,6 +43,20 @@ module.exports = function ( grunt ) {
 				dest: 'tmp/docs.json'
 			}
 		},
+		assemble: {
+			options: {
+				assets: '/root/assets'
+			},
+			docs: {
+				options: {
+					layout: 'templates/page.hbs',
+					partials: 'templates/partials/*.hbs'
+				},
+				files: {
+					'dest' : ['/docs/**/*.hbs']
+				}
+			}
+		},
 
 		copy: {
 			root: {
@@ -61,97 +75,17 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-dir2json' );
-	grunt.loadNpmTasks('assemble');
-
-	grunt.registerTask( 'render', function () {
-
-		var Ractive, docs, version, versionedDocs, pageName, slug, page, pages, slugs, nav;
-
-		Ractive = require( 'ractive' );
-
-		docs = grunt.file.readJSON( 'tmp/docs.json' );
-
-		// render index page
-		render( 'index', {}, null, 'index' );
-
-		for ( version in docs ) {
-			versionedDocs = docs[ version ];
-			pages = [];
-			slugs = {};
-			for ( pageName in versionedDocs ) {
-				if ( pageName.charAt( 0 ) !== '_' ) {
-					page = processPage( versionedDocs[ pageName ], version, pageName, versionedDocs._home);
-					pages.push( page );
-
-					if ( slugs[ page.slug ] ) {
-						throw new Error( 'You cannot have multiple pages with the same slug (' + page.slug + ')' );
-					}
-					slugs[ page.slug ] = true;
-				} else if ( pageName == '_nav') {
-					nav = processPage(versionedDocs[pageName], version, pageName)
-				}
-			}
-
-			pages.reverse();
-
-			// render individual posts
-			pages.forEach( renderPage.bind( null, version, nav) );
-
-			// render index
-			render( 'version-index', { home: versionedDocs._home }, version, 'index' );
-
-			// render page list
-			render( 'pages', { pages: pages }, version, 'pages' );
-		}
-
-		function renderPage ( version, nav, page ) {
-			render( 'page', { page: page, nav: nav }, version, page.slug );
-		}
-
-		function writeFile ( version, fileName, content ) {
-			var path = [ 'build' ];
-			if ( version ) {
-				path.push( version );
-			}
-			path.push( fileName + '.html' );
-			grunt.file.write( path.join( '/' ), content );
-		}
-
-		function render ( templateName, data, version, fileName ) {
-			var cache, template, rendered, logMessage;
-
-			logMessage = [ "Rendering " ];
-			if ( version ) {
-				logMessage.push( version + "/" );
-			}
-			logMessage = logMessage.concat( fileName + ".html", " as [ ", templateName, " ]" );
-			console.log( logMessage.join( '' ) );
-
-
-			cache = render.cache || ( render.cache = {} );
-			template = cache[ templateName ] ||
-				( cache[ templateName ] = grunt.file.read( 'templates/' + templateName + '.html' ) );
-
-			rendered = new Ractive({
-				template: template,
-				data: data,
-				delimiters: [ '[[', ']]' ],
-				tripleDelimiters: [ '[[[', ']]]' ],
-				preserveWhitespace: true
-			}).toHTML();
-
-			writeFile( version, fileName, rendered );
-			if ( version === grunt.config( 'latest' ) ) {
-				writeFile( 'latest', fileName, rendered );
-			}
-		}
-
-	});
+	grunt.loadNpmTasks( 'grunt-newer' );
+	grunt.loadNpmTasks( 'assemble' );
 
 
 	grunt.registerTask( 'default', [
 		'build',
-		'watch'
+		'watch',
+	]);
+
+	grunt.registerTask('render', [
+		'newer:assemble'
 	]);
 
 	grunt.registerTask( 'build', [
@@ -163,58 +97,3 @@ module.exports = function ( grunt ) {
 	]);
 
 };
-
-function processPage ( page, version, name, homePath ) {
-	var markdown;
-
-	return {
-		version: version,
-		name: name,
-		slug: slugify( name ),
-		html: postprocess( require( 'marked' )( preprocessMarkdown( page, homePath ) ) )
-	};
-}
-
-function preprocessMarkdown ( markdown, homePath ) {
-
-	// breadcrumbs
-
-	markdown = markdown.replace( /^(.+)$/m, function ( match, breadcrumbs ) {
-		return '<div class="breadcrumbs">' + breadcrumbs.replace( / > /g, ' &raquo; ' ) + '</div>';
-	});
-
-	// specially treat [[Home]] link
-	markdown = markdown.replace( /\[\[Home\]\]/g, '[Home](' + homePath + ')' );
-
-	// turn [[My link]] into [My link](my-link)
-	markdown = markdown.replace( /\[\[([^\]]+)\]\]/g, function ( match, link ) {
-		return '[' + link + '](' + slugify( link ) + ')';
-	});
-
-	// process github-style code blocks
-	markdown = markdown.replace( /```([a-z]+)?\n([\s\S]+?)\n```/g, function ( match, language, content ) {
-		content = content
-			.replace( /\t/g, '  ' )
-			.replace( /</g, '&lt;' )
-			.replace( />/g, '&gt;' );
-
-		return '<pre' + ( language ? ' class="prettyprint lang-' + language + '"' : '' ) + '>' + content + '</pre>';
-	});
-
-	return markdown;
-}
-
-function postprocess ( html ) {
-	return html.replace( / - /g, ' &ndash; ' );
-}
-
-function slugify ( str ) {
-	if ( !str ) {
-		return '';
-	}
-	return str.toLowerCase()
-		.replace( /[^a-z]/g, '-' )
-		.replace( /-{2,}/g, '-' )
-		.replace( /^-/, '' )
-		.replace( /-$/, '' );
-}
