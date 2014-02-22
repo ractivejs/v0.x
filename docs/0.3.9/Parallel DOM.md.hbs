@@ -1,5 +1,6 @@
-[[Home]] > [[Glossary]] > [[Parallel DOM]]
-
+---
+title: Parallel DOM
+---
 Ractive works by maintaining a simplified model of the part of the DOM that it's responsible for. This model contains all the information - about data-binding, event handling and so on - that it needs to keep things up-to-date.
 
 You can inspect the parallel DOM to understand what's going on under the hood, if you're into that sort of thing. Each Ractive instance, once rendered, has a `fragment` property. Each fragment has a number of properties:

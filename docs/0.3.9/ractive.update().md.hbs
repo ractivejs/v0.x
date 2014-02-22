@@ -1,5 +1,6 @@
-[[Home]] > [[API reference]] > [[ractive.update()]]
-
+---
+title: ractive.update()
+---
 If data has been modified without using [[ractive.set()]], [[ractive.animate()]], or array mutator methods if [[array modification]] is enabled - in other words, you've done `foo.bar = 'baz'` instead of `ractive.set('foo.bar', 'baz')` - then `ractive.update()` causes any affected mustaches to re-render, and any affected [[observers]] to be notified.
 
 If no `keypath` is specified, all mustaches and observers will be checked.
