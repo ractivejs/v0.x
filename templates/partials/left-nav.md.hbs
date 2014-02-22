@@ -1,0 +1,24 @@
+<h3>Introduction</h3>
+<ul>
+	{{# each pages}}
+		{{#is data.section "Intro"}}
+			<li><a href="{{relative ../this.dest this.dest }}">{{data.title }}</a></li>
+		{{/is}}
+	{{/each}}
+</ul>
+<h3>API Reference</h3>
+<ul>
+	{{# each pages}}
+		{{#is data.section "APIReference"}}
+			<li><a href="{{relative ../this.dest this.dest }}">{{data.title }}</a></li>
+		{{/is}}
+	{{/each}}
+</ul>
+<h3>Plugins</h3>
+<ul>
+	{{# each pages}}
+		{{#is data.section "Plugins"}}
+			<li><a href="{{relative ../this.dest this.dest }}">{{data.title }}</a></li>
+		{{/is}}
+	{{/each}}
+</ul>
