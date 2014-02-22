@@ -26,7 +26,7 @@ module.exports = function ( grunt ) {
 		sass: {
 			main: {
 				src: 'scss/main.scss',
-				dest: 'build/min.css'
+				dest: 'build/assets/min.css'
 			},
 			options: {
 				style: 'compressed'
