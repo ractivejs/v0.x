@@ -45,7 +45,8 @@ module.exports = function ( grunt ) {
 		},
 		assemble: {
 			options: {
-				assets: '/root/assets'
+				assets: '/root/assets',
+				helpers: ['helpers/*.js']
 			},
 			docs: {
 				options: {
@@ -106,5 +107,9 @@ module.exports = function ( grunt ) {
 		.replace( /-{2,}/g, '-' )
 		.replace( /^-/, '' )
 		.replace( /-$/, '' );
+	}
+
+	function createLink() {
+
 	}
 };

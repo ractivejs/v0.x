@@ -1,9 +1,9 @@
 ---
 title: ractive.observe()
 ---
-Observes the data at a particular [keypath](keypaths). Unless specified otherwise, the *observer* will be *initialised* once as soon as you create the observer, with `undefined` as `oldValue`. Thereafter it will be *notified* whenever the *observed keypath* changes.
+Observes the data at a particular {{{createLink 'keypaths' 'keypath'}}}. Unless specified otherwise, the *observer* will be *initialised* once as soon as you create the observer, with `undefined` as `oldValue`. Thereafter it will be *notified* whenever the *observed keypath* changes.
 
-See [[Observers]] for more detail.
+See {{{createLink 'Observers'}}} for more detail.
 
 
 > ### ractive.observe( keypath, callback[, options ])
@@ -11,7 +11,7 @@ See [[Observers]] for more detail.
 > > #### **keypath** *`String`*
 > > The [keypath](keypaths) to observe. Any of the keys in this keypath can be a `*` character, which is treated as a wildcard.
 > > #### **callback** *`Function`*
-> > The function that will be called, with `newValue`, `oldValue` and `keypath` as arguments (see [[Observers]] for more nuance regarding these arguments), whenever the observed keypath changes value. By default the function will be called with `ractive` as `this`
+> > The function that will be called, with `newValue`, `oldValue` and `keypath` as arguments (see {{{createLink 'Observers'}}} for more nuance regarding these arguments), whenever the observed keypath changes value. By default the function will be called with `ractive` as `this`
 > > #### options *`Object`*
 > > > #### init *`Boolean`*
 > > > Defaults to `true`. Whether or not to initialise the observer, i.e. call the function with the current value of `keypath` as the first argument and `undefined` as the second

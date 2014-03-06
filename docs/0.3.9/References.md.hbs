@@ -1,9 +1,9 @@
 ---
 title: References
 ---
-Within this documentation, and within Ractive's code, a *reference* is a string that refers to a piece of data - in other words, within a `\{{name}}` [mustache](mustaches), `name` is the reference.
+Within this documentation, and within Ractive's code, a *reference* is a string that refers to a piece of data - in other words, within a `\{{name}}` {{{createLink 'mustaches' 'mustache'}}}, `name` is the reference.
 
-By themselves, references are useless - they must *resolve* to a *[keypath](keypaths)* before we can do anything with them (like render their value). If the reference exists with a section mustache, it may need to be resolved *in the context of that section*. In fact, because sections can be nested, we have to resolve each reference within its *context stack*.
+By themselves, references are useless - they must *resolve* to a *{{{createLink 'keypaths' 'keypath'}}}* before we can do anything with them (like render their value). If the reference exists with a section mustache, it may need to be resolved *in the context of that section*. In fact, because sections can be nested, we have to resolve each reference within its *context stack*.
 
 The resolution algorithm looks like this:
 
@@ -58,7 +58,7 @@ We take `\{{unread}}` and `\{{total}}` and apply the same algorithm - sure enoug
 
 What about `\{{lastLogin}}`? Again, we take the innermost context from the stack - `user.messages`. Is `user.messages.lastLogin` a valid keypath? No, it isn't. So we take the next innermost context - `user`. As it turns out, `user.lastLogin` is a valid keypath, so the reference resolves.
 
-Most of the time you don't need to be aware that this is going on, especially if you're already familiar with [Mustache](mustaches), but it's useful to have a background understanding.
+Most of the time you don't need to be aware that this is going on, especially if you're already familiar with {{{createLink 'mustaches' 'Mustache'}}}, but it's useful to have a background understanding.
 
 
 ## Lists
@@ -120,4 +120,4 @@ Sometimes you may want to reference a property within the current context regard
 \{{/options}}
 ```
 
-This feature is particularly useful with [[two-way binding]] as these references have to be resolved immediately.
+This feature is particularly useful with {{{createLink 'two-way binding'}}} as these references have to be resolved immediately.
