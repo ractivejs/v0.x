@@ -1,5 +1,4 @@
-
-.left_menu {
+.left-nav {
 	
 	ul {
 		list-style: none;
@@ -10,8 +9,10 @@
 
 		li {
 			border-bottom: 1px solid #DDD;
+			font-size: .8em;
+
 			&:hover, .selected {
-				background-color: #F5f5f5
+				background-color: #F5f5f5;
 			}
 			cursor: pointer;
 			a {

@@ -3,7 +3,93 @@ title: Components
 ---
 In many situations, you want to encapsulate behaviour and markup into a single reusable *component*, which can be dropped in to Ractive applications.
 
-First, you need to **create the component** with [[Ractive.extend()]], which allows you to define a template, initialisation behaviour, default data, and so on. (If you're not familiar with Ractive.extend() you should read that page first.)
+First, you need to **create the component** with <a href="{{relative absolute 'latest/ractive-extend'}}">Ractive.extend()</a>, which allows you to define a template, initialisation behaviour, default data, and so on. (If you're not familiar with Ractive.extend() you should read that page first.)
+
+## Initialisation Options
+
+### beforeInit
+
+beforeInit will be passed all the data that will initialize the particular component. This is where you should modify the component with dynamic logic.
+This could include setting/changing partials, adding decorators, adding other subcomponents, or anything you would use to initialise a normal Ractive instance. This is great for dynamic templating, an example can be found below.
+
+
+### init
+
+Init is called after the component has been initialised. This means that `this` will reference that component instance. This allows you to observe on, or listen on events/keypaths for this particular component.
+
+### isolated (default false)
+
+Isolated is defaulted to false. This applies to your template scope being isolated to only the data that is passed in.
+For example if you wanted to access a particular variable on your parent data as if it existed on your component then setting isolated false would allow this. However if you wanted your template scoped to only data you give it so that everything was very module then set isolated to true.
+
+
+Setting isolated to false
+
+```js
+
+
+var Component = Ractive.extend({
+  isolated: false,
+  template: '#component'
+
+});
+
+var ractive = new Ractive({
+  el: 'body',
+  template: '#template',
+  data: {
+    nonIsolatedSetting: 'This is a non isolated setting, get it anywhere'
+  }
+});
+
+```
+
+```html 
+
+<script id="template" type="text/ractive">
+<div>
+<Component>
+</div>
+</script>
+
+<script id="component" type="text/ractive">
+
+{{nonIsolatedString}}
+
+</script>
+
+```
+
+The result of this would be
+
+```html
+<div>
+This is a non isolated setting, get it anywhere
+</div>
+```
+
+
+But if we used the same example and set isolated to true
+```js
+
+var Component = Ractvie.extend({
+  isolated: true,
+  template: '#template'
+})
+
+```
+
+Then the resulting output would be
+
+```html
+<div>
+</div>
+```
+
+Very complex example for such a simple idea but this could drastically effect you.
+
+
+init is called after the extended compoent has been initialized 
 
 ```js
 var MyWidget = Ractive.extend({
