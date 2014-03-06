@@ -47,14 +47,14 @@ var ractive = new Ractive({
 ```html 
 
 <script id="template" type="text/ractive">
-<div>
-<Component>
-</div>
+  <div>
+    <Component>
+  </div>
 </script>
 
 <script id="component" type="text/ractive">
 
-{{nonIsolatedString}}
+  \{{nonIsolatedString}}
 
 </script>
 
@@ -63,9 +63,9 @@ var ractive = new Ractive({
 The result of this would be
 
 ```html
-<div>
-This is a non isolated setting, get it anywhere
-</div>
+  <div>
+    This is a non isolated setting, get it anywhere
+  </div>
 ```
 
 
@@ -82,8 +82,8 @@ var Component = Ractvie.extend({
 Then the resulting output would be
 
 ```html
-<div>
-</div>
+  <div>
+  </div>
 ```
 
 Very complex example for such a simple idea but this could drastically effect you.
