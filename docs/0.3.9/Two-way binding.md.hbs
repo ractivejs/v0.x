@@ -3,7 +3,7 @@ title: Two-way Binding
 ---
 By default, a Ractive instance will update its internal model based on user input, if you have `<input>`, `<textarea>` or `<select>` elements.
 
-If that's unhelpful for your app, you can disable it by passing `twoway: false` as an {{{createLink 'initialisation-options' 'Initialisation-options'}}}.
+If that's unhelpful for your app, you can disable it by passing `twoway: false` as an {{{createLink 'initialisation-options' 'initialisation option'}}}.
 
 
 ## `<input>` elements
@@ -107,7 +107,7 @@ Ractive must decide, straight away, what {{{createLink 'keypaths' 'keypath'}}} t
 
 But this might not be what you want - maybe you *did* want it to resolve to `'foo.bar'`.
 
-You have two options - either use a [restricted reference](mustaches#restricted-references), i.e. `<input value='\{{.bar}}'>`, or ensure that `foo` has a `bar` property (even if the initial value is `undefined`).
+You have two options - either use a {{{createLink 'mustaches' 'restricted reference' 'restricted-references'}}}, i.e. `<input value='\{{.bar}}'>`, or ensure that `foo` has a `bar` property (even if the initial value is `undefined`).
 
 ## Lazy updates
 
