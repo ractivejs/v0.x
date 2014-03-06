@@ -7,17 +7,17 @@ First, you need to **create the component** with {{{createLink 'Ractive.extend()
 
 ## Initialisation Options
 
-### beforeInit
+### beforeInit *`Function`*
 
 beforeInit will be passed all the data that will initialize the particular component. This is where you should modify the component with dynamic logic.
 This could include setting/changing partials, adding decorators, adding other subcomponents, or anything you would use to initialise a normal Ractive instance. This is great for dynamic templating, an example can be found below.
 
 
-### init
+### init *`Function`*
 
 Init is called after the component has been initialised. This means that `this` will reference that component instance. This allows you to observe on, or listen on events/keypaths for this particular component.
 
-### isolated (default false)
+### isolated *`Boolean`*
 
 Isolated is defaulted to false. This applies to your template scope being isolated to only the data that is passed in.
 For example if you wanted to access a particular variable on your parent data as if it existed on your component then setting isolated false would allow this. However if you wanted your template scoped to only data you give it so that everything was very module then set isolated to true.
