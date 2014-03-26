@@ -16,7 +16,7 @@ Create a folder with a blank `index.html` page:
 </html>
 ```
 
-Download the [latest released version of Ractive.js](http://cdn.ractivejs.org/latest/Ractive.js) and put it in the same folder as `index.html`. Include it with a script tag just before the closing `</body>` tag:
+Download the [latest released version](http://cdn.ractivejs.org/latest/Ractive.js) or the [latest released minified version of Ractive.js](http://cdn.ractivejs.org/latest/Ractive.min.js) and put it in the same folder as `index.html`. Include it with a script tag just before the closing `</body>` tag:
 
 ```html
 <body>
