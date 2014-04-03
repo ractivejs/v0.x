@@ -1,0 +1,8 @@
+@import "../mixins";
+
+main {
+	max-width: 64em;
+	margin: 0 auto;
+	padding: 0 1em;
+	@include border-box;
+}
