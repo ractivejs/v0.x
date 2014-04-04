@@ -19,3 +19,13 @@
 	-o-user-select: none;
 	user-select: none;
 }
+
+@mixin block-header {
+	display: block;
+	border-bottom: 1px solid rgb(240,240,240);
+	padding-bottom: 0.5em;
+	font-family: 'Voltaire', 'Arial';
+	font-weight: bold;
+	margin-bottom: 1em;
+	color: #444;
+}

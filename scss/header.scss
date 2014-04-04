@@ -2,13 +2,13 @@
 
 header {
 	max-width: 64em;
-	margin: 0 auto;
+	margin: 0 auto 2em auto;
 	padding: 3em 1em 0 1em;
 	text-align: center;
 	@include border-box;
 
 	h1 {
-		font-size: 3em;
+		font-size: 2em;
 		margin: 0 0.2em 0.2em 0;
 		line-height: 1;
 		text-align: center;
@@ -32,7 +32,7 @@ header {
 @media (min-width: 32em) {
 	header {
 		h1 {
-			font-size: 4em;
+			font-size: 3em;
 		}
 
 		.subhead {
@@ -46,7 +46,7 @@ header {
 		text-align: left;
 
 		h1 {
-			font-size: 6em;
+			font-size: 4em;
 			text-align: left;
 		}
 

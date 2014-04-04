@@ -17,28 +17,28 @@ $attrValue: $string;
 $literal: rgb(150,0,0);
 
 
-// pre {
-// 	white-space: pre;
-// 	font-family: 'Source Code Pro', monospace;
-// 	font-size: 14px;
-// 	background-color: $light-green;
-// 	display: block;
-// 	padding: 0.5em;
-// 	overflow-x: auto;
-// 	margin: 0 0 1em 0;
+pre {
+	white-space: pre;
+	font-family: 'Inconsolata', monospace;
+	font-size: 14px;
+	background-color: #fbfbfb;
+	display: block;
+	padding: 0.5em;
+	overflow-x: auto;
+	margin: 0 0 1em 0;
 
-// 	&:before {
-// 		@include block-header;
-// 	}
+	&:before {
+		@include block-header;
+	}
 
-// 	&.lang-html:before {
-// 		content: 'html';
-// 	}
+	&.lang-html:before {
+		content: 'html';
+	}
 
-// 	&.lang-js:before {
-// 		content: 'javascript';
-// 	}
-// }
+	&.lang-js:before {
+		content: 'javascript';
+	}
+}
 
 code {
 	font-family: 'Inconsolata', monospace;
