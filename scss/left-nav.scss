@@ -1,0 +1,16 @@
+@import "mixins";
+
+.left-nav {
+	float: left;
+	width: 25%;
+	padding: 2em 1em 0 0;
+	@include border-box;
+
+	ul, li {
+		list-style-type: none;
+	}
+
+	ul {
+		padding: 0 0 0 1em;
+	}
+}

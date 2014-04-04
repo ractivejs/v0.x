@@ -1,0 +1,72 @@
+@import "base";
+@import "font";
+
+body {
+	font-size: 16px;
+	color: #353535;
+	line-height: 1.5;
+	padding: 2em 1em 2em 1em;
+	font-family: 'Baskerville', 'Book Antiqua', 'Georgia';
+
+	width: 100%;
+	@include border-box;
+}
+
+main {
+	position: relative;
+
+	.aside {
+		display: none;
+	}
+
+	@media (min-width: 50em) {
+
+		p {
+			padding-right: 18em;
+		}
+
+		.aside {
+			display: block;
+		}
+	}
+}
+
+a {
+	color: $green;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: $green;
+}
+
+a.stealth {
+	color: #353535;
+}
+
+.main {
+	@include clearfix;
+}
+
+h3 {
+	margin: 0 0 0.5em 0;
+}
+
+p {
+	margin: 0 0 1.5em 0;
+}
+
+@import "aside";
+@import "code";
+@import "header";
+@import "menu";
+@import "title";
+@import "docs";
+
+
+@import "layout";
+@import "left_menu";

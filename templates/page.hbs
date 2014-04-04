@@ -4,27 +4,38 @@
 	<meta charset='utf-8'>
 	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
 
-	<link rel='icon' type='image/png' href='../favicon.png'>
+	<title> {{page.data.title}} | Docs | Ractive.js </title >
 
-    <title > {{page.data.title}} | Docs | Ractive.js </title > 
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
 
-	<!-- CSS -->
-	<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,900' rel='stylesheet' type='text/css'>
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
 	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='assets/respond.min.js'></script>
+	<![endif]-->
+
 </head>
 
 <body class='example'>
-</ul>
-	<div class="header">
-		{{>header}}
-	</div>
-	<aside class="left-nav">
-		{{> left-nav.md}}
-	</aside>
-	<main class="main-content">
-		{{# markdown}}
-			{{> body}}
-		{{/markdown}}
+
+	<%= nav('docs') %>
+
+	<main>
+		<div class='content'>
+			<h1>{{page.data.title}}</h1>
+
+			{{# markdown}}
+				{{> body}}
+			{{/markdown}}
+		</div>
+
+		<aside class="left-nav">
+			{{> left-nav.md}}
+		</aside>
 	</main>
+
+	<%= footer %>
+
 </body>
 </html>
