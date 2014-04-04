@@ -1,0 +1,133 @@
+$light-green: rgb(249,252,246);
+$green: #729d34;
+$blue: rgb(0,0,100);
+
+$plain: #444;
+$keyword: $blue;
+//$var: #444;
+$var: rgb(80,80,180);
+$punctuation: #888;
+$string: $green;
+$type: $blue;
+$comment: #aaa;
+//$attrName: rgb(50,150,50);
+$attrName: rgb(80,80,180);
+$tag: $blue;
+$attrValue: $string;
+$literal: rgb(150,0,0);
+
+
+pre {
+	white-space: pre;
+	font-family: 'Inconsolata', monospace;
+	font-size: 14px;
+	background-color: #fbfbfb;
+	display: block;
+	padding: 0.5em;
+	overflow-x: auto;
+	margin: 0 0 1em 0;
+
+	&:before {
+		@include block-header;
+	}
+
+	&.lang-html:before {
+		content: 'html';
+	}
+
+	&.lang-js:before {
+		content: 'javascript';
+	}
+}
+
+code {
+	font-family: 'Inconsolata', monospace;
+	border: 1px solid #eee;
+	border-radius: 0.2em;
+	background-color: $light-green;
+	color: #444;
+	font-weight: normal;
+	font-size: 0.8em;
+	padding: 0.15em 0.3em;
+	position: relative;
+	//bottom: 0.1em;
+}
+
+pre code {
+	border: none;
+	border-radius: 0;
+	background-color: none;
+	color: inherit;
+	font-weight: inherit;
+	font-size: inherit;
+	padding: 0;
+}
+
+
+.prettyprinted {
+	color: #444;
+}
+
+.prettyprint {
+	.pln { color: $plain; }
+	.pun { color: $punctuation; }
+	.str { color: $string; }
+	.kwd { color: $keyword; }
+	.typ { color: $blue; }
+	.tag { color: $tag; }
+	.atn { color: $attrName }
+	.atv { color: $attrValue }
+	.lit { color: $literal }
+	.com { color: $comment }
+
+	&.lang-js {
+		.pun { color: #444; }
+	}
+}
+
+.cm-s-ractive {
+	line-height: 1.5 !important;
+	div.CodeMirror-selected { background: #b36539 !important; }
+	.CodeMirror-gutters     { background: #fcfcfc; border-right: 1px solid #eee; }
+	.CodeMirror-linenumber  { color: #d0d0d0; }
+	.CodeMirror-cursor      { border-left: 1px solid black !important; }
+	.CodeMirror-lines       { padding: 10px 0; }
+
+	span.cm-comment                      { color: $comment; }
+	span.cm-atom                         { color: #845dc4; }
+	span.cm-number                       { color: $literal; }
+	span.cm-attribute                    { color: $attrName; }
+	span.cm-keyword                      { color: $keyword; }
+	span.cm-string                       { color: $string; }
+	span.cm-meta                         { color: #ff9d00; }
+	span.cm-variable                     { color: $plain; }
+	span.cm-variable-2                   { color: $plain; }
+	span.cm-variable-3                   { color: $plain; }
+	span.cm-def                          { color: $plain; }
+	span.cm-property                     { color: $plain; }
+	span.cm-tag                          { color: $tag; }
+	span.cm-error                        { color: #9d1e15; }
+	span.cm-bracket                      { color: #d8d8d8; }
+	span.cm-builtin, span.cm-special     { color: #ff9e59; }
+	span.cm-link                         { color: #845dc4; }
+
+	&.CodeMirror {
+		height: auto;
+		color: $punctuation;
+		font-family: 'Inconsolata';
+
+		pre {
+			color: $plain;
+		}
+	}
+
+	&.CodeMirror-focused {
+		background: #f9f9f9;
+		.CodeMirror-gutters { background: #f6f6f6; border-right: 1px solid #eee; }
+	}
+
+	.CodeMirror-scroll {
+		height: auto;
+		overflow: auto;
+	}
+}
