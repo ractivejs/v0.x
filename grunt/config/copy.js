@@ -10,7 +10,7 @@ module.exports = {
 	assets: {
 		files: [{
 			expand: true,
-			cwd: 'src/assets',
+			cwd: 'root/assets',
 			src: '**/*',
 			dest: 'build/assets'
 		}]
