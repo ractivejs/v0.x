@@ -5,7 +5,7 @@
 	width: $leftNavWidth;
 	left: 2em;
 	top: 0;
-	padding: 4em 1em 0 0;
+	padding: 3em 1em 0 0;
 	@include border-box;
 
 	ul, li {
@@ -14,5 +14,24 @@
 
 	ul {
 		padding: 0 0 0 1em;
+	}
+
+	h1 {
+		font-family: 'Source Sans Pro';
+		font-weight: normal;
+		font-size: 1.4em;
+		margin: 0 0 0.5em 0;
+	}
+
+	h2 {
+		font-family: 'Source Sans Pro';
+		font-weight: normal;
+		font-size: 1em;
+		color: #555;
+		margin: 0 0 0.5em 0;
+	}
+
+	section {
+		margin: 0 0 2em 0;
 	}
 }
