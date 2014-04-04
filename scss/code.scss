@@ -16,13 +16,11 @@ $tag: $blue;
 $attrValue: $string;
 $literal: rgb(150,0,0);
 
-.language-js {
+.language-js, .language-html, .language-css {
 	background-color: transparent;
+}
 
-	span {
-
-	}
-
+pre {
 	.keyword { color: $keyword; }
 	.string { color: $string; }
 	.comment { color: $comment; }
