@@ -1,0 +1,14 @@
+@import "mixins";
+
+main {
+	position: relative;
+	max-width: 64em;
+	margin: 0 auto 4em auto;
+	padding: 0 1em;
+	@include border-box;
+	@include clearfix;
+
+	& > p, & > ul {
+		max-width: 32em;
+	}
+}

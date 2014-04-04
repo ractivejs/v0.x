@@ -1,0 +1,19 @@
+<nav>
+	<div class='nav-inner'>
+		<a<%= id === 'index' ? ' class="selected"' : '' %> href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li<%= id === 'setup'    ? ' class="selected"' : '' %>><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li<%= id === 'learn'    ? ' class="selected"' : '' %>><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li<%= id === 'examples' ? ' class="selected"' : '' %>><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li<%= id === 'docs'     ? ' class="selected"' : '' %>><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li<%= id === 'plugins'  ? ' class="selected"' : '' %>><a href='http://ractivejs.org/plugins'>Plugins</a></li>
+			<li<%= id === 'blog'     ? ' class="selected"' : '' %>><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>

@@ -1,0 +1,116 @@
+@import "colours";
+@import "mixins";
+
+nav {
+	position: relative;
+	width: 100%;
+	background-color: $light-green;
+	font-weight: 500;
+
+	ul, li {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	ul {
+		display: block;
+		height: 0;
+		overflow: hidden;
+		-webkit-transition: height 0.4s ease-out;
+		-moz-transition: height 0.4s ease-out;
+		-ms-transition: height 0.4s ease-out;
+		-o-transition: height 0.4s ease-out;
+		transition: height 0.4s ease-out;
+
+		.selected {
+			background-color: $green;
+			color: white;
+
+			a {
+				color: white;
+			}
+		}
+	}
+
+	li {
+		display: block;
+	}
+
+	a {
+		display: block;
+		padding: 0.7em 0.7em 0.7em 1em;
+	}
+
+	button {
+		position: absolute;
+		color: #729d34;
+		border: none;
+		font-size: 1.4em;
+		padding: 0.35em 1em;
+		top: 0;
+		right: 0;
+		cursor: pointer;
+		background-color: transparent;
+		line-height: 1;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.github-wide {
+		position: absolute;
+		top: 0;
+		right: 0;
+		display: none;
+		padding-right: none;
+	}
+}
+
+.nav-inner {
+	position: relative;
+	max-width: 62em;
+	margin: 0 auto;
+	@include border-box;
+}
+
+@media (min-width: 48em) {
+	nav {
+		.selected {
+			background-color: $green;
+			color: white;
+
+			a {
+				color: white;
+			}
+		}
+
+		ul {
+			display: inline-block;
+			height: auto;
+			overflow: visible;
+		}
+
+		li {
+			display: inline-block;
+		}
+
+		a {
+			display: inline-block;
+			padding: 0.7em;
+		}
+
+		button {
+			display: none;
+		}
+
+		.github-small {
+			display: none;
+		}
+
+		.github-wide {
+			display: block;
+		}
+	}
+}

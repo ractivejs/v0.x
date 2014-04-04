@@ -1,0 +1,24 @@
+@import "colours";
+
+button {
+	background-color: #888;
+	color: white;
+	font-family: 'Source Sans Pro';
+	font-weight: 500;
+	font-size: inherit;
+	padding: 0.5em 1em;
+	border: 1px solid transparent;
+	border-radius: 0.2em;
+	margin: 0 0 1em 0;
+	cursor: pointer;
+	@include border-box;
+
+	&:hover {
+		background-color: #666;
+	}
+
+	&:active, &:focus {
+		border: 1px solid $green;
+		outline: none;
+	}
+}
