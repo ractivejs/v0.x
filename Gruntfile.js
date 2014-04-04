@@ -1,115 +1,60 @@
+/* The one-size-fits-all key to Grunt.js happiness - http://bit.ly/grunt-happy */
+
+/*global module:false*/
 module.exports = function ( grunt ) {
 
 	'use strict';
 
-	grunt.initConfig({
+	var config, dependency;
 
+	require( 'jit-grunt' )( grunt );
+
+	config = {
+		pkg: grunt.file.readJSON( 'package.json' ),
 		latest: '0.3.9',
+		prod: grunt.option( 'prod' ),
 
-		watch: {
-			sass: {
-				files: 'scss/**/*.scss',
-				tasks: [ 'sass' ]
-			},
+		// TODO do we need this?... probably not, it just got
+		// copied and pasted in
+        paths: {
+            'shared': '../../shared',
 
-			templates: {
-				files: 'templates/**/*',
-				tasks: 'render'
-			},
+            // libraries
+            'ractive': 'lib/ractive',
 
-			docs: {
-				files: 'docs/**/*',
-				tasks: [ 'dir2json', 'render' ]
-			}
+            // loaders
+            'amd-loader': 'loaders/amd-loader',
+            'rvc': 'loaders/rvc'
+        },
+
+		nav: function ( selected ) {
+			var partial = grunt.file.read( 'shared/partials/nav.html' );
+            return grunt.template.process( partial, {
+                data: { id: selected }
+            });
 		},
+		head: grunt.file.read( 'shared/partials/head.html' ),
+		footer: grunt.file.read( 'shared/partials/footer.html' )
+	};
 
-		sass: {
-			main: {
-				src: 'scss/main.scss',
-				dest: 'build/min.css'
-			},
-			options: {
-				style: 'compressed'
-			}
-		},
-
-		clean: {
-			files: [ 'build/', 'tmp/' ]
-		},
-
-		dir2json: {
-			posts: {
-				root: 'docs',
-				dest: 'tmp/docs.json'
-			}
-		},
-		assemble: {
-			options: {
-				assets: '/root/assets',
-				helpers: ['helpers/*.js']
-			},
-			docs: {
-				options: {
-					layout: 'templates/page.hbs',
-					partials: 'templates/partials/*.hbs'
-				},
-				files:[{
-					expand: true,
-					flatten: true,
-					src : ['docs/0.3.9/*'],
-					dest: 'build/latest',
-					rename: slugify,
-				}]
-			}
-		},
-
-		copy: {
-			root: {
-				files: [{
-					expand: true,
-					cwd: 'root',
-					src: '**/*',
-					dest: 'build'
-				}]
-			}
-		}
+	// Read config files from the `grunt/config/` folder
+	grunt.file.expand( 'grunt/config/*.js' ).forEach( function ( path ) {
+		var property = /grunt\/config\/(.+)\.js/.exec( path )[1],
+			module = require( './' + path );
+		config[ property ] = typeof module === 'function' ? module( grunt ) : module;
 	});
 
-	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.loadNpmTasks( 'grunt-contrib-sass' );
-	grunt.loadNpmTasks( 'grunt-contrib-clean' );
-	grunt.loadNpmTasks( 'grunt-contrib-copy' );
-	grunt.loadNpmTasks( 'grunt-dir2json' );
-	grunt.loadNpmTasks( 'grunt-newer' );
-	grunt.loadNpmTasks( 'assemble' );
+	// Initialise grunt
+	grunt.initConfig( config );
 
-
-	grunt.registerTask( 'default', [
-		'build',
-		'watch',
-	]);
-
-	grunt.registerTask('render', [
-		'newer:assemble'
-	]);
-
-	grunt.registerTask( 'build', [
-		'clean',
-		'dir2json',
-		'render',
-		'sass',
-		'copy'
-	]);
-
-	function slugify(dest, src, ref) {
-		return dest + '/' + src.replace('.md.hbs','').toLowerCase()
-		.replace( /[^a-z]/g, '-' )
-		.replace( /-{2,}/g, '-' )
-		.replace( /^-/, '' )
-		.replace( /-$/, '' );
+	// Load development dependencies specified in package.json
+	for ( dependency in config.pkg.devDependencies ) {
+		if ( /^grunt-/.test( dependency) ) {
+			grunt.loadNpmTasks( dependency );
+		}
 	}
 
-	function createLink() {
+	// Load tasks from the `grunt-tasks/` folder
+	grunt.loadTasks( 'grunt/tasks' );
 
-	}
 };
