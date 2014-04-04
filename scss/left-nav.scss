@@ -1,9 +1,11 @@
 @import "mixins";
 
 .left-nav {
-	float: left;
-	width: 25%;
-	padding: 2em 1em 0 0;
+	position: absolute;
+	width: $leftNavWidth;
+	left: 2em;
+	top: 0;
+	padding: 4em 1em 0 0;
 	@include border-box;
 
 	ul, li {

@@ -1,12 +1,13 @@
 @import "mixins";
+@import "dimensions";
 
 main {
 	padding-top: 2em;
+	min-height: $leftNavHeight; // cheap hack to enable column layout
 }
 
 .content {
-	float: right;
-	width: 75%;
+	padding: 0 0 0 $leftNavWidth;
 
 	h1 {
 		font-size: 4em;
