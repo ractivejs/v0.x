@@ -4,7 +4,6 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'build', [
 		'clean',
-		'spelunk',
 		'render',
 		'sass',
 		'copy'

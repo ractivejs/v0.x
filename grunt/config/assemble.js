@@ -29,8 +29,6 @@ module.exports = function ( grunt ) {
 		}
 	});
 
-	console.log( 'config', config );
-
 	reverseMapping = grunt.editLinkReverseMapping; // TODO is there a less hacktacular way?
 
 	return config;
