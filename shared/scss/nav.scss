@@ -42,7 +42,7 @@ nav {
 		padding: 0.7em 0.7em 0.7em 1em;
 	}
 
-	button {
+	button, button:hover, button:active, button:focus {
 		position: absolute;
 		color: #729d34;
 		border: none;
