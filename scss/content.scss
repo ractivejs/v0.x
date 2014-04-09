@@ -3,7 +3,6 @@
 
 main {
 	padding-top: 2em;
-	min-height: $leftNavHeight; // cheap hack to enable column layout
 }
 
 .content {
@@ -21,5 +20,9 @@ main {
 @media (min-width: $fullWidth) {
 	.content {
 		padding: 0 0 0 $leftNavWidth;
+	}
+
+	main {
+		min-height: $leftNavHeight; // cheap hack to enable column layout
 	}
 }
