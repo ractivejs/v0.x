@@ -7,7 +7,7 @@ main {
 }
 
 .content {
-	padding: 0 0 0 $leftNavWidth;
+	padding: 0;
 
 	h2 {
 		font-size: 2em;
@@ -15,5 +15,11 @@ main {
 
 	ul {
 		margin: 0 0 2em 0;
+	}
+}
+
+@media (min-width: $fullWidth) {
+	.content {
+		padding: 0 0 0 $leftNavWidth;
 	}
 }

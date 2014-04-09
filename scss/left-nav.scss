@@ -1,6 +1,7 @@
 @import "mixins";
 
 .left-nav {
+	display: none;
 	position: absolute;
 	width: $leftNavWidth;
 	left: 2em;
@@ -33,5 +34,11 @@
 
 	section {
 		margin: 0 0 2em 0;
+	}
+}
+
+@media (min-width: $fullWidth) {
+	.left-nav {
+		display: block;
 	}
 }
