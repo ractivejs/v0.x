@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> {{title}} | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='assets/respond.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<%= nav('docs') %>
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>{{title}}</h1>
+				<a class='edit-link' href='<%= getEditLink("{{page.dirname}}/{{page.filename}}") %>'>edit this page</a>
+			</header>
+
+			{{# markdown}}
+				{{> body}}
+			{{/markdown}}
+		</div>
+
+		<aside class="left-nav">
+			{{> left-nav.md}}
+		</aside>
+	</main>
+
+	<%= footer %>
+
+</body>
+</html>

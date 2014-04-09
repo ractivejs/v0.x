@@ -1,41 +1,49 @@
 var path = require( 'path' );
 
 module.exports = function ( grunt ) {
-	var reverseMapping = grunt.editLinkReverseMapping; // TODO is there a less hacktacular way?
+	var config, reverseMapping;
 
-	return {
+	config = {
 		options: {
 			assets: '/root/assets',
 			helpers: ['helpers/*.js'],
 			postprocess: function ( content ) {
 				return grunt.template.process( content );
 			}
-		},
-		docs: {
-			options: {
-				layout: 'templates/page.hbs',
-				partials: 'templates/partials/*.hbs'
-			},
-			files:[{
-				expand: true,
-				cwd: 'docs',
-				src : ['**/*.hbs'],
-				dest: 'build',
-				rename: rename,
-			}]
 		}
 	};
 
+	require( 'fs' ).readdirSync( 'docs' ).forEach( function ( version ) {
+		config[ version ] = {
+			options: {
+				layout: 'templates/' + version + '/page.hbs',
+				partials: 'templates/' + version + '/partials/*.hbs'
+			},
+			files:[{
+				expand: true,
+				cwd: 'docs/' + version,
+				src : ['*.hbs'],
+				dest: 'build/' + version,
+				rename: rename,
+			}]
+		}
+	});
+
+	console.log( 'config', config );
+
+	reverseMapping = grunt.editLinkReverseMapping; // TODO is there a less hacktacular way?
+
+	return config;
+
 	function rename (dest, src) {
-		var split, version, slug;
+		var version, slug, result;
 
-		split = src.split( '/' );
-		version = split[0];
-		slug = slugify( split[1].replace( '.md.hbs', '' ) );
+		slug = slugify( src.replace( '.md.hbs', '' ) );
+		version = dest.replace( 'build/', '' );
 
-		var result = path.join( dest, version, slug );
+		result = path.join( dest, slug );
 
-		reverseMapping[ result + '.html' ] = src;
+		reverseMapping[ result + '.html' ] = path.join( version, src );
 		return result;
 	}
 };
