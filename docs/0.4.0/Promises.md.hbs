@@ -36,11 +36,11 @@ alert( 'synchronous alert' );
 ```
 
 
-### What's wrong with callbacks?
+## What's wrong with callbacks?
 
 Nothing! Callbacks are a perfectly good way of handling asynchrony. But promises have a number of advantages:
 
-#### You can attach multiple fulfilment handlers
+### You can attach multiple fulfilment handlers
 
 ```js
 var promise = ractive.set( 'foo', 'bar' );
@@ -55,7 +55,7 @@ promise.then( doSomethingElse );
 promise.then( doSomething ).then( doSomethingElse );
 ```
 
-#### Interoperability
+### Interoperability
 
 There are many different promise implementations (see below) but only one specification - [Promises/A+](http://promises-aplus.github.io/promises-spec/). Because of that, you can mix and match promises from different sources:
 
@@ -72,12 +72,12 @@ Promise.all([
 });
 ```
 
-#### You always know what you're getting
+### You always know what you're getting
 
 It's often not obvious whether a callback will fire synchronously or asychronously. With promises, you don't have that problem. In practice, that often makes your code much easier to understand
 
 
-### Are these ES6 Promises?
+## Are these ES6 Promises?
 
 You may have heard that promises are going to be part of ES6 (the next version of JavaScript). In fact, recent versions of some browsers (e.g. Chrome and Firefox) already support the `Promise` object natively.
 

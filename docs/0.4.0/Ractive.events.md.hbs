@@ -16,7 +16,7 @@ Future versions of Ractive may include more event definitions 'out of the box' -
 
 ## The event definition API
 
-When Ractive sees a `on-[eventName]` directive, it first looks in `Ractive.eventDefinitions` for an `[eventName]` property, and if it finds one it *applies the definition*. (If not, it assumes that `[eventName]` refers to a native DOM event.)
+When Ractive sees a `on-[eventName]` directive, it first looks in `Ractive.events` for an `[eventName]` property, and if it finds one it *applies the definition*. (If not, it assumes that `[eventName]` refers to a native DOM event.)
 
 Event definitions receive two arguments - `node`, and `fire`. `node` is the element to which the definition is being applied, and `fire` is the function that must be called when the event has taken place.
 
@@ -39,7 +39,7 @@ All this will make more sense with an example. Let's define a `menu` event, whic
 If the user is using a mouse, we want to intercept the `contextmenu` event (which is generally fired on right-click). On touch devices, we'll use a long press to signal that the user wants to open the menu, as that is a common interaction within apps.
 
 ```js
-Ractive.eventDefinitions.menu = function ( node, fire ) {
+Ractive.events.menu = function ( node, fire ) {
   var longpressDuration = 500, threshold = 5, contextmenuHandler, touchstartHandler;
 
   // intercept contextmenu events and suppress them
