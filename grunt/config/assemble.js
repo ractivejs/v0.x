@@ -1,6 +1,8 @@
 var path = require( 'path' );
 
 module.exports = function ( grunt ) {
+	var reverseMapping = grunt.editLinkReverseMapping; // TODO is there a less hacktacular way?
+
 	return {
 		options: {
 			assets: '/root/assets',
@@ -23,20 +25,20 @@ module.exports = function ( grunt ) {
 			}]
 		}
 	};
+
+	function rename (dest, src) {
+		var split, version, slug;
+
+		split = src.split( '/' );
+		version = split[0];
+		slug = slugify( split[1].replace( '.md.hbs', '' ) );
+
+		var result = path.join( dest, version, slug );
+
+		reverseMapping[ result + '.html' ] = src;
+		return result;
+	}
 };
-
-function rename (dest, src) {
-	var split, version, slug;
-
-	split = src.split( '/' );
-	version = split[0];
-	slug = slugify( split[1].replace( '.md.hbs', '' ) );
-
-	var result = path.join( dest, version, slug );
-
-	console.log( 'result', result );
-	return result;
-}
 
 function slugify ( filename ) {
 	return filename.toLowerCase()

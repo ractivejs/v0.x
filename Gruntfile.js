@@ -34,8 +34,15 @@ module.exports = function ( grunt ) {
             });
 		},
 		head: grunt.file.read( 'shared/partials/head.html' ),
-		footer: grunt.file.read( 'shared/partials/footer.html' )
+		footer: grunt.file.read( 'shared/partials/footer.html' ),
+
+		getEditLink: function ( file ) {
+			var source = grunt.editLinkReverseMapping[ file ];
+			return 'https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/' + source;
+		}
 	};
+
+	grunt.editLinkReverseMapping = {};
 
 	// Read config files from the `grunt/config/` folder
 	grunt.file.expand( 'grunt/config/*.js' ).forEach( function ( path ) {
