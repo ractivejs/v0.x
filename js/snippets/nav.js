@@ -1,8 +1,4 @@
-define([
-
-], function (
-
-) {
+(function () {
 
 	'use strict';
 
@@ -16,4 +12,4 @@ define([
 		ul.style.height = expanded ? 'auto' : '0';
 	});
 
-});
+}());
