@@ -6,11 +6,11 @@ module.exports = {
 
 	templates: {
 		files: 'templates/**/*',
-		tasks: 'render'
+		tasks: 'assemble'
 	},
 
 	docs: {
 		files: 'docs/**/*',
-		tasks: [ 'spelunk', 'render' ]
+		tasks: 'render'
 	}
 };
