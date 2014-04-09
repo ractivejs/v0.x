@@ -11,7 +11,7 @@ module.exports = function ( grunt ) {
 
 	config = {
 		pkg: grunt.file.readJSON( 'package.json' ),
-		latest: '0.3.9',
+		latest: '0.4.0',
 		prod: grunt.option( 'prod' ),
 
 		// TODO do we need this?... probably not, it just got

@@ -14,5 +14,13 @@ module.exports = {
 			src: '**/*',
 			dest: 'build/'
 		}]
+	},
+	latest: {
+		files: [{
+			expand: true,
+			cwd: 'build/<%= latest %>/',
+			src: '**',
+			dest: 'build/latest/'
+		}]
 	}
 };

@@ -1,3 +1,5 @@
+var path = require( 'path' );
+
 module.exports = function ( grunt ) {
 	return {
 		options: {
@@ -14,19 +16,32 @@ module.exports = function ( grunt ) {
 			},
 			files:[{
 				expand: true,
-				flatten: true,
-				src : ['docs/0.3.9/*'],
-				dest: 'build/latest',
-				rename: slugify,
+				cwd: 'docs',
+				src : ['**/*.hbs'],
+				dest: 'build',
+				rename: rename,
 			}]
 		}
 	};
 };
 
-function slugify(dest, src, ref) {
-	return dest + '/' + src.replace('.md.hbs','').toLowerCase()
-	.replace( /[^a-z]/g, '-' )
-	.replace( /-{2,}/g, '-' )
-	.replace( /^-/, '' )
-	.replace( /-$/, '' );
+function rename (dest, src) {
+	var split, version, slug;
+
+	split = src.split( '/' );
+	version = split[0];
+	slug = slugify( split[1].replace( '.md.hbs', '' ) );
+
+	var result = path.join( dest, version, slug );
+
+	console.log( 'result', result );
+	return result;
+}
+
+function slugify ( filename ) {
+	return filename.toLowerCase()
+		.replace( /[^a-z]/g, '-' )
+		.replace( /-{2,}/g, '-' )
+		.replace( /^-/, '' )
+		.replace( /-$/, '' );
 }
