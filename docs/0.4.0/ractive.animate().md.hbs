@@ -20,11 +20,14 @@ If an animation is started on a keypath which is *already* being animated, the f
 
 
 > ### ractive.animate( keypath, value[, options] )
-> Returns an `Object` with a `stop` method, which cancels the animation.
+> Returns a `Promise` (see {{{createLink 'Promises'}}}) with an additional `stop` method, which cancels the animation.
+
 > > #### **keypath** *`String`*
 > > The {{{createLink 'keypaths' 'keypath'}}} to animate.
+
 > > #### **value** *`Number` or `String` or `Object` or `Array`*
 > > The value to animate to.
+
 > > #### options *`Object`*
 > > Settings for the animation. All properties are optional:
 > > > #### duration *`Number`*
@@ -38,7 +41,8 @@ If an animation is started on a keypath which is *already* being animated, the f
 
 
 > ### ractive.animate( map[, options] )
-> Returns an `Object` with a `stop` method, which cancels the animations.
+> Returns a `Promise` (see {{{createLink 'Promises'}}}) with an additional `stop` method, which cancels the animations.
+
 > > #### **map** *`Object`*
 > > A map of `keypath: value` pairs
 > > #### options *`Object`*

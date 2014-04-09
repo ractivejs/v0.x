@@ -1,18 +1,27 @@
 ---
 title: ractive.update()
 ---
-If data has been modified without using {{{createLink 'ractive.set()'}}}, {{{createLink 'ractive.animate()'}}}, or array mutator methods if {{{createLink 'array modification'}}} is enabled - in other words, you've done `foo.bar = 'baz'` instead of `ractive.set('foo.bar', 'baz')` - then `ractive.update()` causes any affected mustaches to re-render, and any affected {{{createLink 'observers'}}} to be notified.
+
+Forces everything that depends on the specified {{{createLink 'keypath' 'keypaths'}}} (whether directly or indirectly) to be 'dirty checked'. This is useful if you manipulate data without using the built in setter methods (i.e. {{{createLink 'ractive.set()'}}}, {{{createLink 'ractive.animate()'}}}, or {{{createLink 'array mutators' 'array modification'}}}):
+
+```js
+ractive.observe( 'foo', function ( foo ) {
+	alert( foo );
+});
+
+ractive.data.foo = 'changed';
+ractive.update( 'foo' ); // causes observer to alert 'changed'
+```
 
 If no `keypath` is specified, all mustaches and observers will be checked.
 
 
-> ### ractive.update( keypath[, complete ])
+> ### ractive.update( keypath )
+> Returns a `Promise` (see {{{createLink 'Promises'}}})
+
 > > #### **keypath** *`String`*
-> > The keypath to treat as 'dirty'. Any mustaches or observers that depend (directly or indirectly) on this keypath will be checked to see if they need to re-render
-> > #### complete *`Function`*
-> > A function that will be called, with `ractive` as `this`, when any {{{createLink 'transitions'}}} triggered by the update have completed
+> > The keypath to treat as 'dirty'. Any mustaches or observers that depend (directly or indirectly) on this keypath will be checked to see if they need to update
 
 
-> ### ractive.update([ complete ])
-> > #### complete *`Function`*
-> > A function that will be called, with `ractive` as `this`, when any {{{createLink 'transitions'}}} triggered by the update have completed
+> ### ractive.update()
+> Returns a `Promise` (see {{{createLink 'Promises'}}}). This 'dirty checks' everything.
