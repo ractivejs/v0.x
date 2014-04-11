@@ -20,13 +20,13 @@ $ open test.js
 ```
 
 In `test.js`:
-```
+```js
 var Ractive = require('ractive')
 var ractive = new Ractive({
     template: 'hello from \{{who}}'
 })
 ractive.set('who', 'node')
-console.log(ractive.toHTML)
+console.log(ractive.toHTML())
 ```
 
 Running the file using node:
@@ -37,7 +37,7 @@ hello from node
 
 ### Limitations of using Ractive in node
 
-There is no two-way binding in node as there is no DOM. 
+There is no two-way binding in node as there is no DOM.
 
 Data manipulation _can_ be done in node. Use methods like
 {{{createLink 'ractive.set()'}}} to modify data, and {{{createLink 'ractive.toHTML()'}}}
@@ -48,19 +48,19 @@ to output the current template state as HTML.
 Use {{{createLink 'ractive.parse()'}}} to precompile templates in node. Here is an
 example grunt task:
 
-```
-var ractive = require('ractive'),
+```js
+var Ractive = require('ractive'),
 	path = require('path')
 
 module.exports = function(grunt){
 
 	var desc = 'Compile ractive.js templates'
-	grunt.registerMultiTask('compile', desc, make)	
-	
+	grunt.registerMultiTask('compile', desc, make)
+
 	function make(){
 		this.files.forEach(function(file){
-			var templates = file.src.map(parse) 
-			grunt.file.write(file.dest, 
+			var templates = file.src.map(parse)
+			grunt.file.write(file.dest,
 				'var templates = {\n' + templates.join(',\n') + '\n}');
 		})
 	}
@@ -68,7 +68,7 @@ module.exports = function(grunt){
 	function parse(template){
 		var name = path.basename(template, '.mustache'),
 			html = grunt.file.read(template),
-			parsed = ractive.parse(html)
+			parsed = Ractive.parse(html)
 
 		return  '\t' + name + ': ' + JSON.stringify(parsed);
 	}
@@ -78,7 +78,7 @@ module.exports = function(grunt){
 
 If the above file was in folder `/tasks/`, it could be used like:
 
-```
+```js
 module.exports = function(grunt) {
 
   grunt.initConfig({
@@ -100,7 +100,7 @@ module.exports = function(grunt) {
 
 ### Debugging on node
 
-Check out [node-inspector](https://github.com/node-inspector/node-inspector) 
+Check out [node-inspector](https://github.com/node-inspector/node-inspector)
 for information on debugging node modules from the Chrome Web Inspector.
 ```
 $ npm install -g node-inspector
