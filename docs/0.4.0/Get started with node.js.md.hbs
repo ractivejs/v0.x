@@ -1,0 +1,89 @@
+---
+title: Get started with node.js
+---
+
+Using Ractive.js for node.js is fairly straightford once [node.js is installed](http://nodejs.org/). 
+
+Here's a simple "hello world" example:
+
+```
+$ mkdir mynodeapp
+$ cd mynodeapp
+$ npm install ractive
+$ touch test.js
+$ open test.js
+```
+
+In `test.js`:
+```
+var Ractive = require('ractive')
+var ractive = new Ractive({
+    template: 'hello from \{{who}}'
+})
+ractive.set('who', 'node')
+console.log(ractive.toHTML)
+```
+
+Running the file using node:
+```
+$ node test.js
+hello from node
+```
+
+
+There is no two-way binding in node as there is no DOM. You can use methods like
+{{{createLink 'ractive.set()'}}} to modify data and {{{createLink 'ractive.toHTML()'}}}
+to output the current template state as HTML.
+
+You can also you {{{createLink 'ractive.parse()'}}} to precompile templates. Here is an
+example grunt task:
+
+```
+var ractive = require('ractive'),
+	path = require('path')
+
+module.exports = function(grunt){
+
+	var desc = 'Compile ractive.js templates'
+	grunt.registerMultiTask('compile', desc, make)	
+	
+	function make(){
+		this.files.forEach(function(file){
+			var templates = file.src.map(parse) 
+			grunt.file.write(file.dest, 
+				'var templates = {\n' + templates.join(',\n') + '\n}');
+		})
+	}
+
+	function parse(template){
+		var name = path.basename(template, '.mustache'),
+			html = grunt.file.read(template),
+			parsed = ractive.parse(html)
+
+		return  '\t' + name + ': ' + JSON.stringify(parsed);
+	}
+
+}
+```
+
+If the above file was in folder `/tasks/`, you could use it like:
+
+```
+module.exports = function(grunt) {
+
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    compile: {
+      ractive: {
+        src: 'templates/*.mustache',
+        dest: 'templates/templates.js'
+      }
+    }
+  });
+
+  grunt.loadTasks('./tasks');
+
+  grunt.registerTask('default', ['compile']);
+
+};
+```
