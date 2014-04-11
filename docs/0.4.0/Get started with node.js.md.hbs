@@ -2,7 +2,7 @@
 title: Get started with node.js
 ---
 
-Using Ractive.js with node is fairly straightford once [node.js is installed](http://nodejs.org/):
+Using Ractive.js with node is straightforward once [node.js is installed](http://nodejs.org/):
 ```
 $ npm install ractive
 ```
@@ -96,5 +96,14 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['compile']);
 
 };
+```
+
+### Debugging on node
+
+Check out [node-inspector](https://github.com/node-inspector/node-inspector) 
+for information on debugging node modules from the Chrome Web Inspector.
+```
+$ npm install -g node-inspector
+$ node-debug test.js
 ```
 
