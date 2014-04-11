@@ -2,10 +2,15 @@
 title: Get started with node.js
 ---
 
-Using Ractive.js for node.js is fairly straightford once [node.js is installed](http://nodejs.org/). 
+Using Ractive.js with node is fairly straightford once [node.js is installed](http://nodejs.org/):
+```
+$ npm install ractive
+```
 
-Here's a simple "hello world" example:
+### Using Ractive within a node app
 
+Here's a simple "hello world" example that covers the basics of getting started
+ with ractive and node:
 ```
 $ mkdir mynodeapp
 $ cd mynodeapp
@@ -30,12 +35,17 @@ $ node test.js
 hello from node
 ```
 
+### Limitations of using Ractive in node
 
-There is no two-way binding in node as there is no DOM. You can use methods like
-{{{createLink 'ractive.set()'}}} to modify data and {{{createLink 'ractive.toHTML()'}}}
+There is no two-way binding in node as there is no DOM. 
+
+Data manipulation _can_ be done in node. Use methods like
+{{{createLink 'ractive.set()'}}} to modify data, and {{{createLink 'ractive.toHTML()'}}}
 to output the current template state as HTML.
 
-You can also you {{{createLink 'ractive.parse()'}}} to precompile templates. Here is an
+### Precompiling templates with node
+
+Use {{{createLink 'ractive.parse()'}}} to precompile templates in node. Here is an
 example grunt task:
 
 ```
@@ -66,7 +76,7 @@ module.exports = function(grunt){
 }
 ```
 
-If the above file was in folder `/tasks/`, you could use it like:
+If the above file was in folder `/tasks/`, it could be used like:
 
 ```
 module.exports = function(grunt) {
@@ -87,3 +97,4 @@ module.exports = function(grunt) {
 
 };
 ```
+
