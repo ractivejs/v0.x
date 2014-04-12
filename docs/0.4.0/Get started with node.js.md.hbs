@@ -11,7 +11,7 @@ $ npm install ractive
 
 Here's a simple "hello world" example that covers the basics of getting started
  with ractive and node:
-```
+```sh
 $ mkdir mynodeapp
 $ cd mynodeapp
 $ npm install ractive
@@ -21,16 +21,16 @@ $ open test.js
 
 In `test.js`:
 ```js
-var Ractive = require('ractive')
+var Ractive = require('ractive');
 var ractive = new Ractive({
     template: 'hello from \{{who}}'
-})
-ractive.set('who', 'node')
-console.log(ractive.toHTML())
+});
+ractive.set('who', 'node');
+console.log(ractive.toHTML());
 ```
 
 Running the file using node:
-```
+```sh
 $ node test.js
 hello from node
 ```
@@ -50,30 +50,30 @@ example grunt task:
 
 ```js
 var Ractive = require('ractive'),
-	path = require('path')
+	path = require('path');
 
 module.exports = function(grunt){
 
-	var desc = 'Compile ractive.js templates'
-	grunt.registerMultiTask('compile', desc, make)
+	var desc = 'Compile ractive.js templates';
+	grunt.registerMultiTask('compile', desc, make);
 
 	function make(){
 		this.files.forEach(function(file){
-			var templates = file.src.map(parse)
+			var templates = file.src.map(parse);
 			grunt.file.write(file.dest,
 				'var templates = {\n' + templates.join(',\n') + '\n}');
-		})
+		});
 	}
 
 	function parse(template){
 		var name = path.basename(template, '.mustache'),
 			html = grunt.file.read(template),
-			parsed = Ractive.parse(html)
+			parsed = Ractive.parse(html);
 
 		return  '\t' + name + ': ' + JSON.stringify(parsed);
 	}
 
-}
+};
 ```
 
 If the above file was in folder `/tasks/`, it could be used like:
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
 
 Check out [node-inspector](https://github.com/node-inspector/node-inspector)
 for information on debugging node modules from the Chrome Web Inspector.
-```
+```sh
 $ npm install -g node-inspector
 $ node-debug test.js
 ```
