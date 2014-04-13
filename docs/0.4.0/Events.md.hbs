@@ -22,13 +22,9 @@ In all cases, event handlers will be called with `ractive` as `this`.
 
 Standard events are those emitted by all Ractive instances:
 
-### set
+###change
 
-Fired whenever {{{createLink 'ractive.set()'}}} is called. The handler's arguments will be `(keypath, value)` or `(map)` depending on the arguments to {{{createLink 'ractive.set()'}}}.
-
-### update
-
-Fired whenever {{{createLink 'ractive.update()'}}} is called, with `(keypath)` as the sole argument (unless no keypath was specified, in which case there are no arguments).
+Fired whenever any data changes inside of a Ractive instance. To observe only on specific keypaths see {{{createLink 'Observers'}}}.
 
 ### teardown
 
