@@ -1,8 +1,7 @@
 ---
 title: Computed Properties
 ---
-The idea is fairly simple: you can define computed properties that update reactively based on their dependencies. Previously, you might have done something like this:
-
+The idea is fairly simple: you can define computed properties that update reactively based on their dependencies. In previous versions you may have done something as follows.
 ```js
 ractive = new Ractive({
   el: 'body',
@@ -58,7 +57,6 @@ ractive.observe( 'area', doSomething );
 ...instead of manually recalculating it. And computed values can depend on other computed values, and so on (before anyone asks, we're not doing a topological sort or anything fancy like that - in real world scenarios I'd expect the overhead of doing the sort to be greater than the cost of occasionally recomputing a node in the dependency graph more times than is required).
 
 
-
 ## Compact syntax
 
 The syntax used above, where each computed property is defined as a function, gives you a lot of flexibility. But there's a more compact string syntax you can use:
@@ -73,7 +71,6 @@ ractive = new Ractive({
 ```
 
 This string is turned into a function with the `Function` constructor (which unfortunately means it isn't [CSP compliant](https://developer.mozilla.org/en-US/docs/Security/CSP)) - any `${...}` blocks are basically turned into `ractive.get('...')`, so it works exactly the same way. Needless to say you can use any JavaScript here - `${foo}.toUpperCase()`, `Math.round(${num})`, and so on.
-
 
 
 ## Setting computed values
@@ -98,12 +95,11 @@ ractive = new Ractive({
   }
 });
 
-ractive.set( 'fullname', 'Brendan Eich' );
+ractive.set( 'fullname', 'Rich Harris' );
 
-ractive.get( 'firstname' ); // Brendan
-ractive.get( 'lastname' ); // Eich
+ractive.get( 'firstname' ); // Rich
+ractive.get( 'lastname' ); // Harris
 ```
-
 
 ## Components
 
