@@ -80,6 +80,33 @@ We can iterate over the users object with the following:
 </ul>
 ```
 
+In previous versions of Ractive it was required to close a section with the opening keypath. In the example above `\{{#users}}` is closed by `\{{/users}}`. This is no longer the case, you can now simply close an iterator with `\{{/}}`. Ractive will attempt to warn you in the event of a mismatch, `\{{#users}}` cannot be closed by `\{{/comments}}`. This will not effect {{{createLink 'Expressions'}}} as they have always been able to be closed by `\{{/}}`.
+
+```html
+<!--- valid markup -->
+\{{#users}}
+
+\{{/users}}
+
+\{{#users:i}}
+
+\{{/users}}
+
+\{{#users}}
+
+\{{/}}
+
+\{{#users.topUsers}}
+<!-- still matches the first part of the keypath, thus a valid closing tag -->
+\{{/users}}
+
+<!-- invalid markup -->
+\{{#users}}
+
+\{{/comments}}
+
+
+
 ### Restricted references
 
 Normally, references are resolved according to a specific algorithm, which involves *moving up the context stack* until a property matching the reference is found. In the vast majority of cases this is exactly what you want, but occasionally (for example when dealing with {{{createLink 'parials' 'recursive partials' 'recursive-partials'}}}) it is useful to be able to specify that a property must exist *in the current context*.
