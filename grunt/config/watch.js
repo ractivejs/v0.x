@@ -11,6 +11,6 @@ module.exports = {
 
 	docs: {
 		files: 'docs/**/*',
-		tasks: 'render'
+		tasks: ['render','copy']
 	}
 };
