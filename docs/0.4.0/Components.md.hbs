@@ -142,7 +142,6 @@ new MyWidget({
 });
 ```
 
-
 ## Binding
 
 Instead of passing a static message ('Click to activate!') through, we could have passed a dynamic one:
@@ -152,6 +151,37 @@ Instead of passing a static message ('Click to activate!') through, we could hav
 ```
 
 In this case, the value of `message` within the component would be bound to the value of `foo` in the parent Ractive instance. When the value of parent-`foo` changes, the value of child-`message` also changes, and vice-versa.
+
+### Data Context
+A new data context gets created for the component, so any parameters don't pollute the primary data (bound values still update):
+
+```js
+var data = {
+    name: 'Colors',
+    colors: ['red', 'blue', 'yellow'],
+    style: 'tint'
+}
+Ractive.components.widget = Ractive.extend({})
+var ractive = new Ractive({ 
+    template: '<widget items='\{{colors}}' option1='A' option2='\{{style}}'/>',
+    data: data 
+})
+
+function logData(){
+    console.log('main', JSON.stringify(ractive.data))
+    console.log('widget', JSON.stringify(ractive.findComponent('widget').data))
+}
+
+logData()
+// main {"name":"Colors","colors":["red","blue","yellow"],"style":"tint"}
+// widget {"items":["red","blue","yellow"],"option1":"A","option2":"tint"}
+
+ractive.set('colors.1', 'green')
+
+logData()
+// main {"name":"Colors","colors":["red","green","yellow"],"style":"tint"}
+// widget {"items":["red","green","yellow"],"option1":"A","option2":"tint"} 
+```
 
 
 ## Events
