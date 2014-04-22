@@ -14,7 +14,7 @@ Within this documentation, and within Ractive's code, 'mustache' means two thing
 
 We say that the `\{{name}}` mustache has a *[reference](references)* of `name`. When it gets rendered, and we create the object whose job it is to represent `name` in the DOM, we attempt to *resolve the reference according to the current context stack*. For example if we're in the `user` context, and `user` has a property of `name`, `name` will resolve to a {{{createLink 'keypaths' 'keypath'}}} of `user.name`.
 
-As soon as the mustache knows what its keypath is (which may not be at render time, if data has not yet been set), it registers itself as a *{{{createLink 'dependants' 'depedant'}}}* of the keypath. Then, whenever data changes, Ractive scans the dependency graph to see which mustaches need to update, and notifies them accordingly.
+As soon as the mustache knows what its keypath is (which may not be at render time, if data has not yet been set), it registers itself as a *{{{createLink 'dependants' 'dependant'}}}* of the keypath. Then, whenever data changes, Ractive scans the dependency graph to see which mustaches need to update, and notifies them accordingly.
 
 As well as simple *interpolators* like `\{{name}}`, the other mustaches types - sections, partials, and even delimiter changes - are supported. Consult the [tutorials](http://learn.ractivejs.org) to learn about these.
 
