@@ -1,8 +1,6 @@
 @import "mixins";
 
 .left-nav {
-	display: none;
-	position: absolute;
 	width: $leftNavWidth;
 	left: 2em;
 	top: 0;
@@ -39,6 +37,6 @@
 
 @media (min-width: $fullWidth) {
 	.left-nav {
-		display: block;
+		position: absolute;
 	}
 }
