@@ -22,8 +22,11 @@ ractive = new Ractive({
 
 ## Optional
 
-> ### el *`HTMLElement` or `String` or jQuery-like collection*
-> The container element to render to, or a jQuery collection or string (see {{{createLink 'valid selectors'}}}).
+> ### el *`HTMLElement` or `String` or jQuery-like collection or `{ target: <target>[, anchor: <anchor>] }`*
+
+> The container element to render to, or a jQuery collection or string (see {{{createLink 'valid selectors'}}}). Use `append` option (see below) to control whether existing content is replaced.
+
+> The `{ target: <target> [, anchor: <anchor>] }` option, where `<target>` and/or `<anchor>` can be any of the standard `el` options, prepends the result before the supplied `anchor` (functions like {{{createLink 'ractive.insert()'}}} ).
 
 > ### data *`Object` or `Array`*
 > the data to initialise with
