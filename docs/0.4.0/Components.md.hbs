@@ -255,7 +255,7 @@ In some cases you want to render a different template depending on the data that
 ### Form Element Component
 ```js
 var formElement = Ractive.extend({
-  template: '\{{&gt;element}}',
+  template: '\{{>element}}',
   setTemplate: function(options) {
     options.partials.element = options.data.template;
   },
