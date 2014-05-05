@@ -33,6 +33,12 @@ module.exports = function ( grunt ) {
                 data: { id: selected }
             });
 		},
+		analytics: function ( gaTrackingId, gaProperty ) {
+			var partial = grunt.file.read( 'shared/partials/analytics.html' );
+            return grunt.template.process( partial, {
+                data: { gaTrackingId: gaTrackingId, gaProperty: gaProperty }
+            });
+		},
 		head: grunt.file.read( 'shared/partials/head.html' ),
 		footer: grunt.file.read( 'shared/partials/footer.html' ),
 
