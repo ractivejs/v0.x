@@ -74,6 +74,23 @@ Any standard DOM event that an element supports can be used (e.g. `on-mouseover=
 
 *TODO - chained proxy events, additional arguments in custom event definitions*
 
+## Reserved Event Names
+
+In order for Ractive to provide a level of notification that is desirable there are 4 reserved event names.
+You may listen for these names as you would with normal events however these events will not contain the typical structure of an event that you'd exepect.
+
+> ### change
+> the change event is fired when any data changes from the template and the callback is called with a single argument that is the reference to the part of the data object that was updated.
+
+> ### update
+> the update event is fired when any data promatically changes and the callback is called with a single argument that is the new data object that was updated.
+
+> ### reset
+> the reset event is fired when the Ractive instance is reset from the `reset` function, the callback is called with an empty object
+
+> ### teardown
+> the teardown event is fired when the Ractive instance is destroyed from the `teardown` function, the callback is called with no arguments
+
 ## Custom events
 
 You can easily create events of your own with {{{createLink 'ractive.fire()'}}}. This is most useful in the context of subclasses created with {{{createLink 'Ractive.extend()'}}}.
