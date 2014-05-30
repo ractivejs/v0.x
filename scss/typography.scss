@@ -1,0 +1,111 @@
+@import "colours";
+
+@font-face{
+	font-family: 'Voltaire';
+	src: url('assets/fonts/Voltaire/Voltaire.eot');
+	src: url('assets/fonts/Voltaire/Voltaire.eot?#iefix') format('embedded-opentype'),
+	     url('assets/fonts/Voltaire/Voltaire.woff') format('woff'),
+	     url('assets/fonts/Voltaire/Voltaire.ttf') format('truetype'),
+	     url('assets/fonts/Voltaire/Voltaire.svg#webfont') format('svg');
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('assets/fonts/SourceSansPro/sourcesanspro-regular-webfont.eot');
+    src: url('assets/fonts/SourceSansPro/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-regular-webfont.woff') format('woff'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-regular-webfont.ttf') format('truetype'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-regular-webfont.svg#source_sans_proregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('assets/fonts/SourceSansPro/sourcesanspro-semibold-webfont.eot');
+    src: url('assets/fonts/SourceSansPro/sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-semibold-webfont.woff') format('woff'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-semibold-webfont.ttf') format('truetype'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-semibold-webfont.svg#source_sans_prosemibold') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('assets/fonts/SourceSansPro/sourcesanspro-light-webfont.eot');
+    src: url('assets/fonts/SourceSansPro/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-light-webfont.woff') format('woff'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-light-webfont.ttf') format('truetype'),
+         url('assets/fonts/SourceSansPro/sourcesanspro-light-webfont.svg#source_sans_prolight') format('svg');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inconsolata';
+    src: url('assets/fonts/Inconsolata/inconsolata-regular-webfont.eot');
+    src: url('assets/fonts/Inconsolata/inconsolata-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('assets/fonts/Inconsolata/inconsolata-regular-webfont.woff') format('woff'),
+         url('assets/fonts/Inconsolata/inconsolata-regular-webfont.ttf') format('truetype'),
+         url('assets/fonts/Inconsolata/inconsolata-regular-webfont.svg#inconsolataregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inconsolata';
+    src: url('assets/fonts/Inconsolata/inconsolata-bold-webfont.eot');
+    src: url('assets/fonts/Inconsolata/inconsolata-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('assets/fonts/Inconsolata/inconsolata-bold-webfont.woff') format('woff'),
+         url('assets/fonts/Inconsolata/inconsolata-bold-webfont.ttf') format('truetype'),
+         url('assets/fonts/Inconsolata/inconsolata-bold-webfont.svg#inconsolatabold') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+body {
+	font-family: 'Source Sans Pro', 'Arial', sans-serif;
+	color: #555;
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1, h2 {
+	font-family: 'Voltaire';
+	margin: 2em 0 0.5em 0;
+	font-weight: normal;
+	color: #222;
+}
+
+h3, h4, h5, h6 {
+	font-family: 'Source Sans Pro', arial, sans-serif;
+	font-weight: 500;
+	margin: 0 0 0.5em 0;
+	color: #222;
+}
+
+p {
+	margin: 0 0 1em 0;
+}
+
+a {
+	color: $green;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+pre, code {
+	font-family: Inconsolata, monospace;
+}
+
+strong, b {
+	font-weight: 500;
+}
+
+li {
+	margin: 0 0 0.5em 0;
+}
