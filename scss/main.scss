@@ -1,9 +1,8 @@
-@import "layout";
-@import "typography";
-@import "nav";
-@import "header";
+@import "../shared/scss/main";
+@import "../shared/scss/main";
+
 @import "content";
-@import "footer";
+@import "left-nav";
+@import "options";
+@import "header";
 @import "code";
-@import "codemirror";
-@import "buttons";

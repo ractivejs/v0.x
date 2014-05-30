@@ -1,14 +1,28 @@
 @import "mixins";
+@import "dimensions";
 
 main {
-	position: relative;
-	max-width: 64em;
-	margin: 0 auto 4em auto;
-	padding: 0 1em;
-	@include border-box;
-	@include clearfix;
+	padding-top: 2em;
+}
 
-	& > p, & > ul {
-		max-width: 32em;
+.content {
+	padding: 0;
+
+	h2 {
+		font-size: 2em;
+	}
+
+	ul {
+		margin: 0 0 2em 0;
+	}
+}
+
+@media (min-width: $fullWidth) {
+	.content {
+		padding: 0 0 0 $leftNavWidth;
+	}
+
+	main {
+		min-height: $leftNavHeight; // cheap hack to enable column layout
 	}
 }

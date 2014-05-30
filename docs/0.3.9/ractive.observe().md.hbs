@@ -1,0 +1,31 @@
+---
+title: ractive.observe()
+---
+Observes the data at a particular {{{createLink 'keypaths' 'keypath'}}}. Unless specified otherwise, the *observer* will be *initialised* once as soon as you create the observer, with `undefined` as `oldValue`. Thereafter it will be *notified* whenever the *observed keypath* changes.
+
+See {{{createLink 'Observers'}}} for more detail.
+
+
+> ### ractive.observe( keypath, callback[, options ])
+> Returns an object with a `cancel` method, for cancelling the observer
+> > #### **keypath** *`String`*
+> > The [keypath](keypaths) to observe. Any of the keys in this keypath can be a `*` character, which is treated as a wildcard.
+> > #### **callback** *`Function`*
+> > The function that will be called, with `newValue`, `oldValue` and `keypath` as arguments (see {{{createLink 'Observers'}}} for more nuance regarding these arguments), whenever the observed keypath changes value. By default the function will be called with `ractive` as `this`
+> > #### options *`Object`*
+> > > #### init *`Boolean`*
+> > > Defaults to `true`. Whether or not to initialise the observer, i.e. call the function with the current value of `keypath` as the first argument and `undefined` as the second
+> > > #### defer *`Boolean`*
+> > > Defaults to `false`, in which case observers will fire before any DOM changes take place. If `true`, the observer will fire once the DOM has been updated.
+> > > #### context
+> > > Defaults to `ractive`. The context the observer is called in (i.e. the value of `this`)
+> > > #### debug *`Boolean`*
+> > > Defaults to `false` - exceptions that are thrown within observers are handled. This is useful when observing uninitialised keypaths when you don't want to litter your code with `if (foo !== undefined) { /*...*/ }`, but you may prefer to handle errors yourself, in which case use `true`.
+
+
+> ### ractive.observe( map[, options ])
+> Returns an object with a `cancel` method, for cancelling all observers
+> > #### **map** *`Object`*
+> > A map of `keypath: observer` pairs
+> > #### options *`Object`*
+> > As above.

@@ -1,0 +1,62 @@
+@import "mixins";
+
+header {
+	max-width: 64em;
+	margin: 0 auto 2em auto;
+	padding: 3em 1em 0 1em;
+	text-align: center;
+	@include border-box;
+
+	h1 {
+		font-size: 2em;
+		margin: 0 0.2em 0.2em 0;
+		line-height: 1;
+		text-align: center;
+		display: inline-block;
+	}
+
+	.subhead {
+		font-family: 'Source Sans Pro';
+		font-weight: 200;
+		font-size: 1.2em;
+		color: #999;
+		display: inline-block;
+		line-height: 1.2em;
+	}
+
+	br {
+		display: none;
+	}
+}
+
+@media (min-width: 32em) {
+	header {
+		h1 {
+			font-size: 3em;
+		}
+
+		.subhead {
+			font-size: 1.4em;
+		}
+	}
+}
+
+@media (min-width: 48em) {
+	header {
+		text-align: left;
+
+		h1 {
+			font-size: 4em;
+			text-align: left;
+		}
+
+		.subhead {
+			font-size: 1.6em;
+		}
+
+		br {
+			display: block;
+			line-height: 0;
+		}
+	}
+}

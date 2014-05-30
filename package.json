@@ -1,0 +1,15 @@
+{
+  "name": "docs.ractivejs.org",
+  "author": "Rich Harris",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "marked": "~0.3.0",
+    "assemble": "~0.4.36",
+    "grunt-newer": "~0.6.1",
+    "jit-grunt": "~0.3.2",
+    "grunt-sass": "~0.12.1"
+  }
+}

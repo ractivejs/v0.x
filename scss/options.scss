@@ -1,0 +1,45 @@
+blockquote {
+	padding: 0 0 0 1em;
+	margin: 0;
+
+	p {
+		padding: 0;
+	}
+
+	h3, h4 {
+		position: relative;
+		left: -0.8em;
+		font-family: 'Inconsolata', monospace;
+
+		em {
+			font-style: normal;
+			font-size: 0.8em;
+			font-family: 'Source Sans Pro';
+		}
+
+		code {
+			background-color: #f9f9f9;
+			position: relative;
+			bottom: 0.1em;
+		}
+	}
+
+	h3 {
+		font-size: 1.25em;
+	}
+
+	h4 {
+		font-weight: normal;
+	}
+
+	blockquote {
+		border-left: 1px solid #eee;
+		padding: 0 0 0 2em;
+		margin: 0 0 0 0.2em;
+	}
+}
+
+.content > blockquote {
+	background-color: #fbfbfb;
+	padding: 1em 1em 1em 2em;
+}
