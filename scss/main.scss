@@ -7,3 +7,9 @@
 @import "code";
 @import "codemirror";
 @import "buttons";
+
+
+// IE8...
+header, nav, section, article, aside, footer {
+	display: block;
+}
