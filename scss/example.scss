@@ -1,0 +1,43 @@
+.code-example {
+
+	margin-left: 1em;
+
+	label {
+		font-weight: 500;
+		font-size: 0.9em;
+	}	
+
+	label, input {
+		cursor: pointer;
+		display: block;
+	}
+
+	input[type=checkbox] {
+		position: relative;
+		width: 0;
+		left: 5.6em;
+		top: -1.75em;
+	}
+
+	input[type=checkbox]:after {
+		content: '▶';
+		color: rgb(114, 157, 52);
+	}
+
+	input[type=checkbox]:checked:after {
+		content: '▼';
+	}
+
+	pre {
+		-webkit-transition: all 500ms;
+	}
+
+	input:checked + pre {
+		max-height: 20em;
+	}
+
+	input:not(:checked) + pre {
+		max-height: 0;
+		padding: 0 0.5em;
+	}
+}

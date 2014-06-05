@@ -22,7 +22,7 @@ module.exports = function ( grunt ) {
 			files:[{
 				expand: true,
 				cwd: 'docs/' + version,
-				src : ['*.hbs'],
+				src : ['*.hbs', '*.md'],
 				dest: 'build/' + version,
 				rename: rename,
 			}]
