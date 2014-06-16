@@ -23,6 +23,14 @@ module.exports = {
 			dest: 'build/latest/'
 		}]
 	},
+	edge: {
+		files: [{
+			expand: true,
+			cwd: 'build/<%= edge %>/',
+			src: '**',
+			dest: 'build/edge/'
+		}]
+	},
 	snippets: {
 		files: [{
 			expand: true,

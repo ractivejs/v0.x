@@ -5,7 +5,7 @@
 	label {
 		font-weight: 500;
 		font-size: 0.9em;
-	}	
+	}
 
 	label, input {
 		cursor: pointer;
@@ -13,18 +13,22 @@
 	}
 
 	input[type=checkbox] {
-		position: relative;
-		width: 0;
-		left: 5.6em;
-		top: -1.75em;
+		opacity: 0;
 	}
 
-	input[type=checkbox]:after {
+	input[type=checkbox] + span {
+		position: relative;
+		left: 4.2em;
+		top: -2.45em;
+	}
+
+
+	input[type=checkbox] + span:after {
 		content: '▶';
 		color: rgb(114, 157, 52);
 	}
 
-	input[type=checkbox]:checked:after {
+	input[type=checkbox]:checked + span:after {
 		content: '▼';
 	}
 
@@ -32,11 +36,11 @@
 		-webkit-transition: all 500ms;
 	}
 
-	input:checked + pre {
+	input:checked + span + pre {
 		max-height: 20em;
 	}
 
-	input:not(:checked) + pre {
+	input:not(:checked) + span + pre {
 		max-height: 0;
 		padding: 0 0.5em;
 	}

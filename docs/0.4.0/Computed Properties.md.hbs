@@ -24,7 +24,7 @@ area = ractive.get('area').call(ractive);
 
 ```js
 ractive.observe( 'width height', function () {
-	var area = this.get( 'width' ) + this.get( 'height' );
+	var area = this.get( 'width' ) * this.get( 'height' );
 	doSomething( area );
 });
 ```

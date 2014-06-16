@@ -2,51 +2,62 @@
 title: Initialisation Options
 section: APIReference
 ---
-Create a new Ractive instance using the specified options. For example:
 
-```js
-ractive = new Ractive({
-  el: 'container',
-  template: '<p>\{{greeting}}, \{{recipient}}!</p>',
-  data: { greeting: 'Hello', recipient: 'world' }
-});
-```
+The following is a complete list of initialisation options, with full descriptions below grouped by category.
+
+| Option                                    | Category         | Description |
+| ----------------------------------------- | -----------      | -----       |
+| [adapt](#adapt)                           | data             | blah |
+| [adaptors](#adaptors)                     | data             | blah |
+| [append](#append)                         | placement        | bah |
+| [complete](#complete)                     | lifecycle        |  |
+| [components](#components)                 | data             |  |
+| [computed](#computed)                     | data             |  |
+| [data](#data)                             | data             |  |
+| [debug](#debug)                           | data             |  |
+| [decorators](#decorators)                 | data             |  |
+| [delimiters](#delimiters)                 | data             |  |
+| [el](#el)                                 | data             |  |
+| [easing](#easing)                         | data             |  |
+| [events](#events)                         | data             |  |
+| [handlebars](#handlebars)                 | data             |  |
+| [interpolators](#interpolators)           | data             |  |
+| [isolated](#lazy)                         | data             |  |
+| [lazy](#lazy)                             | data             |  |
+| [magic](#magic)                           | data             |  |
+| [modifyArrays](#modifyArrays)             | data             |  |
+| [noCssTransform](#noCssTransform)         | data             |  |
+| [noIntro](#noIntro)                       | data             |  |
+| [partials](#partials)                     | data             |  |
+| [preserveWhitespace](#preserveWhitespace) | data             |  |
+| [sanitize](#sanitize)                     | data             |  |
+| [stripComments](#stripComments)           | data             |  |
+| [template](#template)                     | data             |  |
+| [transitions](#transitions)               | data             |  |
+| [transitionsEnabled](#transitionsEnabled) | data             |  |
+| [tripleDelimiters](#tripleDelimiters)     | data             |  |
+| [twoway](#twoway)                         | data             |  |
+
 
 ## Templating
 
+> <a id="template"></a>
 > ### **template** *`String` or (if {{{createLink 'preparsing'}}}) `Array` or `Object`*
-
 > The template to use. If this is a string, it must be valid (if meaningless, until rendered) HTML, otherwise this must be the output of {{{createLink 'Ractive.parse()'}}}.
 
 > Alternatively, you can pass an id selector string like `#myTemplate` - in this case, Ractive will use the contents of an element whose ID is `myTemplate`. See the [60 second setup](http://ractivejs.org/60-second-setup) for an example of this.
 
+> <a id="partials"></a>
 > ### partials *`Object`*
 > A `key: value` hash of partials that are specific to this instance, where `key` is the name of the partial (as referenced within templates as `\{{>myPartial}}`), and `value` is either a valid template string or the output of {{{createLink 'Ractive.parse()'}}}. See {{{createLink 'Partials'}}} for more info.
 
-{{#example}}
-```js
-el: '#template'
-
-ok too
-el: 'template'
-```
-{{/example}}
-
+> <a id="components"></a>
 > ### components *`Object`*
 > A `key: value` hash of components that are specific to this instance, where `key` is the name of the component (as referenced within templates as `<my-component></my-component>`), and `value` is a valid component create by {{{createLink 'Ractive.extend()'}}}. See {{{createLink 'Components'}}} for more info.
 
-{{#example}}
-```js
-el: '#template'
-
-//ok too
-el: 'template'
-
-```
-{{/example}}
-
 ## Placement
 
+> <a id="el"></a>
 > ### el * `String` or `HTMLElement` or jQuery-like collection*
 
 > Directives for the element to render to. Use `append` option (see below) to control whether existing content is replaced.
@@ -55,49 +66,63 @@ el: 'template'
 > * `HTMLElement` DOM element
 > * any `obj` where `obj[0]` is an `HTMLElement`, see {{{createLink 'valid selectors' 'jquery collections' 'jquery-collections'}}}
 
+> <a id="append"></a>
 > ### append *`Boolean` or anchor*
 
 > Defaults to `false`. Controls whether existing content is replace and optionally where to place the rendered content.
 
-> * `false` - rendered content replaces any existing contents of `el` 
+> * `false` - rendered content replaces any existing contents of `el`
 > * `true` rendered content is appended to `el`
 > * anchor is any valid option as specified in `el` that resolves to an `HTMLElement`. Rendered content is appended to `el` before anchor, see {{{createLink 'ractive.insert()'}}}
 
 ## Data & Binding
 
+> <a id="data"></a>
 > ### data *`Object` or `Array`*
 > The data with which to initialise.
 
+> <a id="computed"></a>
 > ### computed *`Object`*
 > An object that maps to a set of computed values. Refer to the documentation for examples {{{createLink 'Computed Properties'}}}.
 
+> <a id="magic"></a>
 > ### magic *`Boolean`*
 > Defaults to `false`. Whether or not to wrap data in ES5 accessors for automatic binding (see {{{createLink 'magic mode'}}}).
 
+> <a id="adapt"></a>
 > ### adapt *`Array`*
 > Custom wrappers to be used with all or part of the supplied data, see {{{createLink 'Adaptors'}}}.
 
+> <a id="modifyArrays"></a>
 > ### modifyArrays *`Boolean`*
 > Defaults to `true`. Whether or not to modify array mutator methods to enable frictionless data binding with lists (see {{{createLink 'array modification'}}}).
 
+> <a id="twoway"></a>
 > ### twoway *`Boolean`*
 > Defaults to `true`. Whether or not two-way data binding is enabled (see {{{createLink 'Two‐way binding'}}}).
 
+> <a id="lazy"></a>
 > ### lazy *`Boolean`*
 > Defaults to `false`. If two-way data binding is enabled, whether to only update data based on text inputs on `change` and `blur` events, rather than any event (such as key events) that may result in new data.
 
 ## Transition Animations
 
+> <a id="transitions"></a>
 > ### transitions *`Object`*
 > A hash of transition functions specific to this instance, referenced within templates using `intro` and `outro` attributes on elements. See {{{createLink 'Transitions'}}} for more info.
 
+> <a id="noIntro"></a>
 > ### noIntro *`Boolean`*
 > Defaults to `false`. Whether or not to skip intro transitions on render.
 
 ## Lifecycle & Environment
 
+> <a id="complete"></a>
 > ### complete *`Function`*
 > A function that will be called when render is complete (i.e. all intro transitions have finished). If there are no intro transitions, this function will be called as soon as the instance is created)
+`
+> ### computed *`Object`*
+> an object that maps to a set of computed values. Refer to the documentation for examples {{{createLink 'Computed Properties'}}}.
 
 > ### debug *`Boolean`*
 > Defaults to `false`. Whether to print console messages to help debug applications.

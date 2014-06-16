@@ -2,7 +2,7 @@ module.exports.register = function(Handlebars) {
   Handlebars.registerHelper('example', function (options) {
     var wrapped = Handlebars.helpers.markdown.apply(this, arguments),
         id = makeId();
-    return new Handlebars.SafeString('<div class="code-example"><label for="' + id + '">Examples</label><input id="' + id + '" type="checkbox"/>' + wrapped + '</div>');
+    return new Handlebars.SafeString('<div class="code-example"><label for="' + id + '">Examples</label><input id="' + id + '" type="checkbox"/><span></span>' + wrapped + '</div>');
   });
 };
 

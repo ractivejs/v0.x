@@ -30,7 +30,7 @@ If you see something wrong, out of date, or missing from this documentation, ple
 In lieu of formal contribution guidelines, take care to follow the existing structure and conventions. Send pull requests to the `master` branch, not `gh-pages` (which is a snapshot of the `build` folder in `master`).
 
 
-Questions
----------
+Questions?
+----------
 
 Contact [@RactiveJS](http://twitter.com/RactiveJS) on Twitter.
