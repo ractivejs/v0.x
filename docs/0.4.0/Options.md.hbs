@@ -7,37 +7,38 @@ The following is a complete list of initialisation options, with full descriptio
 
 | Option                                    		| Category         						| Description |
 | ----------------------------------------- 		| -----------      						| -----       |
-| [adapt](#adapt)                           		| [data](#data-binding)             	| blah |
-| [adaptors](#adaptors)                     		| [data](#data-binding)             	| blah |
-| [append](#append)                         		| [dom placement](#dom-placement)    	| how to handle existing content in the dom |
-| [complete](#complete)                     		| [transitions](#transitions-animations)|  |
+| [adapt](#adapt)                           		| [data](#data-binding)             	| adaptors to use |
+| [adaptors](#adaptors)                     		| [data](#data-binding)             	| registry of available adaptors |
+| [append](#append)                         		| [placement](#dom-placement)    	    | how to handle existing content in the dom |
+| [complete](#complete)                     		| [transitions](#transitions-animations)| fine-tune template placement in the dom |
 | [components](#components)                 		| [templating](#templating)       		| components to include for use by the template |
-| [computed](#computed)                     		| [data](#data-binding)             	|  |
-| [data](#data)                             		| [data](#data-binding)             	|  |
-| [debug](#debug)                           		| [environment](environment)      		|  |
-| [decorators](#decorators)                 		| [templating](#templating)       		|  |
-| [delimiters](#delimiters)                 		| [parsing](#parsing)          			|  |
-| [el](#el)                                 		| [dom placement](#dom-placement)    	| render to this element in the dom |
-| [easing](#easing)                         		| [transitions](#transitions-animations)|  |
-| [events](#events)                         		| [templating](#templating)      		|  |
-| [interpolators](#interpolators)           		| [transitions](#transitions-animations)|  |
-| [isolated](#lazy)                         		| [data](#data-binding)          		|  |
-| [lazy](#lazy)                             		| [binding](#data-binding)         		|  |
-| [magic](#magic)                           		| [binding](#data-binding)             	|  |
-| [modifyArrays](#modifyArrays)             		| [binding](#data-binding)             	|  |
-| [noCssTransform](#noCssTransform)         		| [templating](#templating)       		|  |
-| [noIntro](#noIntro)                       		| [transitions](#transitions-animations)|  |
+| [computed](#computed)                     		| [data](#data-binding)             	| computed properties to include |
+| [css](#css)                     		            | [templating](#templating)             | component only css to include on render |
+| [data](#data)                             		| [data](#data-binding)             	| the data to bind to the template |
+| [debug](#debug)                           		| [environment](environment)      		| increases app feedback |
+| [decorators](#decorators)                 		| [templating](#templating)       		| decorators to include for use by the template |
+| [delimiters](#delimiters)                 		| [parsing](#parsing)          			| delimiters to use when parsing the template |
+| [el](#el)                                 		| [placement](#dom-placement)    	    | render to this element in the dom |
+| [easing](#easing)                         		| [transitions](#transitions-animations)| easing functions to use in transitions |
+| [events](#events)                         		| [templating](#templating)      		| events to include for use by the template |
+| [interpolators](#interpolators)           		| [transitions](#transitions-animations)| interpolators to use for animating values |
+| [isolated](#lazy)                         		| [data](#data-binding)          		| prevent components from accessing parent data and registries |
+| [lazy](#lazy)                             		| [binding](#data-binding)         		| don't bind to every keypress |
+| [magic](#magic)                           		| [binding](#data-binding)             	| data object getters and setters that update view |
+| [modifyArrays](#modifyArrays)             		| [binding](#data-binding)             	| array modification methods update the view |
+| [noCssTransform](#noCssTransform)         		| [templating](#templating)       		| prevent transformation of component css |
+| [noIntro](#noIntro)                       		| [transitions](#transitions-animations)| do not apply transitions on render |
 | [partials](#partials)                     		| [templating](#templating)       		| partials to include for use by the template |
-| [preserveWhitespace](#preserveWhitespace) 		| [parsing](#parsing)          			|  |
-| [sanitize](#sanitize)                     		| [parsing](#parsing)          			|  |
-| [staticDelimiters](#staticDelimiters)             | [parsing](#parsing)          			|  |
-| [staticTripleDelimiters](#staticTripleDelimiters) | [parsing](#parsing)          			|  |
-| [stripComments](#stripComments)           		| [parsing](#parsing)          			|  |
+| [preserveWhitespace](#preserveWhitespace) 		| [parsing](#parsing)          			| don't normalize template whitespace |
+| [sanitize](#sanitize)                     		| [parsing](#parsing)          			| remove designated elements and event attributes |
+| [staticDelimiters](#staticDelimiters)             | [parsing](#parsing)          			| one-time binding parsing delimiters |
+| [staticTripleDelimiters](#staticTripleDelimiters) | [parsing](#parsing)          			| one-time binding non-escaped parsing delimiters  |
+| [stripComments](#stripComments)           		| [parsing](#parsing)          			| remove HTML comments from templates |
 | [template](#template)                     		| [templating](#templating)       		| specifies the template to use |
-| [transitions](#transitions)               		| [transitions](#transitions-animations)|  |
-| [transitionsEnabled](#transitionsEnabled) 		| [transitions](#transitions-animations)|  |
-| [tripleDelimiters](#tripleDelimiters)     		| [parsing](#parsing)          			|  |
-| [twoway](#twoway)                         		| [binding](#data-binding)          	|  |
+| [transitions](#transitions)               		| [transitions](#transitions-animations)| transitions to include for use by the template |
+| [transitionsEnabled](#transitionsEnabled) 		| [transitions](#transitions-animations)| allow transitions |
+| [tripleDelimiters](#tripleDelimiters)     		| [parsing](#parsing)          			| non-escaped parsing delimiters |
+| [twoway](#twoway)                         		| [binding](#data-binding)          	| prevent updates from the view back to the model |
 
 
 ## Templating
@@ -86,6 +87,25 @@ The following is a complete list of initialisation options, with full descriptio
 > }
 > ```
 > See {{{createLink 'Components'}}} for more info.
+
+> <a id="decorators"></a>
+> ### decorators *`Object`*
+> A `key: value` hash of decorators that are specific to this instance, where `key` is the name of the decorator (as referenced within templates as `<div decorator="myDecorator"/>`), and `value` is a is a decorator functions.  See {{{createLink 'Decorators'}}} for more info.
+> ```js
+> decorators: {
+>     'myDomponent': function( node, fire) {...}
+> }
+> ```
+
+> <a id="css"></a>
+> ### css *`String`*
+> TODO
+
+> <a id="noCssTransform"></a>
+> ### noCSSTransform *`Boolean`*
+> TODO
+
+
 
 ## DOM Placement
 
@@ -297,6 +317,13 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 >     console.log( '<p> has completed fade in!' );
 > }
 > ```
+> <a id="easing"></a>
+> ### easing *`Object`*
+> TODO
+
+> <a id="interpolators"></a>
+> ### interpolators *`Object`*
+> TODO
 
 ## Parsing
 
