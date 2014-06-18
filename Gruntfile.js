@@ -12,7 +12,7 @@ module.exports = function ( grunt ) {
 	config = {
 		pkg: grunt.file.readJSON( 'package.json' ),
 		latest: '0.4.0',
-		edge: '0.3.9',
+		edge: 'edge',
 		prod: grunt.option( 'prod' ),
 
 		// TODO do we need this?... probably not, it just got

@@ -15,11 +15,34 @@ main {
 	ul {
 		margin: 0 0 2em 0;
 	}
+
+	th {
+		text-align: left;
+		padding-left: .25em;
+	}
+
+	td {
+		padding-left: .25em;
+		padding-right: 1.75em;
+	}
+
+	td:last-child {
+		padding-right: .75em;
+	}
+
+	tr:nth-child(odd) {
+		background-color: #f9f9f9;
+	}
+
+	thead > tr {
+		background-color: inherit !important;
+	}
+
 }
 
 @media (min-width: $fullWidth) {
 	.content {
-		padding: 0 0 0 $leftNavWidth;
+		padding: 0 0 0 $leftNavWidth+1;
 	}
 
 	main {
