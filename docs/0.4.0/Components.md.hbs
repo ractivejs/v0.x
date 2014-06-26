@@ -234,7 +234,7 @@ A partial, or component, can be used as well:
 </list>
 ```
 
-Currently, the content markup resolves in the component's context. In the second example above the `value` parameter for `<widget>` is the individual list item of `{{fates}}`. And in the first case, the partial would need to be defined globally (`Ractive.partials`) or on the component, as it won't be found if it is defined, for example, inline in the outer context:
+Currently, the content markup resolves in the component's context. In the second example above the `value` parameter for `<widget>` is the individual list item of `\{{fates}}`. And in the first case, the partial would need to be defined globally (`Ractive.partials`) or on the component, as it won't be found if it is defined, for example, inline in the outer context:
 
 ```html
 <list items="\{{fates}}">
