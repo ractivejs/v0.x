@@ -22,7 +22,7 @@ The following is a complete list of initialisation options, with full descriptio
 | [easing](#easing)                         		| [transitions](#transitions-animations)| easing functions to use in transitions |
 | [events](#events)                         		| [templating](#templating)      		| events to include for use by the template |
 | [interpolators](#interpolators)           		| [transitions](#transitions-animations)| interpolators to use for animating values |
-| [isolated](#lazy)                         		| [data](#data-binding)          		| prevent components from accessing parent data and registries |
+| [isolated](#isolated)                        		| [data](#data-binding)          		| prevent components from accessing parent data and registries |
 | [lazy](#lazy)                             		| [binding](#data-binding)         		| don't bind to every keypress |
 | [magic](#magic)                           		| [binding](#data-binding)             	| data object getters and setters that update view |
 | [modifyArrays](#modifyArrays)             		| [binding](#data-binding)             	| array modification methods update the view |
@@ -61,7 +61,7 @@ The following is a complete list of initialisation options, with full descriptio
 > ```
 > See the [60 second setup](http://ractivejs.org/60-second-setup) for an example of this.
 
-> Please note that while Ractive will fetch any element by ID and use its content as the template, browsers may escape the contents of tags like `<div>` when initially rendered leading to unexpected results in your template.
+> Please note that while Ractive will fetch any element by ID and use its content as the template, browsers may escape the contents of tags like `<div>` when initially rendered, leading to unexpected results in your template.
 
 > The `<script>` tag is a good option as browsers will not modify the contents and is the canonical way to include inline Ractive templates in the document. However, make sure to set `type='text/ractive'` or the browser will try and execute the contents as javascript and you'll get an exception.
 
@@ -77,7 +77,7 @@ The following is a complete list of initialisation options, with full descriptio
 
 > <a id="components"></a>
 > ### components *`Object`*
-> A `key: value` hash of components that are specific to this instance, where `key` is the name of the component (as referenced within templates as `<my-component></my-component>`), and `value` is a valid component create by {{{createLink 'Ractive.extend()'}}}.
+> A `key: value` hash of components that are specific to this instance, where `key` is the name of the component (as referenced within templates as `<my-component></my-component>`), and `value` is a valid component created by {{{createLink 'Ractive.extend()'}}}.
 > ```js
 > components: {
 >     'my-component': Ractive.extend({
@@ -99,11 +99,11 @@ The following is a complete list of initialisation options, with full descriptio
 
 > <a id="css"></a>
 > ### css *`String`*
-> TODO
+> Used on components to specify `css` styles to be inserted into the document.
 
 > <a id="noCssTransform"></a>
 > ### noCSSTransform *`Boolean`*
-> TODO
+> Defaults to `false`. Prevents component css from being transformed with scoping guids.
 
 
 
@@ -275,10 +275,13 @@ Can either be the adaptor itself, or the name of an adaptor registred via `Racti
 >
 > // will not fire as user is typing
 > ractive.on('change', function(){
-> 	  // only on exiting <input> or return if submit
+> 	  // only happens on exiting <input> or return if submit
 > 	  console.log('changed!')
 > })
 > ```
+> <a id="isolated"></a>
+> ### isolated *`Boolean`*
+> Defaults to `false`. This option is typically only relevant as an extension option for {{{createLink 'Components'}}}. Controls whether the component will look outside itself for data and registry items.
 
 ## Transitions & Animations
 
@@ -319,11 +322,11 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 > ```
 > <a id="easing"></a>
 > ### easing *`Object`*
-> TODO
+> A `key: value` hash of easing function. See {{{createLink 'Ractive.easing'}}}
 
 > <a id="interpolators"></a>
 > ### interpolators *`Object`*
-> TODO
+> A `key: value` hash of interpolators use by {{{createLink 'ractive.animate()'}}}
 
 ## Parsing
 
