@@ -3,6 +3,11 @@ title: Observers
 ---
 ## Like publish/subscribe, but different
 
+### Initialisation options
+| Option                                    | Description |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------|
+| init                                      | Set to false to avoid calling the observer callback upon initialization                     |
+
 A common pattern in modern JavaScript is to make models *observable*, using the traditional [publish/subscribe](http://addyosmani.com/blog/understanding-the-publishsubscribe-pattern-for-greater-javascript-scalability/) mechanism.
 
 For example, you can observe changes to attributes within a Backbone Model like so:
