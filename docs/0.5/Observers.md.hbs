@@ -28,7 +28,8 @@ But the normal pub/sub mechanism won't work for monitoring data changes with Rac
 
 So instead, we introduce the concept of *observers*.
 
-An observer observes a particular {{{createLink 'keypaths' 'keypath'}}}, and is *notified* when the value of its keypath changes, whether directly or indirectly (because an *upstream* or *downstream* keypath changed). You create one with `ractive.observe()`.
+An observer observes a particular {{{createLink 'keypaths' 'keypath'}}}, and is *notified* when the value of its keypath changes, whether directly or indirectly (because an *upstream* or *downstream* keypath changed). You create one with `ractive.observe()` (see {{{createLink 'ractive.observe()'}}} for full method
+API).
 
 Here's an example:
 
@@ -80,7 +81,7 @@ var ractive = new Ractive({
 });
 
 ractive.observe('people.*', function(newValue, oldValue, keypath) {
-  
+
 });
 
 var people = ractive.get('people');
@@ -102,7 +103,7 @@ Notice that because you are observing at the array level that `newValue` will be
 
 ```js
 ractive.observe('people.*.isACelebrity', function(newValue, oldValue, keypath) {
-  
+
 });
 
 ractive.set('people.0.isACelebrity', true); //Rich Harris is a celebrity
@@ -115,13 +116,13 @@ You are not limited to just one `*` for your pattern, you can use as many as you
 ```js
 
 ractive.observe('people.*.comments.*', function(newValue, oldValue, keypath) {
-  
+
 });
 
 //even arrays of arrays
 
 ractive.observe('people.*.*', function(newValue, oldValue, keypath) {
-  
+
 });
 
 ```
@@ -141,7 +142,7 @@ var ractive = new Ractive({
 });
 
 ractive.observe('config.*', function(newValue, oldValue, keypath) {
-  
+
 });
 
 ractive.set('config.allowEdit', true);
@@ -180,7 +181,7 @@ ractive.observe('commentCount', updateServer);
 
 This is unecessarily verbose, now with space delimited observers this becomes a single line.
 
-```js 
+```js
 ractive.observe('user.username config.isAdmin commentCount', updateServer);
 
 ```
