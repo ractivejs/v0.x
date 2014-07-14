@@ -55,9 +55,9 @@ ractive = new Ractive({
   template: template,
   data: {
     users: {
-      'joe@example.com': { name: 'Joe' },
-      'jane@example.com': { name: 'Jane' },
-      'mary@example.com': { name: 'Mary' }
+      'Joe': { email: 'joe@example.com' },
+      'Jane': { email: 'jane@example.com' },
+      'Mary': { email: 'mary@example.com' }
     }
   }
 });
@@ -67,16 +67,16 @@ We can iterate over the users object with the following:
 
 ```html
 <ul>
-  \{{#users:email}}
-    <li>\{{email}}: \{{name}}</li>
+  \{{#users:name}}
+    <li>\{{name}}: \{{email}}</li>
   \{{/users}}
 </ul>
 
 <!-- becomes... -->
 <ul>
-  <li>joe@example.com: Joe</li>
-  <li>jane@example.com: Jane</li>
-  <li>mary@example.com: Mary</li>
+  <li>Joe: joe@example.com</li>
+  <li>Jane: jane@example.com</li>
+  <li>Mary: mary@example.com</li>
 </ul>
 ```
 
