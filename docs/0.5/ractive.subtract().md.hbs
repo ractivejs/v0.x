@@ -1,8 +1,7 @@
 ---
 title: ractive.subtract()
 ---
-Decrements the selected {{{createLink 'keypaths' 'keypath'}}}.
-
+Decrements the value of the given {{{createLink 'keypaths' 'keypath'}}}.
 
 > ### ractive.subtract( keypath[, number ])
 > Returns a `Promise` (see {{{createLink 'Promises'}}})
@@ -12,3 +11,29 @@ Decrements the selected {{{createLink 'keypaths' 'keypath'}}}.
 
 > > #### number
 > > Defaults to `1`. The number to decrement by
+
+### Example
+
+This is useful for numeric counters. Instead of using {{{createLink 'ractive-get' 'get()'}}}
+and {{{createLink 'ractive-set' 'set()'}}} in succession, using *add()* and *subtract()* will
+simplify your code.
+
+```js
+quantityBox = new Ractive({
+  template: [
+    "<button on-click='decrease'> - </button>",
+    "<span>{{quantity}}</span>",
+    "<button on-click='increase'> + </button>",
+  ].join(""),
+  
+  data: {
+    quantity: 20
+  }
+});
+
+quantityBox.on({
+  decrease: function () { this.subtract(); },
+  increase: function () { this.add(); }
+  }
+});
+```
