@@ -233,24 +233,24 @@ base.mustache:
 
 ```html
 <h2>Names</h2>
-{{#names}}
-  {{> user}}
-{{/names}}
+\{{#names}}
+  \{{> user}}
+\{{/names}}
 ```
 
 With `user.mustache` containing:
 
 ```html
-<strong>{{name}}</strong>
+<strong>\{{name}}</strong>
 ```
 
 Can be thought of as a single, expanded template:
 
 ```html
 <h2>Names</h2>
-{{#names}}
-  <strong>{{name}}</strong>
-{{/names}}
+\{{#names}}
+  <strong>\{{name}}</strong>
+\{{/names}}
 ```
 
 ### Custom delimiters
