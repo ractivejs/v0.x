@@ -35,6 +35,24 @@ Or it could mean filtering a list to exclude certain records:
 
 These are all examples casually plucked from the air - whether they would be useful or not in real life depends on what you're trying to do. The point is that you can include more of your view logic at the declarative layer - the template - where it's easier to *reason about*.
 
+## Frequently Used Expressions
+ 
+If you use a particular expression frequently, you can save time by adding it Ractive's default data. This way you won't have to set up the expressions on each individual `ractive` instance.
+
+The example below adds expressions for some frequenlty used parts of [moment.js](http://momentjs.com/) to the default data:
+
+```js
+var helpers = Ractive.defaults.data;
+helpers.fromNow = function(timeString){
+	return moment(timeString).fromNow()
+}
+helpers.formatTime = function(timeString){
+	return moment(timeString).format("ddd, h:mmA");
+}
+helpers.humanizeTime = function(timeString){
+	return moment.duration(timeString).humanize();
+}
+```
 
 ## Valid expressions
 
