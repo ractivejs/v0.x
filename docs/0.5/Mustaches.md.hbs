@@ -100,7 +100,7 @@ Template:
 
 ```html
 \{{#repo}}
-  <b>{{name}}</b>
+  <b>\{{name}}</b>
 \{{/repo}}
 ```
 
@@ -132,7 +132,7 @@ Template:
 
 ```html
 \{{#person?}}
-  Hi {{name}}!
+  Hi \{{name}}!
 \{{/person?}}
 ```
 
@@ -152,7 +152,7 @@ Hi Jon!
 
 #### Inverted Sections
 
-An inverted section begins with a caret (hat) and ends with a slash. That is  \{{^person}} begins a "person" inverted section while \{{/person}} ends it.
+An inverted section begins with a caret (hat) and ends with a slash. That is  `\{{^person}}` begins a "person" inverted section while `\{{/person}}` ends it.
 
 While sections can be used to render text one or more times based on the value of the key, inverted sections may render text once based on the inverse value of the key. That is, they will be rendered if the key doesn't exist, is false, or is an empty list.
 
