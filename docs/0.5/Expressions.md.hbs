@@ -129,3 +129,43 @@ In regular mustache, we have something called the *implicit iterator* - `\{{.}}`
 * `parseFloat`
 * `parseInt`
 * `undefined`
+
+
+## Functions
+
+Any functions that you want to call, outside of the available globals above, must be properties of the Ractive instance's data as well. Functions can also depend on other references and will be re-evaulated when one of their dependencies is changed.
+
+Depedendencies are determined by capturing references in the viewmodel while the function is executing. Dependencies for functions are re-captured each time the function is executed.
+
+```html
+<p>\{{ formattedName() }}</p>
+```
+
+```js
+var ractive = new Ractive({
+  template: template,
+  el: output,
+  data: {
+    user: { firstName: 'John', lastName: 'Public' },
+    formattedName: function() {
+      return this.get('user.lastName') + ', ' + this.get('user.firstName');
+    }
+  }
+};
+```
+
+Result:
+```html
+<p>Public, John</p>
+```
+
+In this example, the function ```formattedName``` will depend on both ```user.firstName``` and ```user.lastName```, and updating either (or ```user```) will cause any expressions referencing ```formattedName``` to be re-evaluated as well.
+
+```js
+ractive.set('user.firstName', 'Jane')
+```
+
+Result:
+```html
+<p>Public, Jane</p>
+```
