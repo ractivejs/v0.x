@@ -81,6 +81,25 @@ It's often not obvious whether a callback will fire synchronously or asychronous
 
 You may have heard that promises are going to be part of ES6 (the next version of JavaScript). In fact, recent versions of some browsers (e.g. Chrome and Firefox) already support the `Promise` object natively.
 
-Future versions of Ractive will use native promises, with a polyfill included in the {{{createLink 'legacy builds'}}}. For now, because they're not sufficiently widely supported, Ractive uses its own implementation. It's functionally identical to the ES6 promise (as currently spec'd) except that `Promise.race` and `Promise.cast` are not currently implemented.
+Where possible, Ractive will use native ES6 promises. It will fall back to a polyfill that's functionally identical to the ES6 promise, except that `Promise.race` and `Promise.cast` are not currently implemented.
+
+
+## Can I use them in my own code?
+
+Yes! Whether it's using native promises or the polyfill, Ractive will expose the constructor as `Ractive.Promise`, which saves you worrying about bringing your own polyfill. Here's how you use them:
+
+```js
+var Promise = Ractive.Promise;
+
+var p = new Promise( function ( fulfil, reject ) {
+  doSomethingAsync( function ( error, result ) {
+    if ( error ) {
+      return reject( error );
+    }
+    
+    fulfil( result );
+  });
+});
+```
 
 
