@@ -448,13 +448,17 @@ Mustache fans may bristle at expressions - after all, the whole point is that mu
 
 ### Special Sections
 
-In addition to implicit conditional and iterative sections, Ractive adds ```if```, ```else```, ```each```, and ```with``` to handle branching, iteration, and context control.
+In addition to implicit conditional and iterative sections, Ractive adds ```if```, ```unless```, ```each```, and ```with``` to handle branching, iteration, and context control. For ```if``` and ```each```, ```{{else}}``` may be used to provide an alternate branch for a false condition or an empty iterable.
 
 ```html
 <button on-click="flip">Flip Coin</button>
 <p>Coin flip result: \{{#if heads}}heads\{{else}}tails\{{/if}}</p>
 <ul>
-  \{{#each result}}<li>\{{.}}</li>\{{/each}}
+  \{{#each result}}
+    <li>\{{.}}</li>
+  \{{else}}
+    <li>No results yet...</li>
+  \{{/each}}
 </ul>
 <p>Here is a \{{#with some.nested.value}}\{{.}}\{{/with}} value.</p>
 ```

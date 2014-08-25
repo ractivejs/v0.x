@@ -228,3 +228,20 @@ helloModal.on( 'close', function () {
   this.teardown();
 });
 ```
+
+
+## Updating Partials
+
+Partials may be updated after they are rendered if they are held within a conditional section. They will be re-parsed each time they are re-rendered, if necessary, so string, pre-parsed, and function partials may be used.
+
+```html
+\{{^toggle}}\{{>rickroll}}\{{/}}
+```
+
+```js
+ractive.partials.rickroll = 'I wouldn\'t do that to you, chum.';
+ractive.set('toggle', true);
+ractive.set('toggle', false);
+```
+
+This is a little hacky, but it brings an element of dynamism that can be very useful.
