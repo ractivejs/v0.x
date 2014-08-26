@@ -149,7 +149,7 @@ You have two options - either use a {{{createLink 'mustaches' 'restricted refere
 
 ## Lazy updates
 
-Under the hood, Ractive always binds to the `change` event (and the `click` event in IE, in the case of checkboxes, due to an IE bug). By default, it will also bind to the `input` event, which means the model is updated instantly when the user enters data (the `change` event fires when a change is ['committed by the user'](https://developer.mozilla.org/en-US/docs/Web/Reference/Events/change)). In some situations, that's not what you want - if you want to only bind to `change`, pass in `lazy: true` as an {{{createLink 'initialisation-options' 'initialisation option'}}}.
+Under the hood, Ractive always binds to the `change` event (and the `click` event in IE, in the case of checkboxes, due to an IE bug). By default, it will also bind to the `input` event, which means the model is updated instantly when the user enters data (the `change` event fires when a change is ['committed by the user'](https://developer.mozilla.org/en-US/docs/Web/Reference/Events/change)). In some situations, that's not what you want - if you want to only bind to `change`, pass in `lazy: true` as an {{{createLink 'options' 'initialisation option' 'twoway'}}}.
 
 ## Observing changes
 
