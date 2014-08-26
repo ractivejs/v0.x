@@ -253,7 +253,7 @@ Can either be the adaptor itself, or the name of an adaptor registred via `Racti
 > var ractive = new Ractive({
 >     template: '<input value="\{{foo}}">',
 >     data: { foo: 'bar' },
->     twoWay: false
+>     twoway: false
 > });
 > // user types "fizz" into <input>, but data value is not changed:
 > console.log( ractive.get( 'foo' ) ); //logs "bar"
