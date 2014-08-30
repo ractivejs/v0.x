@@ -66,13 +66,70 @@ Proxy event handlers receive an `event` argument. This isn't the same as the `ev
 * `context` - the value of `ractive.get(event.keypath)`
 * `index` - a map of index references
 
-*TODO - explain what the hell the last three of those things meant... In the meantime folks, do a `console.log( event )` inside your handlers and all will be revealed!*
+The first two properties are self-explanatory, but the last three can bear explanation.
+
+The `keypath` of the current `context` is useful if the event handler is being attached in an element that is nested within one or more sections. For instance:
+
+```html
+\{{#user}}
+  \{{#contactPoints:i}}
+     \{{#phone}}<button on-click="call">Call</button>\{{/}}
+  \{{/}}
+\{{/}}
+```
+
+```js
+{
+  user: {
+    contactPoints: [
+      { phone: { number: '8675309' } },
+      { email: 'joe@college.edu' },
+      { phone: { number: '011899988199911972523' } }
+    ]
+  }
+}
+```
+
+Here, there will be two buttons rendered that will trigger the same `call` proxy event. If the first button is clicked, the keypath of the event object will be `user.contactPoints.0.phone`. If the second button is clicked, the keypath of the event object will be `user.contactPoints.2.phone`.
+
+`context` is simply the value that resides at the `keypath`.
+
+Since there is an index reference, `i`, set in an iteration section, the `index` property of the event object will be `{ i: 0 }` for the first button and `{ i: 2 }` for the second. If there are no index references, `index` will be undefined.
 
 Because of the way proxy events work, they more or less eliminate the need for event delegation.
 
 Any standard DOM event that an element supports can be used (e.g. `on-mouseover='highlight'`, `on-touchstart='dragstart'`, `on-blur='submit'`, `on-error='loadFallbackImage'`, and so on), as can non-standard {{{createLink 'event plugins'}}} such as `on-tap`.
 
-*TODO - chained proxy events, additional arguments in custom event definitions*
+Multiple events may be proxied to the same Ractive event by nameing them individually or stacking them within an `on-` attribute.
+
+```html
+<div on-mouseover="mouse" on-mouseout="mouse" on-mousemove="mouse" />
+```
+is equivalent to
+```html
+<div on-mouseover-mouseout-mousemove="mouse" />
+```
+
+#### Arguments
+
+You can pass additional arguments to event handlers using expressions. The general form for doing so is `eventName:\{{expression}},...`. Additional arguments are passed to event handler functions after the event object.
+
+```html
+\{{#buttons:i}}
+  <button on-click="test:\{{i}},\{{"foo"}}">Button \{{i}}</button>
+\{{/}}
+```
+
+```js
+ractive.on('test', function(event, i, foo) {
+  // event is the event object
+  // i is whatever the value of \{{i}} is where the event is bound
+  // foo is the string 'foo'
+});
+```
+
+
+*TODO - chained proxy events*
 
 ## Reserved Event Names
 
