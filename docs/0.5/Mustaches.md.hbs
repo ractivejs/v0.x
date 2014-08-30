@@ -284,7 +284,7 @@ var ractive = new Ractive({
 
 ## Extensions
 
-Ractive is 99% backwards-compatible with Mustache, but adds six additional features (array index references, object iteration, restricted references, ancestor references, expressions, and special sections) which are detailed below.
+Ractive is 99% backwards-compatible with Mustache, but adds seven additional features (array index references, object iteration, restricted references, ancestor references, expressions, special sections, and aliasing) which are detailed below.
 
 ### Array Index references
 
@@ -482,6 +482,60 @@ ractive.on('flip', function() {
 ```
 
 In this example, clicking the button gets a "random" coin flip result, sets it in an ```if``` conditional section, and prepends it in an ```each``` iterative section. There is also a ```with``` context section throw in for good measure.
+
+
+### Aliasing
+
+Since a section with a non-falsy value uses the value as its context, an object expression can be used to create an arbitrary context within a section. Any currently visible context keypaths can be referenced within the new context object, which allows you to keep keypaths available that would otherwise be unreachable.
+
+```html
+\{{# { id: '10t' } }}
+  Error: \{{id}}
+\{{/}}
+```
+
+Output:
+```html
+Error: 10t
+```
+
+Using a section with an object expression to keep references accessible:
+
+```html
+<ul>
+\{{#things:i}}
+  \{{# { outeri: i, thing: . } }}
+    \{{#colors:i}}
+      <li>\{{outeri}}-\{{i}} \{{.}} \{{thing}}</li>
+    \{{/}}
+  \{{/}}
+\{{/}}
+</ul>
+```
+
+Data:
+```js
+{
+  colors: ['Purple', 'Orange', 'Green'],
+  things: ['People-Eater', 'Orange', 'Hornet']
+}
+```
+
+Output:
+```html
+<ul>
+  <li>0-0 Purple People-Eater</li>
+  <li>0-1 Orange People-Eater</li>
+  <li>0-2 Green People-Eater</li>
+  <li>1-0 Purple Orange</li>
+  <li>1-1 Orange Orange</li>
+  <li>1-2 Green Orange</li>
+  <li>2-0 Purple Hornet</li>
+  <li>2-1 Orange Hornet</li>
+  <li>2-2 Green Hornet</li>
+</ul>
+```
+
 
 ## Footnote
 
