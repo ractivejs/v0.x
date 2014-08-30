@@ -284,7 +284,7 @@ var ractive = new Ractive({
 
 ## Extensions
 
-Ractive is 99% backwards-compatible with Mustache, but adds seven additional features (array index references, object iteration, restricted references, ancestor references, expressions, special sections, and aliasing) which are detailed below.
+Ractive is 99% backwards-compatible with Mustache, but adds eight additional features (array index references, object iteration, restricted references, ancestor references, expressions, special sections, aliasing, and static mustaches) which are detailed below.
 
 ### Array Index references
 
@@ -534,6 +534,58 @@ Output:
   <li>2-1 Orange Hornet</li>
   <li>2-2 Green Hornet</li>
 </ul>
+```
+
+
+### Static Mustaches
+
+Sometimes it is useful to have portions of a template render once and stay the same even if their references change. A static mustache will be updated only when its template is rendered and not when its keypath is updated. So, if a static mustache is a child of a section or partial that get re-rendered, the mustache will also be re-rendered using the current value of its keypath.
+
+The default static mustache delimiters are `[[ ]]` for escaped values and `[[[ ]]]` for unescaped values.
+
+```html
+[[ foo ]] \{{ foo }}
+\{{^flag}}
+  [[ foo ]]
+\{{/}}
+```
+
+```js
+var ractive = new Ractive({
+  data: { foo: 'bar' },
+  ...
+});
+ractive.set('foo', 'bippy');
+ractive.set('flag', true);
+ractive.set('flag', false);
+```
+
+Output:
+```html
+bar bippy bippy
+```
+
+Static mustaches may also be used for sections that should only be updated on render.
+
+```html
+[[# if admin ]]
+Hello, admin
+[[else]]
+Hello, normal user
+[[/if]]
+```
+
+```js
+var ractive = new Ractive({
+  data: { admin: false },
+  ...
+});
+ractive.set('admin', true);
+```
+
+Output:
+```
+Hello, normal user
 ```
 
 
