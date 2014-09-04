@@ -199,6 +199,58 @@ ractive.on( 'doSomething', function () {
 
 (The same goes for any events that are fired programmatically by the component, rather than as a result of user interaction.)
 
+### Bubbling
+
+Events fired from within components will also bubble up the component hierarchy with their component name attached as a namespace. For instance, if a component referenced in a template as `Foo` fires an event named `myFoo`, then all of the Ractive instances in the hierarchy above the `Foo` will also have a `Foo.myFoo` event fired. This can be used to avoid having to reproxy events at each level in a deeply nested component hierarchy.
+
+Namespaced events may be subscribed in a two ways:
+
+1. Explicitly
+```js
+ractive.on('Foo.myFoo', function() {
+    // ...
+});
+```
+2. As a wildcard
+```js
+ractive.on('*.myFoo', function() {
+    // ...
+});
+```
+
+Using wildcards will subscribe to any events with the given name, regardless of their namespace. Multiple instances of the same component can be namespaced separately in the same hierarchy by adding the same component with multiple names.
+
+```js
+var component = Ractive.extend({});
+Ractive.components.Foo = component;
+Ractive.components.Bar = component;
+```
+
+Here, `<Foo />` and `<Bar />` will both be instances of `component`, but any events bubbled out of `<Foo />` will have `Foo.` as their namespace and events from `<Bar />` will have `Bar.` as their namespace.
+
+#### Stop bubbling
+
+If you don't want the event to bubble any further up the component hierarchy, simply return false from the event handler function. This will also `stopPropagation()` and `preventDefault()` on the `original` event if there is one.
+
+Additionally, events proxied within a component will stop events from internal components from bubbling further upwards. Within components, proxy event attributes may use wildcards.
+
+```html
+<Foo on-Bar.foo="barfooed" on-Baz.*="baz-event" on-*.bippy="any-bippy">
+  <Bar /><Baz /><Baz />
+</Foo>
+```
+
+Here, `Bar.foo`, `Baz.`, and `*.bippy` events will not bubble beyond the `Foo` component. At this point though, `Foo` events will be bubbled for `barfooed`, `baz-event`, and `any-bippy`. To completely stop events from bubbling, you can pass an empty handler.
+
+```html
+<Foo on-*.*="">
+  <Bar /><Baz /><Baz />
+</Foo>
+```
+
+Here, no internal component events will bubble above `Foo`.
+
+
 ## The `\{{>content}}` Directive 
 
 Any content in the template calling the component:
