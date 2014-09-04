@@ -499,14 +499,14 @@ Output:
 Error: 10t
 ```
 
-Using a section with an object expression to keep references accessible:
+Using a section with an object expression to keep references accessible or convenient:
 
 ```html
 <ul>
-\{{#things:i}}
-  \{{# { outeri: i, thing: . } }}
-    \{{#colors:i}}
-      <li>\{{outeri}}-\{{i}} \{{.}} \{{thing}}</li>
+\{{#things:outerIndex}}
+  \{{# { thing: ., i: outerIndex } }}
+    \{{#colors:j}}
+      <li>\{{i}}-\{{j}} \{{.}} \{{thing}}</li>
     \{{/}}
   \{{/}}
 \{{/}}
