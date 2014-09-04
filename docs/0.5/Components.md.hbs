@@ -9,6 +9,8 @@ First, you need to **create the component** with {{{createLink 'Ractive.extend()
 * [Binding](#binding)
 * [Events](#events)
 * [The \{{>content}} Directive](#content)
+* [The \{{yield}} Directive](#yield)
+* [Pseudo-Dynamic Templating](#dynamism)
 
 ## <a name="init"></a>Initialisation Options
 
@@ -305,7 +307,40 @@ Currently, the content markup resolves in the component's context. In the second
 ```
 Be aware that the context scope for resolution may change or be expanded in a future release to control whether it resolves in the calling or component context. 
 
-## Pseudo Dynamic Templating
+
+
+## <a name="yield"></a>The `\{{yield}}` Directive
+
+The `\{{>content}}` directive, as a special partial, renders everthing in the context of the component. The `\{{yield}}` directive renders everything in the context of the parent, which is typically what the component user expects to happen. Any event handlers or data references will be registered on or refer the parent context instead of the component context.
+
+Any inline templates defined in the template passed to the component, however, will be rendered in the context of the component.
+
+```html
+<Foo>
+  \{{ myData }}
+  <button on-click="clicked">Click</button>
+</Foo>
+```
+
+```js
+var Foo = Ractive.extend({
+  template: '<div>\{{ yield }}</div>',
+  data: { myData: 2 }
+});
+var ractive = new Ractive({
+  components: { Foo: Foo },
+  data: { myData: 1 }
+});
+ractive.on('clicked', function(ev) {
+  console.log('clicked');
+});
+```
+
+Here, `1` will be displayed next to the button, and the button, when clicked, will log a message to the console.
+
+
+
+## <a name="dynamism"></a>Pseudo Dynamic Templating
 
 In some cases you want to render a different template depending on the data that is passed in.
 
@@ -359,6 +394,8 @@ ractive.observe('items.*.value', function(newValue, oldValue, keypath) {
   console.log(keypath + ' ' + newValue);
 });
 ```
+
+
 ## Caveat
 
 Components are a stable feature, but still relatively new - certain aspects have yet to be implemented. Pardon the dust! There is a [long-running GitHub issue](https://github.com/RactiveJS/Ractive/issues/74), which may be of interest.
