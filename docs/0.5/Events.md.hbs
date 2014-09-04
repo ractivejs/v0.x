@@ -3,7 +3,7 @@ title: Events
 ---
 Like many libraries, Ractive implements the [publish/subscribe](http://addyosmani.com/blog/understanding-the-publishsubscribe-pattern-for-greater-javascript-scalability/) mechanism to allow you to trigger behaviour at certain points.
 
-There are three types of events - standard events, proxy events, and custom events. They all use the same interface - {{{createLink 'ractive.on()'}}}:
+There are four types of events - [standard events](#standard), [proxy events](#proxy), [custom events](#custom), and [method events](#method). The first three use the same interface - {{{createLink 'ractive.on()'}}}:
 
 ```js
 ractive = new Ractive({
@@ -18,7 +18,7 @@ ractive.on( 'teardown', function () {
 
 In all cases, event handlers will be called with `ractive` as `this`.
 
-## Standard events
+## <a name="standard"></a>Standard events
 
 Standard events are those emitted by all Ractive instances:
 
@@ -31,7 +31,7 @@ Fired whenever any data changes inside of a Ractive instance. To observe only on
 Fired whenever {{{createLink 'ractive.teardown()'}}} is called. No arguments.
 
 
-## Proxy events
+## <a name="proxy"></a>Proxy events
 
 Proxy events are a convenient way of handling user interaction. Instead of doing `someElement.addEventListener( eventName, handler )` or `$( someSelector ).on( eventName, handler )`, you can write the name of a *proxy event* right into your template:
 
@@ -148,7 +148,7 @@ You may listen for these names as you would with normal events however these eve
 > ### teardown
 > the teardown event is fired when the Ractive instance is destroyed from the `teardown` function, the callback is called with no arguments
 
-## Custom events
+## <a name="custom"></a>Custom events
 
 You can easily create events of your own with {{{createLink 'ractive.fire()'}}}. This is most useful in the context of subclasses created with {{{createLink 'Ractive.extend()'}}}.
 
@@ -176,6 +176,33 @@ var Catalogue = Ractive.extend({
       self.fire( 'selected', items[ index ] );
     });
   }
+});
+```
+
+
+## <a name="method"></a>Method events
+
+In addition to naming a proxy event and passing arguments to it in a proxy event attribute, you may also specify a method on the Ractive instance to call using a slightly different syntax that looks like a method call. This is a more general method of handling events and can also be used to emulate proxy events as described above.
+
+For example:
+```html
+\{{ counter }}
+<button on-click="add('counter', 1)">Add</button>
+<button on-click="subtract('counter', 1)">Subtract</button>
+```
+
+Since Ractive instances already have {{{createLink 'ractive.add()'}}} and {{{createLink 'ractive.subtract()'}}} methods, they can be used in event attributes directly instead of setting up a proxy event and adding a handler with {{{createLink 'ractive.on()'}}}.
+
+There is also an implicit `event` variable available that is the same as the event instance that is passed to plain proxy events. Using this, you can simulate a proxy event using {{{createLink 'ractive.fire()'}}}.
+
+```html
+<button on-click="fire(event, 'proxy-event-name', someContextRef)">Go!</button>
+```
+
+```js
+ractive.on('proxy-event-name', function(event, ref) {
+  // event is the usual event object
+  // ref is whatever someContextRef is from the template
 });
 ```
 
