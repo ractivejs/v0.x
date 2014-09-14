@@ -3,7 +3,7 @@ title: Events
 ---
 Like many libraries, Ractive implements the [publish/subscribe](http://addyosmani.com/blog/understanding-the-publishsubscribe-pattern-for-greater-javascript-scalability/) mechanism to allow you to trigger behaviour at certain points.
 
-There are three types of events - standard events, proxy events, and custom events. They all use the same interface - {{{createLink 'ractive.on()'}}}:
+There are four types of events - [standard events](#standard), [proxy events](#proxy), [custom events](#custom), and [method events](#method). The first three use the same interface - {{{createLink 'ractive.on()'}}}:
 
 ```js
 ractive = new Ractive({
@@ -18,7 +18,7 @@ ractive.on( 'teardown', function () {
 
 In all cases, event handlers will be called with `ractive` as `this`.
 
-## Standard events
+## <a name="standard"></a>Standard events
 
 Standard events are those emitted by all Ractive instances:
 
@@ -31,7 +31,7 @@ Fired whenever any data changes inside of a Ractive instance. To observe only on
 Fired whenever {{{createLink 'ractive.teardown()'}}} is called. No arguments.
 
 
-## Proxy events
+## <a name="proxy"></a>Proxy events
 
 Proxy events are a convenient way of handling user interaction. Instead of doing `someElement.addEventListener( eventName, handler )` or `$( someSelector ).on( eventName, handler )`, you can write the name of a *proxy event* right into your template:
 
@@ -66,13 +66,70 @@ Proxy event handlers receive an `event` argument. This isn't the same as the `ev
 * `context` - the value of `ractive.get(event.keypath)`
 * `index` - a map of index references
 
-*TODO - explain what the hell the last three of those things meant... In the meantime folks, do a `console.log( event )` inside your handlers and all will be revealed!*
+The first two properties are self-explanatory, but the last three can bear explanation.
+
+The `keypath` of the current `context` is useful if the event handler is being attached in an element that is nested within one or more sections. For instance:
+
+```html
+\{{#user}}
+  \{{#contactPoints:i}}
+     \{{#phone}}<button on-click="call">Call</button>\{{/}}
+  \{{/}}
+\{{/}}
+```
+
+```js
+{
+  user: {
+    contactPoints: [
+      { phone: { number: '8675309' } },
+      { email: 'joe@college.edu' },
+      { phone: { number: '011899988199911972523' } }
+    ]
+  }
+}
+```
+
+Here, there will be two buttons rendered that will trigger the same `call` proxy event. If the first button is clicked, the keypath of the event object will be `user.contactPoints.0.phone`. If the second button is clicked, the keypath of the event object will be `user.contactPoints.2.phone`.
+
+`context` is simply the value that resides at the `keypath`.
+
+Since there is an index reference, `i`, set in an iteration section, the `index` property of the event object will be `{ i: 0 }` for the first button and `{ i: 2 }` for the second. If there are no index references, `index` will be undefined.
 
 Because of the way proxy events work, they more or less eliminate the need for event delegation.
 
 Any standard DOM event that an element supports can be used (e.g. `on-mouseover='highlight'`, `on-touchstart='dragstart'`, `on-blur='submit'`, `on-error='loadFallbackImage'`, and so on), as can non-standard {{{createLink 'event plugins'}}} such as `on-tap`.
 
-*TODO - chained proxy events, additional arguments in custom event definitions*
+Multiple events may be proxied to the same Ractive event by nameing them individually or stacking them within an `on-` attribute.
+
+```html
+<div on-mouseover="mouse" on-mouseout="mouse" on-mousemove="mouse" />
+```
+is equivalent to
+```html
+<div on-mouseover-mouseout-mousemove="mouse" />
+```
+
+#### Arguments
+
+You can pass additional arguments to event handlers using expressions. The general form for doing so is `eventName:\{{expression}},...`. Additional arguments are passed to event handler functions after the event object.
+
+```html
+\{{#buttons:i}}
+  <button on-click="test:\{{i}},\{{"foo"}}">Button \{{i}}</button>
+\{{/}}
+```
+
+```js
+ractive.on('test', function(event, i, foo) {
+  // event is the event object
+  // i is whatever the value of \{{i}} is where the event is bound
+  // foo is the string 'foo'
+});
+```
+
+
+*TODO - chained proxy events*
 
 ## Reserved Event Names
 
@@ -91,7 +148,7 @@ You may listen for these names as you would with normal events however these eve
 > ### teardown
 > the teardown event is fired when the Ractive instance is destroyed from the `teardown` function, the callback is called with no arguments
 
-## Custom events
+## <a name="custom"></a>Custom events
 
 You can easily create events of your own with {{{createLink 'ractive.fire()'}}}. This is most useful in the context of subclasses created with {{{createLink 'Ractive.extend()'}}}.
 
@@ -119,6 +176,33 @@ var Catalogue = Ractive.extend({
       self.fire( 'selected', items[ index ] );
     });
   }
+});
+```
+
+
+## <a name="method"></a>Method events
+
+In addition to naming a proxy event and passing arguments to it in a proxy event attribute, you may also specify a method on the Ractive instance to call using a slightly different syntax that looks like a method call. This is a more general method of handling events and can also be used to emulate proxy events as described above.
+
+For example:
+```html
+\{{ counter }}
+<button on-click="add('counter', 1)">Add</button>
+<button on-click="subtract('counter', 1)">Subtract</button>
+```
+
+Since Ractive instances already have {{{createLink 'ractive.add()'}}} and {{{createLink 'ractive.subtract()'}}} methods, they can be used in event attributes directly instead of setting up a proxy event and adding a handler with {{{createLink 'ractive.on()'}}}.
+
+There is also an implicit `event` variable available that is the same as the event instance that is passed to plain proxy events. Using this, you can simulate a proxy event using {{{createLink 'ractive.fire()'}}}.
+
+```html
+<button on-click="fire(event, 'proxy-event-name', someContextRef)">Go!</button>
+```
+
+```js
+ractive.on('proxy-event-name', function(event, ref) {
+  // event is the usual event object
+  // ref is whatever someContextRef is from the template
 });
 ```
 
