@@ -90,11 +90,11 @@ The `keypath` of the current `context` is useful if the event handler is being a
 }
 ```
 
-Here, there will be two buttons rendered that will trigger the same `call` proxy event. If the first button is clicked, the keypath of the event object will be `user.contactPoints.0.phone`. If the second button is clicked, the keypath of the event object will be `user.contactPoints.2.phone`.
+Here, there will be two buttons rendered that will trigger the same `call` proxy event. If the first button is clicked, the keypath of the event object will be `user.contactPoints.0.phone`. If the second button is clicked, the keypath of the event object will be `user.contactPoints.1.phone`.
 
 `context` is simply the value that resides at the `keypath`.
 
-Since there is an index reference, `i`, set in an iteration section, the `index` property of the event object will be `{ i: 0 }` for the first button and `{ i: 2 }` for the second. If there are no index references, `index` will be undefined.
+Since there is an index reference, `i`, set in an iteration section, the `index` property of the event object will be `{ i: 0 }` for the first button and `{ i: 1 }` for the second. If there are no index references, `index` will be undefined.
 
 Because of the way proxy events work, they more or less eliminate the need for event delegation.
 
