@@ -100,7 +100,7 @@ init is called after the extended component has been initialized
 
 ```js
 var MyWidget = Ractive.extend({
-  template: '<div on-click="activate">\{{message}}</p>',
+  template: '<div on-click="activate">\{{message}}</div>',
   init: function () {
     this.on( 'activate', function () {
       alert( 'Activating!' );
