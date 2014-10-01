@@ -3,7 +3,20 @@ title: Initialisation Options
 section: APIReference
 ---
 
-The following is a complete list of initialisation options, with full descriptions below grouped by category.
+The following is an exhaustive list of initialisation options that you can pass to `new Ractive(options)`, with full descriptions grouped below by category.
+
+Note that any additional options will be added as properties of the instance, so you can create custom methods (e.g. for calling from templates):
+
+```js
+var ractive = new Ractive({
+  myMethod: function () {
+    alert( 'my method was called' );
+  }
+});
+
+ractive.myMethod(); // triggers the alert
+```
+
 
 | Option                                    		| Category         						| Description |
 | ----------------------------------------- 		| -----------      						| -----       |
