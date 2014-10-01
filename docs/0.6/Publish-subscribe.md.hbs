@@ -26,6 +26,11 @@ There are different types of events:
 </ul>
 
 
+## Event bubbling
+
+If a component fires an event, it will bubble - [see this demonstration](http://jsfiddle.net/rich_harris/cdvehp1t/).
+
+
 ## Hygiene
 
 Event handlers are automatically removed if the instance is torn down (e.g. with {{{createLink 'ractive.teardown()'}}}). You can also unsubscribe event handlers manually using one of two approaches:

@@ -1,0 +1,28 @@
+---
+title: 'Custom events'
+---
+
+In addition to the built-in {{{createLink 'lifecycle events'}}} and {{{createLink 'proxy events'}}}, you can fire your own events with {{{createLink 'ractive.fire()'}}}.
+
+This is most useful in the context of a {{{createLink 'Components' 'component'}}} that needs to emit custom events. Here's a (somewhat contrived) example:
+
+```js
+var Ticker = Ractive.extend({
+  oninit: function () {
+    var i = 1;
+
+    this.interval = setInterval( function () {
+      this.fire( 'tick', i++ );
+    }.bind( this ), 1000 );
+  },
+  onteardown: function () {
+    clearInterval( this.interval );
+  }
+});
+
+var ticker = new Ticker();
+
+ticker.on( 'tick', function ( i ) {
+  console.log( i % 2 ? 'tick' : 'tock' );
+});
+```

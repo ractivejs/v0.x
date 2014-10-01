@@ -1,7 +1,0 @@
----
-title: 'Custom events'
----
-
-In addition to the built-in {{{createLink 'lifecycle events'}}} and {{{createLink 'proxy events'}}}, you can fire your own events with {{{createLink 'ractive.fire()'}}}.
-
-more soon...

@@ -1,0 +1,50 @@
+---
+title: 'Method calls'
+---
+
+As an alternative to {{{createLink 'proxy events'}}}, you can call any method of your Ractive instance, in response to a DOM event, right from your template:
+
+```html
+<p>foo is {{foo}}</p>
+<button on-click='toggle("foo")'>toggle foo</button>
+```
+
+In this case, because {{{createLink 'ractive.toggle()'}}} is a built-in method, clicking the button will toggle the value of `foo` between `true` and `false` ([demo](http://jsfiddle.net/rich_harris/xxg93vw8/)).
+
+This also works with custom methods:
+
+```js
+var ractive = new Ractive({
+  el: 'body',
+  template: '<button on-click="klaxon()">sound the klaxon</button>',
+  audio: new Audio( 'klaxon.mp3' ),
+  klaxon: function () {
+    this.audio.play();
+  }
+});
+```
+
+You can pass as many arguments to the method as you like, including data references:
+
+```html
+{{#each items :i}}
+  <button on-click='select(this,i)'>select this item</button>
+{{/each}}
+```
+
+You can also pass the `event` object, or properties thereof (`event.original` is the original DOM event) ([demo](http://jsfiddle.net/rich_harris/9ecvjjtm/)):
+
+```html
+<div
+  on-mousemove='set({
+    x: event.original.clientX,
+    y: event.original.clientY
+  })'
+  on-mouseleave='set({
+    x: "unknown",
+    y: "unknown"
+  })'
+>
+  <p>current mouse position: {{x}} x {{y}}</p>
+</div>
+```
