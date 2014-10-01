@@ -5,7 +5,7 @@ title: 'Method calls'
 As an alternative to {{{createLink 'proxy events'}}}, you can call any method of your Ractive instance, in response to a DOM event, right from your template:
 
 ```html
-<p>foo is {{foo}}</p>
+<p>foo is \{{foo}}</p>
 <button on-click='toggle("foo")'>toggle foo</button>
 ```
 
@@ -27,9 +27,9 @@ var ractive = new Ractive({
 You can pass as many arguments to the method as you like, including data references:
 
 ```html
-{{#each items :i}}
+\{{#each items :i}}
   <button on-click='select(this,i)'>select this item</button>
-{{/each}}
+\{{/each}}
 ```
 
 You can also pass the `event` object, or properties thereof (`event.original` is the original DOM event) ([demo](http://jsfiddle.net/rich_harris/9ecvjjtm/)):
@@ -45,6 +45,6 @@ You can also pass the `event` object, or properties thereof (`event.original` is
     y: "unknown"
   })'
 >
-  <p>current mouse position: {{x}} x {{y}}</p>
+  <p>current mouse position: \{{x}} x \{{y}}</p>
 </div>
 ```
