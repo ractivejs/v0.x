@@ -28,6 +28,17 @@ The following is a complete list of initialisation options, with full descriptio
 | [modifyArrays](#modifyArrays)             		| [binding](#data-binding)             	| array modification methods update the view |
 | [noCssTransform](#noCssTransform)         		| [templating](#templating)       		| prevent transformation of component css |
 | [noIntro](#noIntro)                       		| [transitions](#transitions-animations)| do not apply transitions on render |
+| [onchange](#onchange)                             | [lifecycle events](#lifecycle-events) | event fired when data changes
+| [oncomplete](#oncomplete)                         | [lifecycle events](#lifecycle-events) | event fired once {{{createLink 'transitions'}}} have completed
+| [onconfig](#onconfig)                             | [lifecycle events](#lifecycle-events) | event fired once all configuration options have been processed
+| [onconstruct](#onconstruct)                       | [lifecycle events](#lifecycle-events) | event fired immediately after `new Ractive(...)`
+| [ondetach](#ondetach)                             | [lifecycle events](#lifecycle-events) | event fired each time `ractive.detach()` is called
+| [oninit](#oninit)                                 | [lifecycle events](#lifecycle-events) | event fired when the instance is ready to be rendered
+| [oninsert](#oninsert)                             | [lifecycle events](#lifecycle-events) | event fired each time `ractive.insert()` is called
+| [onrender](#onrender)                             | [lifecycle events](#lifecycle-events) | event fired each time the instance is rendered
+| [onteardown](#onteardown)                         | [lifecycle events](#lifecycle-events) | event fired each time the instance is destroyed
+| [onunrender](#onunrender)                         | [lifecycle events](#lifecycle-events) | event fired each time the instance is unrendered
+| [onupdate](#onupdate)                             | [lifecycle events](#lifecycle-events) | event fired after `ractive.update()` is called
 | [partials](#partials)                     		| [templating](#templating)       		| partials to include for use by the template |
 | [preserveWhitespace](#preserveWhitespace) 		| [parsing](#parsing)          			| don't normalize template whitespace |
 | [sanitize](#sanitize)                     		| [parsing](#parsing)          			| remove designated elements and event attributes |
@@ -39,6 +50,7 @@ The following is a complete list of initialisation options, with full descriptio
 | [transitionsEnabled](#transitionsEnabled) 		| [transitions](#transitions-animations)| allow transitions |
 | [tripleDelimiters](#tripleDelimiters)     		| [parsing](#parsing)          			| non-escaped parsing delimiters |
 | [twoway](#twoway)                         		| [binding](#data-binding)          	| prevent updates from the view back to the model |
+
 
 
 ## Templating
@@ -282,6 +294,10 @@ Can either be the adaptor itself, or the name of an adaptor registred via `Racti
 > <a id="isolated"></a>
 > ### isolated *`Boolean`*
 > Defaults to `false`. This option is typically only relevant as an extension option for {{{createLink 'Components'}}}. Controls whether the component will look outside itself for data and registry items.
+
+## Lifecycle events
+
+See the {{{createLink 'lifecycle events' 'main entry for lifecycle events'}}}.
 
 ## Transitions & Animations
 
