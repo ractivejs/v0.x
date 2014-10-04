@@ -1,0 +1,60 @@
+---
+title: Publish/subscribe
+---
+
+Like many libraries, Ractive implements the [publish/subscribe](http://addyosmani.com/blog/understanding-the-publishsubscribe-pattern-for-greater-javascript-scalability/) mechanism to allow you to respond to, or trigger, particular events.
+
+To subscribe to an event, use {{{createLink 'ractive.on()'}}}:
+
+```js
+ractive = new Ractive({
+  el: 'body',
+  template: '<button on-click="activate">click me!</button>'
+});
+
+ractive.on( 'activate', function () {
+  alert( 'Activating!' );
+});
+```
+
+There are different types of events:
+
+<ul>
+<li>{{{createLink 'Lifecycle events'}}} - such as `render` and `teardown`</li>
+<li>{{{createLink 'Proxy events'}}} - which are defined in your template, and proxy DOM events</li>
+<li>{{{createLink 'Custom events'}}}, which could be anything you like</li>
+</ul>
+
+
+## Event bubbling
+
+If a component fires an event, it will bubble - [see this demonstration](http://jsfiddle.net/rich_harris/cdvehp1t/).
+
+
+## Hygiene
+
+Event handlers are automatically removed if the instance is torn down (e.g. with {{{createLink 'ractive.teardown()'}}}). You can also unsubscribe event handlers manually using one of two approaches:
+
+```js
+var listener = ractive.on( 'activate', function () {
+  alert( 'Activating!' );
+});
+
+// later...
+listener.cancel();
+```
+
+or...
+
+```js
+var handler = function () {
+  alert( 'Activating!' );
+};
+
+ractive.on( 'activate', handler );
+
+// later...
+ractive.off( 'activate', handler );
+```
+
+In the second case, note that if you don't specify a handler, all 'activate' handlers will be removed. If you don't specify an event name, **all** event handlers will be removed from the instance. See {{{createLink 'ractive.off()'}}} for more detail.

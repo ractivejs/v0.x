@@ -14,6 +14,8 @@ module.exports = function ( grunt ) {
 	};
 
 	require( 'fs' ).readdirSync( 'docs' ).forEach( function ( version ) {
+		if ( version === '.DS_Store' ) return;
+
 		config[ version ] = {
 			options: {
 				layout: 'templates/' + version + '/page.hbs',
