@@ -4,30 +4,44 @@ title: 'Migrating to 0.6.x'
 
 These migration notes are cribbed from the [CHANGELOG](https://github.com/ractivejs/ractive/blob/dev/CHANGELOG.md). While we strive to minimise breaking changes, and to highlight the ones we do introduce, if you discover an undocumented breaking change please edit this page.
 
-
 ## Migrating from 0.5.x
 
-Ractive instances now emit *lifecycle events*. If you use `Ractive.extend(...)` with `init()`, `beforeInit()` or `complete()`, you should replace them with `onrender()`, `onconstruct()`, and `oncomplete()` respectively - they will continue to work, but will be removed in a future version. See the {{{createLink 'lifecycle events'}}} page for more detail.
+### Lifecycle events
 
+Ractive instances now emit *lifecycle events*. If you use `Ractive.extend(...)` with `init()`, `beforeInit()` or `complete()`, you will need to replace them - they will continue to work, but will be removed in a future version.
 
-### Breaking changes
+`init()` can be replaced with one of the following methods, or you may need to split your code into both methods. Use `onrender()` for code that needs access to the rendered DOM, but is safe being called more than once if you unrender and rerender your ractive instance. Use `oninit()` for code that should run only once or needs to be run regardless of whether the ractive instance is rendered into the DOM.
 
-* `new Ractive()` now inherits all options as methods/properties including event hooks.
-* The deprecated `init()` function (see below) is mapped to `onrender()` and will fire more than once, and no longer contains options argument
-* New reserved events - 'change', 'config', 'construct', 'init', 'render', 'reset', 'teardown', 'unrender', 'update'
+The `init()` method also no longer recieves an `options` parameter as the ractive instance now inherits _all_ options passed to the constructor. You can still access the options directly using the `onconstruct()` method.
+
+`beforeInit()` and `complete()` can be replaced directly with `onconstruct()` and `oncomplete()` respectively
+
+See the {{{createLink 'lifecycle events'}}} page for more detail.
+
+### Other Breaking changes
+
+* `new Ractive()` now inherits all options as methods/properties including event hooks. If you have been passing data through custom initialisation options be aware that they will appended to your ractive instance.
+* Using other elements besides `<script>` for templates is an now an error. Migrate any templates in non-script elements and include a non-javascript type so the browser does not try to interpret your template:
+
+	```js
+		<script id='template' type='text/ractive'>
+			Your template goes here
+		</script>
+	```
+
+* New reserved events cannot be used for proxy event names, i.e. `<p on-click='init'></p>`. These include 'change', 'config', 'construct', 'init', 'render', 'reset', 'teardown', 'unrender', and 'update'. You will need to rename your events.
 * Setting uninitialised data on a component will no longer cause it to leak out into the parent scope
-* 'Smart updates', via `ractive.merge()` and `ractive.shift()` etc, work across component boundaries
-* Use of other elements besides `<script>` for templates is an error
-* Removed CSS length interpolator
+* 'Smart updates', via `ractive.merge()` and `ractive.shift()` etc, work across component boundaries. In most cases this is the expected behavior.
+* The CSS length interpolator has been removed.
 
 
 ## Migrating from 0.4.x
 
 ### Breaking changes
 
-* errors in observers and evaluators are no longer caught
+* Errors in observers and evaluators are no longer caught
 * Nodes are detached as soon as any outro transitions are complete (if any), rather than when *all* transitions are complete
-* The options argument of `init: function(options)` is now strictly what was passed into the constructor, use `this.option` to access configured value.
+* (Outdated if you are moving to `0.6.x` or above) The options argument of `init: function(options)` is now strictly what was passed into the constructor, use `this.option` to access configured value.
 * `data` with properties on prototype are no longer cloned when accessed. `data` from "baseClass" is no longer deconstructed and copied.
 * Options specified on component constructors will not be picked up as defaults. `debug` now on `defaults`, not constructor
 * Select bindings follow general browser rules for choosing options. Disabled options have no value.
@@ -47,3 +61,5 @@ Ractive instances now emit *lifecycle events*. If you use `Ractive.extend(...)` 
 * Improved attribute parsing and handling:
 	* character escaping and whitespace handling in attribute directive arguments
 	* boolean and empty string attributes
+* Computed properties no longer create nested objects with keypath like names, i.e. `page.area: '${width} * ${height}'` creates a property accessible by `\{{page.area}}` but not `\{{#page}}\{{area}}\{{/page}}`
+* The element into which the ractive instance was rendered is no longer available as `ractive.el`. See {{{createLink 'ractive.render()'}}} and {{{createLink 'ractive.insert()'}}} for more information on moving ractive instances in the DOM.
