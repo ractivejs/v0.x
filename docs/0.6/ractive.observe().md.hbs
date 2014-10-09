@@ -37,8 +37,6 @@ See {{{createLink 'Observers'}}} for more detail.
 > > > Defaults to `false`, in which case observers will fire before any DOM changes take place. If `true`, the observer will fire once the DOM has been updated.
 > > > #### context
 > > > Defaults to `ractive`. The context the observer is called in (i.e. the value of `this`)
-> > > #### debug *`Boolean`*
-> > > Defaults to `false` - exceptions that are thrown within observers are handled. This is useful when observing uninitialised keypaths when you don't want to litter your code with `if (foo !== undefined) { /*...*/ }`, but you may prefer to handle errors yourself, in which case use `true`.
 
 
 > ### ractive.observe( map[, options ])
