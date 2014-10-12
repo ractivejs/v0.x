@@ -115,10 +115,19 @@ ractive.myMethod(); // triggers the alert
 
 > <a id="decorators"></a>
 > ### decorators *`Object`*
-> A `key: value` hash of decorators that are specific to this instance, where `key` is the name of the decorator (as referenced within templates as `<div decorator="myDecorator"/>`), and `value` is a is a decorator functions.  See {{{createLink 'Decorators'}}} for more info.
+> A `key: value` hash of decorators that are specific to this instance, where `key` is the name of the decorator (as referenced within templates as `<div decorator="myDecorator"></div>`), and `value` is a is a decorator functions.  See {{{createLink 'Decorators'}}} for more info.
 > ```js
 > decorators: {
->     'myDomponent': function( node, fire) {...}
+>     'myDecorator': function( node, fire) {...}
+> }
+> ```
+
+> <a id="events"></a>
+> ### events *`Object`*
+> A `key: value` hash of {{{createLink 'Writing event plugins' 'event plugins'}}} that are specific to this instance, where `key` is the name of the event (as referenced within templates as `<button on-mycustomevent="fire"></button>`), and `value` is the custom event plugin functions.  See {{{createLink 'Writing event plugins'}}} for more info.
+> ```js
+> events: {
+>     'mycustomevent': function( node, fire) {...}
 > }
 > ```
 
@@ -324,6 +333,10 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 > }
 > ```
 
+> <a id="transitionsEnabled"></a>
+> ### transitionsEnabled *`Boolean`*
+> Defaults to `true`. Whether or not transitions are enabled for this instance.
+
 > <a id="noIntro"></a>
 > ### noIntro *`Boolean`*
 > Defaults to `false`. Whether or not to skip intro transitions on render.
@@ -339,6 +352,7 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 > ractive.get('items').push( 'green' );
 > // 'green' list item will fade in
 > ```
+
 > <a id="complete"></a>
 > ### complete *`Function`*
 > A function that will be called when render is complete (i.e. all intro transitions have finished). If there are no intro transitions, this function will be called as soon as the instance is created)
@@ -349,6 +363,7 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 >     console.log( '<p> has completed fade in!' );
 > }
 > ```
+
 > <a id="easing"></a>
 > ### easing *`Object`*
 > A `key: value` hash of easing function. See {{{createLink 'Ractive.easing'}}}
