@@ -44,6 +44,11 @@ The full list of lifecycle events is as follows:
 | `insert`        | ...each time `ractive.insert()` is called
 | `detach`        | ...each time `ractive.detach()` is called (note: `ractive.insert()` calls `ractive.detach()`)
 
+<br>
+Most of the events do not have arguments, except for:
+
+* `construct` supplies the actual initialisation options provided to the instance constructor
+* `change` supplies a change object with each change keypath as a property and the new change value as the value of that property
 
 ## Reserved event names
 
