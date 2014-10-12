@@ -39,7 +39,7 @@ Note that returning `false` has a duel purpose of both cancelling the view hiera
 
 Template directives for handling component events _implicitly_ cancel bubbling of the subscribed event:
 
-```html+handlebars
+```html
 <widget on-foo='bar'/>
 ```
 In this example, `widget.foo` will not bubble. Instead a new event `bar` will be fired and bubbled, assuming the above template is also contained in a component, under the name of the new component.
