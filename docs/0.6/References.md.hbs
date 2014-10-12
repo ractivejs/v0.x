@@ -85,10 +85,11 @@ The contents of the `\{{#items}}` section are rendered once for each member of `
 
 With a context of `items.0`, the `content` reference resolves to `items.0.content`, and so on.
 
+## Current context - `\{{.}}` or `\{{this}}`
 
-## The implicit iterator - `\{{.}}`
+Using `\{{.}}` or `\{{this}}` (they refer to the same thing) resolves to the current data context.
 
-Sometimes you will have lists of primitives (i.e. strings and numbers) rather than objects. To refer to the primitives, we must use the *implicit iterator*:
+For example, sometimes you will have lists of primitives (i.e. strings and numbers) rather than objects. To refer to the primitives, we must use the *implicit iterator*:
 
 ```html
 \{{#items}}
@@ -108,7 +109,7 @@ ractive = new Ractive({
 
 Whenever Ractive sees `\{{.}}`, it simply resolves it to the innermost context - `items.0`, `items.1`, `items.2`.
 
-In Ractive (but not Mustache), you can use `\{{this}}` in place of `\{{.}}`. This is because it looks better in expressions - `\{{this.toFixed(1)}}` looks much nicer than `\{{..toFixed(1)}}` (for example).
+In Ractive (but not Mustache), you can use `\{{this}}` in place of `\{{.}}`. This is because in expressions - `\{{this.toFixed(1)}}` looks much nicer than `\{{..toFixed(1)}}` (for example).
 
 ## Restricted references
 
@@ -121,3 +122,60 @@ Sometimes you may want to reference a property within the current context regard
 ```
 
 This feature is particularly useful with {{{createLink 'two-way binding'}}} as these references have to be resolved immediately.
+
+You can also use the form `\{{./selected}}` if you prefer, or `\{{this.selected}}`, both of which are the same as `\{{.selected}}`.
+
+
+### Ancestor references
+
+Very occasionally, you might need to refer explicitly to a property higher up in the tree to avoid naming conflicts. You can do that by prefixing references with `../` (or `../../`, or `../../../`...):
+
+```html
+<h1>Blog posts by \{{name}}</p>
+
+<ul class='blog-posts'>
+  \{{#posts}}
+    <li><a href='\{{ slugify(../../name) }}/\{{ slugify(name) }}'>\{{name}}</a></li>
+  \{{/posts}}
+</ul>
+```
+
+```js
+var ractive = new Ractive({
+  el: document.body,
+  template: myTemplate,
+  data: {
+    name: 'Rich',
+    posts: [
+      { name: 'This is a blog post' },
+      { name: 'And so is this' }
+    ],
+    slugify: function ( str ) {
+      var slug;
+      /* SOME CODE HAPPENS */
+      return slug;
+    }
+  }
+});
+```
+
+In this example, some damn fool decided it would be a good idea to give posts a 'name' property as well as authors. Which means that in the `href` attribute, it wouldn't be possible to refer to the root-level `name` property, because it would always resolve to the `name` property of the current post - and that's no good, because the root-level `name` property is used to construct the URL.
+
+By using `../../name` instead of `name`, we're saying 'go up one level (to `posts`), then up one more (to the root), and *then* look for the `name` property'.
+
+### Root references
+
+You can also navigate directly from the top of the data hierarchy with `~/`. Note that this is the root of the ractive instance in which the template appears, not the entire view hierarchy of nested components.
+
+The above example could also use a root reference:
+
+```html
+<h1>Blog posts by \{{name}}</p>
+
+<ul class='blog-posts'>
+  \{{#posts}}
+    <li><a href='\{{ ~/name }}/\{{ name }}'>\{{name}}</a></li>
+  \{{/posts}}
+</ul>
+```
+
