@@ -33,7 +33,7 @@ partials dynamically, the template option function also receives a second argume
 with a helper parser object `p` that offers the following methods:
 
 > ### p.fromId( id )
-> Retrieves the template from the DOM element specified by `id`. Leading `#` is optional
+> Retrieves the template from the DOM `<script>` tag specified by `id`. Leading `#` is optional. Make sure to set `type='text/ractive'` on the `<script>` tag or the browser will try and execute the contents as javascript and you'll get an exception.
 
 > ### p.isParsed( template )
 > Test whether the supplied instance has already been parsed

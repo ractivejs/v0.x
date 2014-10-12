@@ -80,15 +80,13 @@ ractive.myMethod(); // triggers the alert
 > template: parsedTemplates.foo,
 > ```
 
-> Or alternatively, you can pass an id selector string like `#myTemplate` - in this case, Ractive will use the contents of an element whose ID is `myTemplate`:
+> Or alternatively, you can pass an id selector string like `#myTemplate` - in this case, Ractive will use the contents of a `<script>` tag whose ID is `myTemplate`:
 > ```js
 > template: '#myTemplate'
 > ```
 > See the [60 second setup](http://ractivejs.org/60-second-setup) for an example of this.
 
-> Please note that while Ractive will fetch any element by ID and use its content as the template, browsers may escape the contents of tags like `<div>` when initially rendered, leading to unexpected results in your template.
-
-> The `<script>` tag is a good option as browsers will not modify the contents and is the canonical way to include inline Ractive templates in the document. However, make sure to set `type='text/ractive'` or the browser will try and execute the contents as javascript and you'll get an exception.
+> Make sure to set `type='text/ractive'` on the `<script>` tag or the browser will try and execute the contents as javascript and you'll get an exception.
 
 > <a id="partials"></a>
 > ### partials *`Object`*
