@@ -131,3 +131,61 @@ box2 = new Box({
 box2.get( 'area' ); // 800
 box2.get( 'volume' ); // 48000
 ```
+
+## Data context for computed properties
+
+Computed properties can only be calculated for the instance context as a whole. You can't, for example, directly
+compute a value for each member of an array:
+
+```js
+new Ractive({
+  template: '\{{#boxes}}\{{area}}\{{/}}',
+  data: {
+    boxes: [
+      { width: 20, height: 40 },
+      { width: 30, height: 45 },
+      { width: 20, height: 20 }
+    ]
+  },
+  // there's no way to specify this for "each" box :(
+  computed: { area: '${width} * ${height}' }
+});
+```
+
+The solution is to either use a function that calculates the value for each member:
+
+```js
+  template: '\{{#boxes:b}}\{{ getArea(b) }}\{{/}}',
+  data: {
+    boxes: [
+      { width: 20, height: 40 },
+      { width: 30, height: 45 },
+      { width: 20, height: 20 }
+    ],
+    getArea: function ( i ) {
+      var box = this.get( 'boxes.' + i );
+      return box.width * box.area;
+    }
+  }
+```
+
+Or leverage a component to "scope" the data to each item:
+
+```js
+Box = Ractive.extend({
+  template: boxTemplate,
+  computed: { area: '${width} * ${height}' }
+});
+
+new Ractive({
+  template: '\{{#boxes}}<box/>\{{/}}',
+  data: {
+    boxes: [
+      { width: 20, height: 40 },
+      { width: 30, height: 45 },
+      { width: 20, height: 20 }
+    ]
+  },
+  components: { box: Box }
+});
+```
