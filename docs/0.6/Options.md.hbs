@@ -247,8 +247,9 @@ ractive.myMethod(); // triggers the alert
 > ```
 > <a id="adapt"></a>
 > ### adapt *`Array`*
-> Custom wrappers to be used with all or part of the supplied data, see {{{createLink 'Adaptors'}}}.
-Can either be the adaptor itself, or the name of an adaptor registred via `Ractive.adaptors`:
+> Custom wrappers to be used with all or part of the supplied data, see {{{createLink 'Adaptors'}}}. Unlike components or other registries where there is a template-level directive that informs Ractive that plugin is to be used, adaptors are a data-level construct and so you use the `adapt` option to tell Ractive which adaptors are to be used with that instance. If you define the adaptors directly on the instance or component, you do not need to specify them in the `adapt` option.
+
+> Can either be the adaptor itself, or the name of an adaptor registred via `Ractive.adaptors`:
 > ```js
 > Ractive.adaptors.myAdaptor = MyAdaptor1;
 >

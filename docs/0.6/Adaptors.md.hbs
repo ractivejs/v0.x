@@ -23,7 +23,9 @@ Add the adaptor code to your app. Using the Backbone adaptor as an example:
 
 If you're using module loaders, beware - the adaptor needs access to both `ractive` and `backbone`. You may need to change your paths config (or equivalent), or modify the adaptor source code to fit your app.
 
-When you create a new Ractive instance, you can specify which adaptors to use like so:
+Unlike components or other registries where there is a template-level directive that informs Ractive that plugin is to be used, adaptors are a data-level construct and so you use the `adapt` option to tell Ractive which adaptors are to be used with that instance. If you define the adaptors directly on the instance or component, you do not need to specify them in the `adapt` option.
+
+For our example, when you create a new Ractive instance, you can specify which adaptors to use like so:
 
 ```js
 ractive = new Ractive({
