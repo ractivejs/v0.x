@@ -67,6 +67,7 @@ Properties on all `this.event` objects:
 * `this.event.name` - the name of the event
 * `this.event.context` - the value of `this.get(event.keypath)` or `ractive.data` for non-proxy events
 * `this.event.component` - the component that raised the event, only present on {{{createLink 'event bubbling' 'bubbled events'}}}
+* `this.event.original` - the original DOM event, if available
 
 Properties only on proxy events:
 * `this.event.node` - the DOM node in question
