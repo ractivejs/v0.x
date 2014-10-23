@@ -8,6 +8,25 @@ title: Mustaches
 
 If you've used [Handlebars](http://handlebarsjs.com) or [Angular](http://angularjs.org) you'll also find mustaches familiar.
 
+* [What are mustaches?](#what)
+* [Mustache basics](#basics)
+  * [Variables](#variables)
+  * [Sections](#sections)
+  * [Comments](#comments)
+  * [Partials](#partials)
+  * [Custom delimiters](#delimiters)
+* [Extensions](#extensions)
+  * [Array indices](#indices)
+  * [Object iteration](#object-iteration)
+  * [Special references](#special-refs)
+  * [Restricted references](#restricted-refs)
+  * [Expressions](#expressions)
+  * [Handlebars-style sections](#handlebars)
+  * [Aliasing](#aliasing)
+  * [Static mustaches](#static)
+
+
+<a name="what"></a>
 ## What are mustaches?
 
 Within this documentation, and within Ractive's code, 'mustache' means two things - a snippet of a template which uses mustache delimiters, such as `\{{name}}`, and the object within our {{{createLink 'parallel DOM'}}} that is responsible for listening to data changes and updating the (real) DOM.
@@ -16,12 +35,14 @@ We say that the `\{{name}}` mustache has a *[reference](references)* of `name`. 
 
 As soon as the mustache knows what its keypath is (which may not be at render time, if data has not yet been set), it registers itself as a *{{{createLink 'dependants' 'dependant'}}}* of the keypath. Then, whenever data changes, Ractive scans the dependency graph to see which mustaches need to update, and notifies them accordingly.
 
+<a name="basics"></a>
 ## Mustache basics
 
 If you already know Mustache, Ractive supports all the Mustache features - basic Mustache variables like `\{{name}}`, as well as sections, partials, and even delimiter changes. If you're already familiar with Mustache, skip to the Extensions section below.
 
 You can also check out the [tutorials](http://learn.ractivejs.org).
 
+<a name="variables"></a>
 ### Variables
 
 The most basic mustache type is the variable. A `\{{name}}` tag in a template will try to find the `name` key in the current context. If there is no `name` key in the current context, the parent contexts will be checked recursively. If the top context is reached and the name key is still not found, nothing will be rendered.
@@ -58,6 +79,7 @@ Will generate the following output:
  * <b>GitHub</b>
 ```
 
+<a name="sections"></a>
 ### Sections
 Sections render blocks of text one or more times, depending on the value of the key in the current context.
 
@@ -191,6 +213,17 @@ Output:
 No repos :(
 ```
 
+#### Attributes
+
+Sections may also be used within attribute values and around attribute values. Using a conditional section around an attribute or group of attributes will exclude those attributes from the DOM when the conditional is `false` and include them when it is `true`. Using a conditional section within an attribute only affects the value of the attribute, and there may be multiple sections within an attribute value.
+
+In the following terribly contrived example, if `big` is truthy, then the button will have a class `big` in addition to the fixed class `button`. If `planetsAligned` is truthy, the button will also get an annoying `onmousemove` attribute. **Note** that ractive directives cannot currently be placed within a section, but that may change in the future.
+
+```html
+<button class="\{{#big}}big \{{/}}button" \{{#planetsAligned}}onmousemove="alert('I am annoying...')"\{{/}}>I sure hope the planets aren't aligned...</button>
+```
+
+<a name="comments"></a>
 ### Comments
 Comments begin with a bang and are ignored. The following template:
 
@@ -206,6 +239,7 @@ Will render as follows:
 
 Comments may contain newlines.
 
+<a name="partials"></a>
 ### Partials
 
 Partials begin with a greater than sign:
@@ -253,6 +287,9 @@ Can be thought of as a single, expanded template:
 \{{/names}}
 ```
 
+Partials are a very useful construct, and you can find out more about them on the {{{createLink 'partials'}}} page.
+
+<a name="delimiters"></a>
 ### Custom delimiters
 
 Custom delimiters are set with a 'Set delimiter' tag. Set delimiter tags start with an equal sign and change the tag delimiters from `\{{` and `}}` to custom strings.
@@ -282,11 +319,13 @@ var ractive = new Ractive({
 });
 ```
 
+<a name="extensions"></a>
 ## Extensions
 
-Ractive is 99% backwards-compatible with Mustache, but adds eight additional features (array index references, object iteration, restricted references, ancestor references, expressions, special sections, aliasing, and static mustaches) which are detailed below.
+Ractive is 99% backwards-compatible with Mustache, but adds several additional features.
 
-### Array Index references
+<a name="indices"></a>
+### Array index references
 
 Index references are a way of determining where we are within a list section. It's best explained with an example:
 
@@ -307,7 +346,8 @@ If you then set `items` to `[{content: 'zero'}, {content: 'one'}, {content: 'two
 
 This is particularly useful when you need to respond to user interaction. For example you could add a `data-index='\{{i}}'` attribute, then easily find which item a user clicked on.
 
-### Object Iteration
+<a name="object-iteration"></a>
+### Object iteration
 
 Mustache can also iterate over objects, rather than array. The syntax is the same as for Array indices. Given the following ractive:
 
@@ -371,12 +411,31 @@ In previous versions of Ractive it was required to close a section with the open
 \{{/comments}}
 ```
 
+<a name="special-refs"></a>
+### Special references
+
+There are a few implicit variables that are available anywhere within a ractive template.
+
+* `@index` is a reference to the index or key name of the nearest iterative section. It is available even if an index name is not supplied for the section.
+  ```html
+  \{{#items}}\{{@index + 1}} - \{{.}}\{{/}}
+  ```
+* `@key` is an alias for `@index`, though at some point in the future Ractive may further differentiate between array and object iteration.
+* `@keypath` is the current context used to resolve references.
+  ```html
+  \{{#foo}}\{{#bar}}\{{@keypath}} - foo.bar\{{/}}\{{/}}
+  \{{#items}}\{{#.condition}}\{{@keypath}} - for the first item will be items.0.condition\{{/}}\{{/}}
+  ```
+  `@keypath` is particularly useful when aliasing is used and the current context outside of the aliasing is hidden.
+
+<a name="restricted-refs"></a>
 ### Restricted references
 
 Normally, references are resolved according to a specific algorithm, which involves *moving up the context stack* until a property matching the reference is found. In the vast majority of cases this is exactly what you want, but occasionally (for example when dealing with {{{createLink 'partials' 'recursive partials' 'recursive-partials'}}}) it is useful to be able to specify more specific directives about the context of a property being referenced.
 
 See {{{createLink 'References' 'References' 'restricted-references'}}} for all available reference restrictions.
 
+<a name="expressions"></a>
 ### Expressions
 
 Expressions are a big topic, so they have a {{{createLink 'Expressions' 'page of their own'}}}. But this section is about explaining the difference between vanilla Mustache and Ractive Mustache, so they deserve a mention here.
@@ -392,9 +451,10 @@ The neat part is that this expression will recognise it has a dependency on what
 Mustache fans may bristle at expressions - after all, the whole point is that mustache templates are *logic-less*, right? But what that really means is that the logic is *embedded in the syntax* (what are conditionals and iterators if not forms of logic?) rather than being language dependent. Expressions just allow you to add a little more, and in so doing make complex tasks simple.
 
 
-### Special Sections
+<a name="handlebars"></a>
+### Handlebars-style sections
 
-In addition to implicit conditional and iterative sections, Ractive adds ```if```, ```unless```, ```each```, and ```with``` to handle branching, iteration, and context control. For ```if``` and ```each```, ```\{{else}}``` may be used to provide an alternate branch for a false condition or an empty iterable.
+In addition to Mustache-style conditional and iterative sections, Ractive adds Handlebars-style ```if```, ```unless```, ```each```, and ```with``` to handle branching, iteration, and context control. For ```if``` and ```each```, ```\{{else}}``` may be used to provide an alternate branch for a false condition or an empty iterable.
 
 ```html
 <button on-click="flip">Flip Coin</button>
@@ -430,6 +490,7 @@ ractive.on('flip', function() {
 In this example, clicking the button gets a "random" coin flip result, sets it in an ```if``` conditional section, and prepends it in an ```each``` iterative section. There is also a ```with``` context section throw in for good measure.
 
 
+<a name="aliasing"></a>
 ### Aliasing
 
 Since a section with a non-falsy value uses the value as its context, an object expression can be used to create an arbitrary context within a section. Any currently visible context keypaths can be referenced within the new context object, which allows you to keep keypaths available that would otherwise be unreachable.
@@ -459,6 +520,8 @@ Using a section with an object expression to keep references accessible or conve
 </ul>
 ```
 
+**Note** `i` as `outerIndex` is not required, `outerIndex` is still accessible within the `\{{#colors}}` section.
+
 Data:
 ```js
 {
@@ -483,7 +546,8 @@ Output:
 ```
 
 
-### Static Mustaches
+<a name="static"></a>
+### Static mustaches
 
 Sometimes it is useful to have portions of a template render once and stay the same even if their references change. A static mustache will be updated only when its template is rendered and not when its keypath is updated. So, if a static mustache is a child of a section or partial that get re-rendered, the mustache will also be re-rendered using the current value of its keypath.
 
