@@ -33,6 +33,7 @@ The first argument to a proxy event handler is always a Ractive `event` object. 
 * `event.context` - the value of `this.get(event.keypath)`
 * `event.index` - a map of index references
 * `event.component` - the component that raised the event, only present on {{{createLink 'event bubbling' 'bubbled events'}}}
+* `event.original` - the original DOM event, if available
 
 In the example above, `event.keypath` might be `items.0` for the first item in the list, `items.1` for the second, and so on. The `event.index` map would have a property `i`, which would correspond to those indices.
 
