@@ -29,6 +29,20 @@ Checkboxes are used to flag a property as `true` or `false`. Rather than binding
 
 (True HTML nerds will recognise that *boolean attributes* such as checked don't have a value, as such - they either exist on an element or they don't. This makes life unnecessarily difficult; Ractive treats dynamic (i.e., controlled by a mustache) boolean attributes as present if the mustache is `true`, absent if `false`.)
 
+Checkboxes may also be bound by the `name` attribute, which will result in the value specified in the `name` attribute containing an array of selected checkbox values.
+
+```html
+\{{#colors}}
+  <label>
+    <input type='checkbox' name='\{{selected}}' value='\{{.}}' />\{{.}}
+  </label>
+\{{/}}
+```
+
+If `colors` is an array, `['Red', 'Yellow', 'Green', 'Blue']`, then checking the first box will result in `selected` becoming `['Red']`. Checking the third box will result in `selected` becoming `['Red', 'Green']`. The array may also be updated from code using `set` or any of the array modification methods available to Ractive, and the checkboxes will be updated to reflect the contents of the array in the Ractive viewmodel.
+
+**Note** that checkboxes may be bound by either `checked` or `name` but not both.
+
 ### Radios
 
 Radio buttons can be controlled in the same way as checkboxes. However the chances are, if you're using radio buttons, you have a set of mutually exclusive options to choose between. In this case, if you set the `name` attribute on a radio input to e.g. `\{{someValue}}`, `someValue` will reflect the `value` of the currently checked option:
