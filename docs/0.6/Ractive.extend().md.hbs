@@ -70,7 +70,7 @@ Here's a simple example - we'll create a `Modal` subclass which has a default te
 ```
 
 ```html
-<div class='modal-background' proxy-tap='close' intro='fadeIn' outro='fadeOut'>
+<div class='modal-background' on-tap='close' intro='fade' outro='fade'>
   <div class='modal-outer'>
     <div class='modal'>
       \{{>modalContent}}
@@ -103,8 +103,8 @@ Modal = Ractive.extend({
     this.modal = this.find( '.modal' );
 
     // if the user taps on the background, close the modal
-    this.on( 'close', function ( el, event ) {
-      if ( !this.modal.contains( event.target ) ) {
+    this.on( 'close', function ( event ) {
+      if ( !this.modal.contains( event.original.target ) ) {
         this.teardown();
       }
     });
@@ -128,10 +128,10 @@ Modal = Ractive.extend({
 
     // horizontal centring is taken care of by CSS, but we need to
     // vertically centre
-    outerHeight = this.background.clientHeight;
+    outerHeight = this.outer.clientHeight;
     modalHeight = this.modal.clientHeight;
 
-    verticalSpace = ( backgroundHeight - modalHeight ) / 2;
+    verticalSpace = ( outerHeight - modalHeight ) / 2;
 
     this.modal.style.top = verticalSpace + 'px';
   }
@@ -140,7 +140,7 @@ Modal = Ractive.extend({
 // We can now instantiate our modal
 basicModal = new Modal({
   partials: {
-    modalContent: '<p>This is some important content!</p><a class="modal-button" proxy-tap="okay">Okay</a>'
+    modalContent: '<p>This is some important content!</p><a class="modal-button" on-tap="okay">Okay</a>'
   }
 });
 
@@ -154,7 +154,7 @@ Subclasses can themselves be extended. Lets say we wanted to be able to create l
 ```js
 BasicModal = Modal.extend({
   partials: {
-    modalContent: '<p>This is some important content!</p><a class="modal-button" proxy-tap="okay">Okay</a>'
+    modalContent: '<p>This is some important content!</p><a class="modal-button" on-tap="okay">Okay</a>'
   },
 
   init: function ( options ) {
