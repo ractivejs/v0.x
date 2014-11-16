@@ -47,7 +47,7 @@ ractive = new Ractive({
 });
 ```
 
-Here, `myThumbnailPartial` can be a {{{createLink 'templates' 'string template'}}} or a {{{createLink 'preparsing' 'parsed template'}}}.
+Here, `myThumbnailPartial` can be a {{{createLink 'templates' 'string template'}}}, a {{{createLink 'preparsing' 'parsed template'}}}, or a function that returns either of those.
 
 
 ### As a globally available partial
@@ -58,7 +58,7 @@ Equally, you can make partials globally available by adding them to {{{createLin
 Ractive.partials.thumbnail = myThumbnailPartial;
 ```
 
-Again, this can be a string template or parsed template - if a string, it will be parsed when it first gets used and stored as a parsed template thereafter.
+Again, this can be a string template, parsed template, or a function that returns either of this - if a string, it will be parsed when it first gets used and stored as a parsed template thereafter.
 
 
 ### As a script tag
@@ -82,7 +82,7 @@ Internally, when a template requests the `\{{>thumbnail}}` partial, Ractive will
 
 ### Inline partials
 
-It is also possible to embed partials within templates. Suppose you have a single `mainTemplate.html` file. You can define any partials within it by wrapping them in comments that follow this structure:
+It is also possible to embed partials within templates. Suppose you have a single `mainTemplate.html` file. You can define any partials within it by wrapping them in a special partial section:
 
 ```html
 <div class='gallery'>
@@ -91,6 +91,19 @@ It is also possible to embed partials within templates. Suppose you have a singl
   \{{/items}}
 </div>
 
+\{{#partial thumbnail}}
+  <figure class='thumbnail'>
+    <img src='assets/thumbnails/\{{id}}.jpg'>
+    <figcaption>\{{description}}</figcaption>
+  </figure>
+\{{/partial}}
+```
+
+In this case, the `thumbnail` partial won't be globally available - it will only be available to Ractive instances that use this template.
+
+Prior to the introduction of the special partial section, inline partials were defined inside special HTML comments. The following is equivalent to the example above:
+
+```html
 <!-- \{{>thumbnail}} -->
 <figure class='thumbnail'>
   <img src='assets/thumbnails/\{{id}}.jpg'>
@@ -99,7 +112,7 @@ It is also possible to embed partials within templates. Suppose you have a singl
 <!-- \{{/thumbnail}} -->
 ```
 
-In this case, the `thumbnail` partial won't be globally available - it will only be available to Ractive instances that use this template.
+**Note** the comment-style of defining inline partials will be deprecated and removed in a future release.
 
 
 <a name="expressions"></a>
@@ -158,7 +171,7 @@ This example uses a function to generate a partial on-the-fly and return the new
 
 ### Invalid names
 
-Since the partial name may be an expression, JavaScript keywords cannot be used in partial expressions. This means that `\{{>delete}}` is not valid. Keywords and other otherwise-invalid names may be used with a string expression such as `\{{>'delete'}}` or `\{{>'invalid-name here'}}`.
+Partials may be named with the same rules as any other identifier in Ractive or JavaScript, but since there isn't much danger of trying to do math in a partial name, they enjoy relaxed naming requirements that allow otherwise reserved globals and keywords to be used for partial names. Partial names may also contain `-` characters as long as they are surrounded by other valid characters e.g. `some-partial-template`.
 
 <a name="context"></a>
 ## Partial context
@@ -184,15 +197,15 @@ Partials can be used *recursively*:
   \{{/root}}
 </div>
 
-<!-- \{{>folder}} -->
+\{{#partial folder}}
 <ul class='folder'>
   \{{#files}}
     \{{>file}}
   \{{/files}}
 </ul>
-<!-- \{{/folder}} -->
+\{{/partial}}
 
-<!-- \{{>file}} -->
+\{{#partial file}}
 <li class='file'>
   <img class='icon-\{{type}}'>
   <span>\{{filename}}</span>
@@ -202,7 +215,7 @@ Partials can be used *recursively*:
     \{{>folder}}
   \{{/ type === 'folder' }}
 </li>
-<!-- \{{/file}} -->
+\{{/partial}}
 ```
 
 ```js
@@ -316,7 +329,9 @@ helloModal.on( 'close', function () {
 <a name="updating"></a>
 ## Updating Partials
 
-Partials may be updated after they are rendered if they are held within a conditional section. They will be re-parsed each time they are re-rendered, if necessary, so string, pre-parsed, and function partials may be used.
+Partials may be reset after they are rendered using `resetPartial` as documented {{{ createLink 'ractive.resetPartial()' 'here' }}}. A reset partial will update everywhere it is referenced, so if it is used multiple times or inherited by a component, those instances will be updated as well. If a component has a partial with the same name as a parent partial, partial resets will not affect it since it is a different partial.
+
+It should be noted that partials evaluate lazily, so it is possible to cause a single partial to update by wrapping it in a conditional section and causing the section to be hidden and re-shown.
 
 ```html
 \{{^toggle}}\{{>rickroll}}\{{/}}
@@ -327,5 +342,3 @@ ractive.partials.rickroll = 'I wouldn\'t do that to you, chum.';
 ractive.set('toggle', true);
 ractive.set('toggle', false);
 ```
-
-This is a little hacky, but it brings an element of dynamism that can be very useful.

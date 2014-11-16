@@ -10,7 +10,7 @@ First, you need to **create the component** with {{{createLink 'Ractive.extend()
 * [Events](#events)
 * [The \{{>content}} Directive](#content)
 * [The \{{yield}} Directive](#yield)
-* [Pseudo-Dynamic Templating](#dynamism)
+* [Parents and Containers](#parent)
 
 ## <a name="init"></a>Initialisation Options
 
@@ -283,31 +283,30 @@ is exposed in the component as a partial named "content":
 </ul>
 ```
 
-A partial, or component, can be used as well:
+Partials, components, and any other valid template items can be used as well:
 ```html
-<list items='\{{gunas}}''>
+<list items='\{{gunas}}'>
     \{{>partialA}})
 </list>
 
-<list items='\{{fates}}''>
+<list items='\{{fates}}'>
     <widget value='\{{.}}'/> 
 </list>
 ```
 
-Currently, the content markup resolves in the component's context. In the second example above the `value` parameter for `<widget>` is the individual list item of `\{{fates}}`. And in the first case, the partial would need to be defined globally (`Ractive.partials`) or on the component, as it won't be found if it is defined, for example, inline in the outer context:
+Currently, the content markup resolves in the component's context. In the second example above the `value` parameter for `<widget>` is the individual list item of `\{{fates}}`. Components inherit their parents partials, so in the first case, `partiaA` could be a partiald defined inline within the component body, added to the component's `partials` property at creation or before use, defined in the parent Ractive instance, or defined globally (`Ractive.partials`).
+
+Partials defined inline in the component body can be used to override partials defined on the component. This can be useful for components to allow easy customization of each instance using partials:
 
 ```html
-<list items="\{{fates}}">
-    \{{>partialB}}
+<list items='\{{gunas}}'>
+    \{{#partial item}}
+        * \{{name}}
+    \{{/partial}}
 </list>
-<!-- \{{>partialB}} -->
-    //won't be found by list component,
-    //because this markup is handed off 
-    //and rendered inside component
-<!-- \{{/partial}} -->
 ```
-Be aware that the context scope for resolution may change or be expanded in a future release to control whether it resolves in the calling or component context. 
 
+If the `list` component uses a partial named `item` to display the given `items`, it will be overridden for this instance with `* \{{name}}`.
 
 
 ## <a name="yield"></a>The `\{{yield}}` Directive
@@ -339,6 +338,22 @@ ractive.on('clicked', function(ev) {
 
 Here, `1` will be displayed next to the button, and the button, when clicked, will log a message to the console.
 
+Inline partials may also be yielded within a component by specifying a name with `yield` e.g. `\{{yield item}}`. Currently, only partials defined inside the component body may be yielded.
+
+```html
+<Foo>
+  I will be in the name-less yield.
+  \{{#partial foo}}
+    I will be in the foo yield.
+  \{{/partial}}
+</Foo>
+```
+```js
+var Foo = Ractive.extend({
+  template: '<div>Here is my content: \{{yield}}</div><div>Here is my foo: \{{yield foo}}</div>'
+});
+```
+
 
 
 ## <a name="dynamism"></a>Pseudo Dynamic Templating
@@ -358,45 +373,13 @@ var formElement = Ractive.extend({
 });
 ```
 
-### Form Template
-```html
-\{{#items}}
-<formElement value="\{{value}}" template="\{{template}}"/>
-\{{/items}}
-```
-### Ractive Form
-```js
-var ractive = new Ractive({
-  el: 'body',
-  template: formTemplate,
-  components: {
-    formElement: formElement
-  }
-  data: {
-    items: [
-        {
-          template: '<h1>\{{value}}</h1>',
-          value: 'This is a title'
-        },
-        {
-          template: '<input type="text" value="\{{value}}" style="display:block; clear: both;" />',
-          value: 'Input Value'
-        },
-        {
-          template: '<textarea value="\{{value}}"></textarea>',
-          value: 'Textarea Value'
-        }
-    ]
-  }
+## <a name="parent"></a>Parents and Containers
 
-});
+Components that are nested within other components have access to their parents, containers, and root.
 
-ractive.observe('items.*.value', function(newValue, oldValue, keypath) {
-  console.log(keypath + ' ' + newValue);
-});
-```
+`this.root` is the base Ractive instance that has no other parents.
+`this.parent` is the parent immediately above this component in the fragment hierarchy.
+`this.container` is the containing Ractive instance in the case that this component was included in a `yield`.
 
-
-## Caveat
-
-Components are a stable feature, but still relatively new - certain aspects have yet to be implemented. Pardon the dust! There is a [long-running GitHub issue](https://github.com/RactiveJS/Ractive/issues/74), which may be of interest.
+`this.findParent(name)` will search up the hierarchy until it finds a parent component named `name`.
+`this.findContainer(name)` will search up the surrogate hierarchy until if finds a container named `name`.

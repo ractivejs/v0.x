@@ -1,8 +1,31 @@
 ---
-title: 'Migrating to 0.6.x'
+title: 'Migrating to Edge'
 ---
 
 These migration notes are cribbed from the [CHANGELOG](https://github.com/ractivejs/ractive/blob/dev/CHANGELOG.md). While we strive to minimise breaking changes, and to highlight the ones we do introduce, if you discover an undocumented breaking change please edit this page.
+
+## Migrating from 0.6.x
+
+### What's new
+
+Components can now access their parents and containers using an official API.
+
+Binding directives may be set on elements that support two-way binding. These directives override the settings on the Ractive instance for `twoway` and `lazy`.
+
+Inline partials can now be defined within a new section `\{{partial partial-name}}...\{{/partial}}`. The old comment syntax will most likely be deprecated and removed in future releases.
+
+Inline partials are now scoped to their nearest component. Inline partials defined inside a component's content will belong to the component and not the root instances. Inline partials defined outside of component content still belong to the main Ractive instance.
+
+Components may now yield to multiple inline partials by supplying the partial name with yield e.g. `\{{yield some-name}}`. Yielding without a name will still result in non-partial content being yielded. Only inline partials may be yielded. Any partials, including inline and inherited, may still be referenced within a component using a plain partial section e.g. `\{{>partial}}`.
+
+Partials can now be reset without resorting to manually un/re-rendering them using a wrapping conditional section. This can be done with the new `resetPartial` {{{ createLink 'Ractive.resetPartial()' 'method' }}} on Ractive instances.
+
+`this.event` is now available to method-call event handlers.
+
+### Breaking changes
+
+* `twoway` and `lazy` are now reserved attribute names to be used as binding directives.
+* Inline partials now belong to their nearest component instance.
 
 ## Migrating from 0.5.x
 
