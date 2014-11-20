@@ -150,6 +150,15 @@ ractive.set('config.allowEdit', true);
 
 ```
 
+In addition to `newValue`, `oldValue`, and `keypath`, any widlcards that are matched in the `keypath` will be passed to the callback. Each additional wildcard will cause an extra parameter to be passed to the callback. For instance:
+```js
+ractive.observe('items.*.*', function(newValue, oldValue, keypath, idx, key) {
+  console.log('item', idx, key, 'is now', newValue);
+});
+ractive.set('items.1.foo', 'bar');
+// logs 'item 1 foo is now bar'
+```
+
 Pattern observers are a simple and flexible that will allow you to observe your data any way that you want.
 
 ## Space Delimited Observers
