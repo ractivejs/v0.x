@@ -70,6 +70,8 @@ If you return `false` from a proxy event handler, ractive will automatically cal
 
 Note that returning `false` has a dual purpose of both cancelling further bubbling up the view hierarchy {{{createLink 'Event bubbling' 'event bubbling'}}} __as well as__ cancelling the DOM Event if the event was DOM-based.
 
+If you only want to cancel the DOM event, you can call the appropriate methods directly on `event.original` or `this.event.original`, which are both references to the current DOM event object.
+
 
 ## Reserved event names
 
