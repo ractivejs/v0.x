@@ -1,0 +1,64 @@
+---
+title: 'Method calls'
+---
+
+*See also: {{{createLink 'proxy events'}}}*
+
+As an alternative to {{{createLink 'proxy events'}}}, you can call any method of your Ractive instance, in response to an {{{createLink 'event directives' 'event directive'}}}, right from your template:
+
+```html
+<p>foo is \{{foo}}</p>
+<button on-click='toggle("foo")'>toggle foo</button>
+```
+
+In this case, because {{{createLink 'ractive.toggle()'}}} is a built-in method, clicking the button will toggle the value of `foo` between `true` and `false` ([demo](http://jsfiddle.net/rich_harris/xxg93vw8/)).
+
+This also works with custom methods:
+
+```js
+var ractive = new Ractive({
+  el: 'body',
+  template: '<button on-click="klaxon()">sound the klaxon</button>',
+  audio: new Audio( 'klaxon.mp3' ),
+  klaxon: function () {
+    this.audio.play();
+  }
+});
+```
+
+You can pass as many arguments to the method as you like, including data references:
+
+```html
+\{{#each items :i}}
+  <button on-click='select(this,i)'>select this item</button>
+\{{/each}}
+```
+
+Notice that mustaches are __not__ used with data reference in method calls, i.e. `\{{i}}` and will cause errors if they are. String literals need to be in quotes:
+
+```html
+<button on-click='set( "foo", true)'>make foo true</button>
+```
+
+You can also pass the `event` object, or properties thereof (`event.original` is the original DOM event) ([demo](http://jsfiddle.net/rich_harris/9ecvjjtm/)):
+
+```html
+<div
+  on-mousemove='set({
+    x: event.original.clientX,
+    y: event.original.clientY
+  })'
+  on-mouseleave='set({
+    x: "unknown",
+    y: "unknown"
+  })'
+>
+  <p>current mouse position: \{{x}} x \{{y}}</p>
+</div>
+```
+
+The `event` object is also available within body of the method call function as `this.event`. Note that methods on your Ractive instance that may handle your events are effectively part of your public API, and `this.event` will only be available during invocations triggered by an event.
+
+### Cancelling events
+
+As with proxy events, you can cancel a DOM event by returning `false` from your event handler. Ractive with then call `preventDefault()` and `stopPropagation()` on the original DOM event. You can also call any methods on the original event by having it passed to your handler or accessing it using `this.event.original`.
