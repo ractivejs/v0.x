@@ -23,6 +23,14 @@ Or it could mean adding a class based on some condition:
 <a class='button \{{ active ? "on" : "off" }}'>switch</a>
 ```
 
+Or a whole section based on some condition:
+
+```html
+\{{#if (country === 'GB')}}
+   <p>To whom it may concern...</p>  
+\{{/if}}
+```
+
 Or it could mean filtering a list to exclude certain records:
 
 ```html
