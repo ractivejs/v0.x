@@ -86,7 +86,7 @@ ractive.on( 'foo.*', function () {
 
 If you return 'false' from a proxy event handler, ractive will automatically call both `preventDefault()` and `stopPropagation()` on the original DOM event.
 
-Note that returning `false` has a duel purpose of both cancelling the view hierarchy {{{createLink 'Event bubbling' 'event bubbling'}}} __as well as__ cancelling the DOM Event if the event was DOM-based.
+Note that returning `false` has a dual purpose of both cancelling the view hierarchy {{{createLink 'Event bubbling' 'event bubbling'}}} __as well as__ cancelling the DOM Event if the event was DOM-based.
 
 ## Unsubscribe
 
