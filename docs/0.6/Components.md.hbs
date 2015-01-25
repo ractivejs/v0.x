@@ -20,7 +20,7 @@ beforeInit will be passed all the data that will initialize the particular compo
 This could include setting/changing partials, adding decorators, adding other subcomponents, or anything you would use to initialise a normal Ractive instance. This is great for dynamic templating, an example can be found below.
 
 
-### init *`Function`*
+### onrender *`Function`*
 
 Init is called after the component has been initialised. This means that `this` will reference that component instance. This allows you to observe on, or listen on events/keypaths for this particular component.
 
@@ -102,7 +102,7 @@ init is called after the extended component has been initialized
 ```js
 var MyWidget = Ractive.extend({
   template: '<div on-click="activate">\{{message}}</div>',
-  init: function () {
+  onrender: function () {
     this.on( 'activate', function () {
       alert( 'Activating!' );
     });
