@@ -13,7 +13,7 @@ A [starter project](https://github.com/alienscience/gulp-ractive-starter) is ava
 
 ## Using plugins with Ractive and Browserify
 
-[[Plugins]] typically include a Universal Module Definition (UMD) block that, in a node.js or Browserify environment, calls `require('ractive')`. If you want to be explicit about *which* version of Ractive gets loaded, you can do it when you configure browserify like so:
+{{{createLink 'Plugins'}}} typically include a Universal Module Definition (UMD) block that, in a node.js or Browserify environment, calls `require('ractive')`. If you want to be explicit about *which* version of Ractive gets loaded, you can do it when you configure browserify like so:
 
 ```js
 browserify.require('./my-copy-of-ractive.js', { expose: 'ractive' });
