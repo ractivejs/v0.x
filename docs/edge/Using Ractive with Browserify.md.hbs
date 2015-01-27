@@ -10,3 +10,11 @@ There are three Browserify transforms available that you can use for Ractive.js:
 - [Ractiveify](https://npmjs.org/package/ractiveify), a transform that will pre-compile components with support for compiling embedded scripts and style tags (with livescript, coffeescript, sass, etc). Inspired by ractivify. Contributed by [norcalli](https://github.com/norcalli). [(Github repository)](https://github.com/norcalli/ractiveify)
 
 A [starter project](https://github.com/alienscience/gulp-ractive-starter) is available for using Ractivate with [gulp.js](http://gulpjs.com/) build system.
+
+## Using plugins with Ractive and Browserify
+
+[[Plugins]] typically include a Universal Module Definition (UMD) block that, in a node.js or Browserify environment, calls `require('ractive')`. If you want to be explicit about *which* version of Ractive gets loaded, you can do it when you configure browserify like so:
+
+```js
+browserify.require('./my-copy-of-ractive.js', { expose: 'ractive' });
+```
