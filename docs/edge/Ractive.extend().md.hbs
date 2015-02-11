@@ -172,3 +172,12 @@ basicModal = new BasicModal();
 ```
 
 The `init` method is able to call `this._super` because when Ractive detects (with regex, essentially by calling `init.toString()`) that a child method requires `this._super` it wraps it in a function that sets `this._super` to the parent method of the same name. This wrapping only happens where necessary.
+
+`Ractive.extend()` can be used with multiple prototypes, which will be applied from left to right.
+```js
+var Foo = Ractive.extend({
+    template: 'I am effectively overridden'
+  }, {
+    template: 'I win'
+  });
+```
