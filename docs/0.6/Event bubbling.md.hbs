@@ -35,7 +35,7 @@ this.on( 'widget.select', function () {
 
 Sibling event handlers will still be called. Cancelling only applies to bubbling up to the next level of the view hierarchy.
 
-Note that returning `false` has a duel purpose of both cancelling the view hierarchy event bubbling __and__ cancelling the DOM Event if the event was DOM-based.
+Note that returning `false` has a dual purpose of both cancelling the view hierarchy event bubbling __and__ cancelling the DOM Event if the event was DOM-based.
 
 Template directives for handling component events _implicitly_ cancel bubbling of the subscribed event:
 
