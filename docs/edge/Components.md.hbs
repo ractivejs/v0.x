@@ -14,15 +14,28 @@ First, you need to **create the component** with {{{createLink 'Ractive.extend()
 
 ## <a name="init"></a>Initialisation Options
 
-### beforeInit *`Function`*
+Most of the normal Ractive {{{ createLink 'initialisation options' }}} also apply to components, particularly the {{{ createLink 'lifecycle events' }}}, a few of which are listed here.
 
-beforeInit will be passed all the data that will initialize the particular component. This is where you should modify the component with dynamic logic.
-This could include setting/changing partials, adding decorators, adding other subcomponents, or anything you would use to initialise a normal Ractive instance. This is great for dynamic templating, an example can be found below.
+### onconstruct *`Function`*
 
+`onconstruct` fires a single time immediately after the instance is created and will be passed all the data that will initialize the particular component.
+This could include setting/changing partials, adding decorators, adding other subcomponents, or anything you would use to initialise a normal Ractive instance.
 
-### init *`Function`*
+### onconfig *`Function`*
 
-Init is called after the component has been initialised. This means that `this` will reference that component instance. This allows you to observe on, or listen on events/keypaths for this particular component.
+`onconfig` fires a single time once all of the configuration options have been processed.
+
+### oninit *`Function`*
+
+`oninit` fires a single time when the component is ready to be rendered. You can use this event to set up any proxy event listeners or observers that you need on a particular instance.
+
+### onrender *`Function`*
+
+`onrender` fires just before each time the component is rendered.
+
+### oncomplete *`Function`*
+
+`oncomplete` fires just after the component is rendered and any transitions have completed. At this point, the component DOM is available.
 
 ### isolated *`Boolean`*
 
@@ -62,7 +75,7 @@ var ractive = new Ractive({
 
 <script id="component" type="text/ractive">
 
-  \{{nonIsolatedString}}
+  \{{nonIsolatedSetting}}
 
 </script>
 

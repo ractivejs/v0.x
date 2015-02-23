@@ -86,7 +86,9 @@ ractive.myMethod(); // triggers the alert
 > ```
 > See the [60 second setup](http://ractivejs.org/60-second-setup) for an example of this.
 
-> Make sure to set `type='text/ractive'` on the `<script>` tag or the browser will try and execute the contents as javascript and you'll get an exception.
+> Make sure to set `type='text/ractive'` on the `<script>` tag or the browser will try and execute the contents as javascript and you'll get an exception. Some text editors will highlight `type='text/html'` as HTML, which can be useful and the browser will still ignore it for execution.
+
+> If a function, the result of the function can be a string or a pre-parsed template.
 
 > <a id="partials"></a>
 > ### partials *`Object`*
@@ -213,7 +215,7 @@ ractive.myMethod(); // triggers the alert
 ## Data & Binding
 
 > <a id="data"></a>
-> ### data *`Object` or `Array` or `String`*
+> ### data *`Object` or `Array` or `Function`*
 > The data with which to initialise.
 > ```js
 > // object
@@ -222,8 +224,10 @@ ractive.myMethod(); // triggers the alert
 > // array
 > data: [ 'red', 'blue', 'yellow' ]
 >
-> // string
-> data: 'foo'
+> // function
+> data: function() {
+>   return { foo: 'bar' };
+> }
 > ```
 
 > <a id="computed"></a>
@@ -342,7 +346,7 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 > ```js
 > var ractive = new Ractive({
 >     template: '<ul>\{{#items}}<li intro="fade">\{{.}}</li>\{{/items}}</ul>',
->	  data: { items: [ 'red', 'blue' ] },
+>	    data: { items: [ 'red', 'blue' ] },
 >     transitions: { fade: function ( t, params ) {...} },
 >     noIntro: true
 > });
