@@ -24,6 +24,7 @@ If you've used [Handlebars](http://handlebarsjs.com) or [Angular](http://angular
   * [Handlebars-style sections](#handlebars)
   * [Aliasing](#aliasing)
   * [Static mustaches](#static)
+  * [Escaping Mustaches](#escaping)
 
 
 <a name="what"></a>
@@ -597,6 +598,23 @@ ractive.set('admin', true);
 Output:
 ```
 Hello, normal user
+```
+
+
+<a name="escaping"></a>
+### Escaping mustaches
+
+If you need to have Ractive ignore some mustaches in your template, you can escape them with a '\\'.
+
+```html
+\{{ interpolated }} {{backslash}}\{{ left alone }}
+```
+
+If you need to have a backslash before an interpolated mustache, you can escape the backslash with another '\\'. Any additional mustaches will be exported into the template.
+
+```html
+{{backslash}}{{backslash}}\{{ interpolated }} and preceeded by a single slash.
+{{backslash}}{{backslash}}{{backslash}}\{{ interpolated }} and preceeded by two slashes.
 ```
 
 
