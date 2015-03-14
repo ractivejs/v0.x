@@ -44,7 +44,7 @@ Also, be aware that if you have a situation like this...
 <div style='color: \{{color}}; opacity: \{{opacity}};'>some content</div>
 ```
 
-...then using `ractive.set({ color: 'red', opacity: 0.5 })` would only cause one DOM update, whereas `ractive.data.color = 'red'` followed by `ractive.data.opacity = 0.5` would cause two. Again, in most real-world situations that's not a problem.
+...then using `ractive.set({ color: 'red', opacity: 0.5 })` would only cause one DOM update, whereas `model.color = 'red'` followed by `model.opacity = 0.5` would cause two. Again, in most real-world situations that's not a problem.
 
 
 Using magic mode with arrays

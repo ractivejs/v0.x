@@ -9,7 +9,7 @@ ractive.observe( 'foo', function ( foo ) {
 	alert( foo );
 });
 
-ractive.data.foo = 'changed';
+model.foo = 'changed';
 ractive.update( 'foo' ); // causes observer to alert 'changed'
 ```
 

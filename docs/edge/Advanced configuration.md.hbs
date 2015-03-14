@@ -45,26 +45,6 @@ with a helper parser object `p` that offers the following methods:
 During a {{{createLink 'ractive.reset()' }}} operation, an option function for a template will be re-evaluated
 and _if_ the return value changes the ractive instance will be re-rendered.
 
-Used in a component, an option function can be used to dynamically control the template from the parent
-and self-update when the value changes:
-
-```html
-<widget template='\{{template}}'/>
-```
-```js
-var Widget = Ractive.extend({
-	template: function( data ) {
-		return data.template
-	},
-	init : function() {
-        this.observe( 'template', function( newTemplate, oldTemplate ) {
-            if( newTemplate === oldTemplate ) { return; }
-            this.reset( this.data )
-        }.bind(this), {init: false} )
-    }
-});
-```
-
 ## Partials
 
 The value for a named partial can also be specified using a function:
