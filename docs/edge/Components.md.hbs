@@ -189,8 +189,8 @@ var ractive = new Ractive({
 })
 
 function logData(){
-    console.log('main', JSON.stringify(ractive.data))
-    console.log('widget', JSON.stringify(ractive.findComponent('widget').data))
+    console.log('main', JSON.stringify(ractive.get()))
+    console.log('widget', JSON.stringify(ractive.findComponent('widget').get()))
 }
 
 logData()
@@ -364,25 +364,6 @@ Inline partials may also be yielded within a component by specifying a name with
 ```js
 var Foo = Ractive.extend({
   template: '<div>Here is my content: \{{yield}}</div><div>Here is my foo: \{{yield foo}}</div>'
-});
-```
-
-
-
-## <a name="dynamism"></a>Pseudo Dynamic Templating
-
-In some cases you want to render a different template depending on the data that is passed in.
-
-### Form Element Component
-```js
-var formElement = Ractive.extend({
-  template: '\{{>element}}',
-  setTemplate: function(options) {
-    options.partials.element = options.data.template;
-  },
-  beforeInit: function(options) {
-    this.setTemplate(options)
-  }
 });
 ```
 

@@ -24,6 +24,8 @@ If you've used [Handlebars](http://handlebarsjs.com) or [Angular](http://angular
   * [Handlebars-style sections](#handlebars)
   * [Aliasing](#aliasing)
   * [Static mustaches](#static)
+  * [`\{{else}}` and `\{{elseif}}`](#else)
+  * [Escaping Mustaches](#escaping)
 
 
 <a name="what"></a>
@@ -112,6 +114,7 @@ Output:
 ```html
 Shown.
 ```
+
 #### Non-Empty Lists
 
 If the person key exists and has a non-false value, the HTML between the pound and slash will be rendered and displayed one or more times.
@@ -187,30 +190,6 @@ Template:
 \{{^repo}}
   No repos :(
 \{{/repo}}
-```
-
-Ractive borrows a trick from Handlebars here and lets you perform:
-
-```html
-\{{#repo}}
-  <b>{{name}}</b>
-\{{else}}
-  No repos :(
-\{{/repo}}
-```
-
-Data:
-
-```javascript
-{
-  "repo": []
-}
-```
-
-Output:
-
-```html
-No repos :(
 ```
 
 #### Attributes
@@ -597,6 +576,66 @@ ractive.set('admin', true);
 Output:
 ```
 Hello, normal user
+```
+
+
+<a name="else"></a>
+### \{{else}} and \{{elseif}}
+Ractive borrows a trick from Handlebars here and lets you perform:
+
+```html
+\{{#repo}}
+  <b>{{name}}</b>
+\{{else}}
+  No repos :(
+\{{/repo}}
+```
+
+Data:
+
+```javascript
+{
+  "repo": []
+}
+```
+
+Output:
+
+```html
+No repos :(
+```
+
+Ractive takes it a step further and also allows you to use `\{{elseif otherCondition}}` for alternate cases.
+
+```html
+\{{#if foo}}
+  foo
+\{{elseif bar}}
+  bar but not foo
+\{{else}}
+  neither foo nor bar
+\{{/if}}
+```
+
+In this case, the output would be what you would expect. If `foo` is true, then the output will be `foo`. If `foo` is false and `bar` is true, the the output will be `bar but not foo`. If neither `foo` nor `bar` is true, the the output will be `neither foo nor bar`.
+
+Further, `\{{else}}` and `\{{elseif}}` clauses can be used with `\{{#with}}` and `\{{#each}}` sections too. If the context for the `\{{#with}}` section doesn't exist, then any else clauses will be processed as if the entire section were a conditional with a false first branch. If the array for the `\{{#each}}` (or regular iterative section) is empty or the object has no keys, then any else clauses will be processed as if the entire section were a conditional with a false first branch.
+
+
+<a name="escaping"></a>
+### Escaping mustaches
+
+If you need to have Ractive ignore some mustaches in your template, you can escape them with a '\\'.
+
+```html
+\{{ interpolated }} {{backslash}}\{{ left alone }}
+```
+
+If you need to have a backslash before an interpolated mustache, you can escape the backslash with another '\\'. Any additional mustaches will be exported into the template.
+
+```html
+{{backslash}}{{backslash}}\{{ interpolated }} and preceeded by a single slash.
+{{backslash}}{{backslash}}{{backslash}}\{{ interpolated }} and preceeded by two slashes.
 ```
 
 

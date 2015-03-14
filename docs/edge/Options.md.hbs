@@ -28,7 +28,6 @@ ractive.myMethod(); // triggers the alert
 | [computed](#computed)                     		| [data](#data-binding)             	| computed properties to include |
 | [css](#css)                     		            | [templating](#templating)             | component only css to include on render |
 | [data](#data)                             		| [data](#data-binding)             	| the data to bind to the template |
-| [debug](#debug)                           		| [environment](environment)      		| increases app feedback |
 | [decorators](#decorators)                 		| [templating](#templating)       		| decorators to include for use by the template |
 | [delimiters](#delimiters)                 		| [parsing](#parsing)          			| delimiters to use when parsing the template |
 | [easing](#easing)                         		| [transitions](#transitions-animations)| easing functions to use in transitions |
@@ -215,14 +214,11 @@ ractive.myMethod(); // triggers the alert
 ## Data & Binding
 
 > <a id="data"></a>
-> ### data *`Object` or `Array` or `Function`*
+> ### data *`Object` or `Function`*
 > The data with which to initialise.
 > ```js
 > // object
 > data: { foo: 'bar' }
->
-> // array
-> data: [ 'red', 'blue', 'yellow' ]
 >
 > // function
 > data: function() {
@@ -492,14 +488,3 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 > <div>the good stuff</div>
 > ```
 
-## Environment
-
-> <a id="debug"></a>
-> ### debug *`Boolean`*
-> Defaults to `false`. Increases the severity of response to unexpected events or unfound resources to help debug applications.
-> Generally will throw errors or print console messages when otherwise things would print a console messages or fail silently.
-> ```js
-> // throws when 'myPartial' not found:
-> template: '<p>\{{>myPartial}}</p>',
-> debug: true
-> ```

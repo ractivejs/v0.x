@@ -11,10 +11,10 @@ ractive = new Ractive({
 });
 
 ractive.set({ bar: 2 });
-console.log( ractive.data ); // { foo: 1, bar: 2 }
+console.log( ractive.get() ); // { foo: 1, bar: 2 }
 
 ractive.reset({ bar: 2 });
-console.log( ractive.data ); // { bar: 2 }
+console.log( ractive.get() ); // { bar: 2 }
 ```
 
 > ### ractive.reset([ data ])

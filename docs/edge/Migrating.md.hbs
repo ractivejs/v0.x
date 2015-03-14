@@ -12,7 +12,7 @@ Components can now access their parents and containers using an official API.
 
 Binding directives may be set on elements that support two-way binding. These directives override the settings on the Ractive instance for `twoway` and `lazy`.
 
-Inline partials can now be defined within a new section `\{{partial partial-name}}...\{{/partial}}`. The old comment syntax will most likely be deprecated and removed in future releases.
+Inline partials can now be defined within a new section `\{{#partial partial-name}}...\{{/partial}}`. The old comment syntax will most likely be deprecated and removed in future releases.
 
 Inline partials are now scoped to their nearest component. Inline partials defined inside a component's content will belong to the component and not the root instances. Inline partials defined outside of component content still belong to the main Ractive instance.
 
@@ -22,10 +22,23 @@ Partials can now be reset without resorting to manually un/re-rendering them usi
 
 `this.event` is now available to method-call event handlers.
 
-### Breaking changes
+Regular expression literals can now be used in template expressions.
+
+You can now escape mustaches with a '\' if you'd like them to appear in the template.
+
+`ractive.toggle` now works with patterns.
+
+The debug setting is no longer set per-instance. It has been replaced with `Ractive.DEBUG`, which defaults to true. You can set it automatically based on whether or not the your code has been minified with:
+```js
+Ractive.DEBUG = /unminified/.test(function(){/*unminified*/});
+```
+
+### Breaking changes and deprecation
 
 * `twoway` and `lazy` are now reserved attribute names to be used as binding directives.
 * Inline partials now belong to their nearest component instance.
+* `ractive.data` is no longer available. Use `ractive.get()` to get a shallow copy of the data with any component mappings.
+* Child data always overrides parent data, whether it is a POJO or not.
 
 ## Migrating from 0.5.x
 
