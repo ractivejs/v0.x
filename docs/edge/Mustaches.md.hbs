@@ -619,7 +619,7 @@ Ractive takes it a step further and also allows you to use `\{{elseif otherCondi
 
 In this case, the output would be what you would expect. If `foo` is true, then the output will be `foo`. If `foo` is false and `bar` is true, the the output will be `bar but not foo`. If neither `foo` nor `bar` is true, the the output will be `neither foo nor bar`.
 
-Further, `\{{else}}` and `\{{elseif}}` clauses can be used with `\{{#with}}` and `\{{#each}}` sections too. If the context for the `\{{#with}}` section doesn't exist, then any else clauses will be processed as if the entire section were a conditional with a false first branch. If the array for the `\{{#each}}` (or regular iterative section) is empty, then any else clauses will be processed as if the entire section were a conditional with a false first branch.
+Further, `\{{else}}` and `\{{elseif}}` clauses can be used with `\{{#with}}` and `\{{#each}}` sections too. If the context for the `\{{#with}}` section doesn't exist, then any else clauses will be processed as if the entire section were a conditional with a false first branch. If the array for the `\{{#each}}` (or regular iterative section) is empty or the object has no keys, then any else clauses will be processed as if the entire section were a conditional with a false first branch.
 
 
 <a name="escaping"></a>
