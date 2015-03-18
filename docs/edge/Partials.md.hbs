@@ -114,6 +114,25 @@ Prior to the introduction of the special partial section, inline partials were d
 
 **Note** the comment-style of defining inline partials will be deprecated and removed in a future release.
 
+If a partial is inlined within an element that isn't a component, it will be available to any partial references that are children of the element. This can be used to achieve a sort of template inheritance with partials and is pretty handy for layouts.
+
+```html
+\{{#partial header}}<h1 class="header">\{{>content}}</h1>\{{/partial}}
+<section>
+  \{{#partial content}}Partial "inheritance"!\{{/partial}}
+  \{{>header}}
+  Some content for the terribly contrived example here...
+</section>
+```
+
+Result:
+```html
+<section>
+  <h1 class="header">Partial "inheritance"!</h1>
+  Some content for the terribly contrived example here...
+</section>
+```
+
 
 <a name="expressions"></a>
 ## Parial expressions

@@ -12,9 +12,11 @@ Components can now access their parents and containers using an official API.
 
 Binding directives may be set on elements that support two-way binding. These directives override the settings on the Ractive instance for `twoway` and `lazy`.
 
-Inline partials can now be defined within a new section `\{{#partial partial-name}}...\{{/partial}}`. The old comment syntax will most likely be deprecated and removed in future releases.
+Single-fire versions of `ractive.on` and `ractive.observe` are now available as `ractive.once` and `ractive.observeOnce`.
 
-Inline partials are now scoped to their nearest component. Inline partials defined inside a component's content will belong to the component and not the root instances. Inline partials defined outside of component content still belong to the main Ractive instance.
+Inline partials can now be defined within a new section `\{{#partial partial-name}}...\{{/partial}}`. The old comment syntax is now deprecated and will be removed in a future release.
+
+Inline partials are now scoped to their nearest element. If a partial reference sits in the template below an element with a matching inline partial, the inline partial will be used in the reference. This can be used as a sort of partial inheritance. If an inline partial is defined directly within a component tag or the root of the template, it will be added to the Ractive instance.
 
 Components may now yield to multiple inline partials by supplying the partial name with yield e.g. `\{{yield some-name}}`. Yielding without a name will still result in non-partial content being yielded. Only inline partials may be yielded. Any partials, including inline and inherited, may still be referenced within a component using a plain partial section e.g. `\{{>partial}}`.
 
@@ -36,10 +38,12 @@ Ractive.DEBUG = /unminified/.test(function(){/*unminified*/});
 ### Breaking changes and deprecation
 
 * `twoway` and `lazy` are now reserved attribute names to be used as binding directives.
-* Inline partials now belong to their nearest component instance.
+* Inline partials now belong to their nearest element.
+* The comment syntax for inline partials is now deprecated.
 * `elseif` is now a reserved identifier.
 * `ractive.data` is no longer available. Use `ractive.get()` to get a shallow copy of the data with any component mappings.
 * Child data always overrides parent data, whether it is a POJO or not.
+* `ractive.debug` has been replaced with the global `Ractive.DEBUG` flag.
 
 ## Migrating from 0.5.x
 

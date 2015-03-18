@@ -4,6 +4,8 @@ title: ractive.resetPartial()
 
 Resets a partial and re-renders all of its use-sites, including in any components that have inherited it. If a component has a partial with a same name that is its own, that partial will not be affected.
 
+Inline partials that don't belong directly to a Ractive instance aren't affected by `resetPartial`.
+
 ```js
 ractive = new Ractive({
   // ...,
