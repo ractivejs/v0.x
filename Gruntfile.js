@@ -11,7 +11,7 @@ module.exports = function ( grunt ) {
 
 	config = {
 		pkg: grunt.file.readJSON( 'package.json' ),
-		latest: '0.6',
+		latest: '0.7',
 		edge: 'edge',
 		prod: grunt.option( 'prod' ),
 
