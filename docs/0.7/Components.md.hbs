@@ -5,7 +5,7 @@ In many situations, you want to encapsulate behaviour and markup into a single r
 
 First, you need to **create the component** with {{{createLink 'Ractive.extend()'}}}, which allows you to define a template, initialisation behaviour, default data, and so on. (If you're not familiar with Ractive.extend() you should read that page first.)
 
-* [Initiliasation Options](#init)
+* [Initialisation Options](#init)
 * [Binding](#binding)
 * [Events](#events)
 * [The \{{>content}} Directive](#content)
@@ -307,7 +307,7 @@ Partials, components, and any other valid template items can be used as well:
 </list>
 ```
 
-Currently, the content markup resolves in the component's context. In the second example above the `value` parameter for `<widget>` is the individual list item of `\{{fates}}`. Components inherit their parents partials, so in the first case, `partiaA` could be a partiald defined inline within the component body, added to the component's `partials` property at creation or before use, defined in the parent Ractive instance, or defined globally (`Ractive.partials`).
+Currently, the content markup resolves in the component's context. In the second example above the `value` parameter for `<widget>` is the individual list item of `\{{fates}}`. Components inherit their parents partials, so in the first case, `partiaA` could be a partial defined inline within the component body, added to the component's `partials` property at creation or before use, defined in the parent Ractive instance, or defined globally (`Ractive.partials`).
 
 Partials defined inline in the component body can be used to override partials defined on the component. This can be useful for components to allow easy customization of each instance using partials:
 
@@ -376,4 +376,4 @@ Components that are nested within other components have access to their parents,
 `this.container` is the containing Ractive instance in the case that this component was included in a `yield`.
 
 `this.findParent(name)` will search up the hierarchy until it finds a parent component named `name`.
-`this.findContainer(name)` will search up the surrogate hierarchy until if finds a container named `name`.
+`this.findContainer(name)` will search up the surrogate hierarchy until it finds a container named `name`.
