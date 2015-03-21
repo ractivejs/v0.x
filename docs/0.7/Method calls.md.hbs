@@ -61,4 +61,4 @@ The `event` object is also available within body of the method call function as 
 
 ### Cancelling events
 
-As with proxy events, you can cancel a DOM event by returning `false` from your event handler. Ractive with then call `preventDefault()` and `stopPropagation()` on the original DOM event. You can also call any methods on the original event by having it passed to your handler or accessing it using `this.event.original`.
+As with proxy events, you can cancel a DOM event by returning `false` from your event handler. Ractive will then call `preventDefault()` and `stopPropagation()` on the original DOM event. You can also call any methods on the original event by having it passed to your handler or accessing it using `this.event.original`.
