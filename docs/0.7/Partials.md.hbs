@@ -186,7 +186,7 @@ new Ractive({
 });
 ```
 
-This example uses a function to generate a partial on-the-fly and return the new generated partial name to be rendered. Note that if the `template` value for any of the items in `list` changes, its corresponding partial will **not** be updated in this instance. If you need to achieve something like that, you could modify the function to wrap the partial content in a conditional and modify the cacheing logic to re-render the target partial when its template changed.
+This example uses a function to generate a partial on-the-fly and return the new generated partial name to be rendered. Note that if the `template` value for any of the items in `list` changes, its corresponding partial will **not** be updated in this instance. If you need to achieve something like that, you could modify the function to wrap the partial content in a conditional and modify the caching logic to re-render the target partial when its template changed.
 
 ### Invalid names
 
@@ -230,9 +230,9 @@ Partials can be used *recursively*:
   <span>\{{filename}}</span>
 
   <!-- if this is actually a folder, embed the folder partial -->
-  \{{# type === 'folder' }}
+  \{{#type === 'folder' }}
     \{{>folder}}
-  \{{/ type === 'folder' }}
+  \{{/type === 'folder' }}
 </li>
 \{{/partial}}
 ```
