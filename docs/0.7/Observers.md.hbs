@@ -64,7 +64,7 @@ Observers are most useful in the context of {{{createLink 'two‐way binding'}}}
 
 ## Pattern Observers
 
-It is useful to observe on specific keypaths but in the event your data contains array, or a set of dynamic data it isn't logical to bind to every potential keypath that could exist. Pattern observers use a `*` to indicate to Ractive that you would like to be notified whenever anything changes in your data at a particular depth as well as below the specified depth.
+It is useful to observe on specific keypaths but in the event that your data contains an array, or a set of dynamic data, it isn't logical to bind to every potential keypath that could exist. Pattern observers use a `*` to indicate to Ractive that you would like to be notified whenever anything changes in your data at a particular depth as well as below the specified depth.
 
 There are a few caveats when it comes to observing on array data, when observing on keypath `people.*` you are observing on the length of the array. This means that the `newValue` will be the index at which the new object was pushed. However when you use `set` to change an item at a particular index or a key that is on an object in the array then it will provide the object as the `newValue`.
 
