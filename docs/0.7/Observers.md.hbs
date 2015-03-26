@@ -150,7 +150,7 @@ ractive.set('config.allowEdit', true);
 
 ```
 
-In addition to `newValue`, `oldValue`, and `keypath`, any widlcards that are matched in the `keypath` will be passed to the callback. Each additional wildcard will cause an extra parameter to be passed to the callback. For instance:
+In addition to `newValue`, `oldValue`, and `keypath`, any wildcards that are matched in the `keypath` will be passed to the callback. Each additional wildcard will cause an extra parameter to be passed to the callback. For instance:
 ```js
 ractive.observe('items.*.*', function(newValue, oldValue, keypath, idx, key) {
   console.log('item', idx, key, 'is now', newValue);
