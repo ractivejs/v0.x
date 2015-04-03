@@ -25,7 +25,7 @@ new Ractive({
 });
 ```
 The return value can be any of the valid template options: a preparsed template,
-a string that will parsed as a template, or an string starting with `#` that refers to an element id from which
+a string that will be parsed as a template, or a string starting with `#` that refers to an element id from which
 the template should be retrieved.
 
 In general, these should be sufficient for most use cases. However, if you need to dissect templates or extract
@@ -54,13 +54,13 @@ new Ractive({
 	template: '<div>\{{>dynamicPartial}}</div>',
 	partials: {
 		dynamicPartial: function ( data ) {
-			return data.condition ? '<p>hello world</p>' : '<div>yes, we have no foo</div>';
+			return data.foo ? '<p>hello world</p>' : '<div>yes, we have no foo</div>';
 		}
 	}
 });
 ```
 
-Partial option functions also received the helper parser `p` as the second argument. This is useful in
+Partial option functions also receive the helper parser `p` as the second argument. This is useful in
 partials as you cannot return an element id from a partial function and must use `p.fromId` to return
 the template content of an element.
 
@@ -123,7 +123,7 @@ var ractive = new Component2({
     data: { foo: 'bar' }
 })
 
-// r.data: { foo: "bar", formatTitle: function, scale: 5 }
+// ractive.data: { foo: "bar", formatTitle: function, scale: 5 }
 
 ```
 
