@@ -92,9 +92,9 @@ Modal = Ractive.extend({
   // on a per-instance basis, if you really want to)
   template: modalTemplate,
 
-  // the init function will be called as soon as the instance has
+  // the onrender function will be called as soon as the instance has
   // finished rendering
-  init: function () {
+  onrender: function () {
     var self = this, resizeHandler;
 
     // store references to the background, and to the modal itself
@@ -157,11 +157,7 @@ BasicModal = Modal.extend({
     modalContent: '<p>This is some important content!</p><a class="modal-button" on-tap="okay">Okay</a>'
   },
 
-  init: function ( options ) {
-    // wherever we overwrite methods, such as `init`, we can call the
-    // overwritten method as `this._super`
-    this._super( options );
-
+  onrender: function ( options ) {
     this.on( 'okay', function () {
       this.teardown();
     });
@@ -170,8 +166,6 @@ BasicModal = Modal.extend({
 
 basicModal = new BasicModal();
 ```
-
-The `init` method is able to call `this._super` because when Ractive detects (with regex, essentially by calling `init.toString()`) that a child method requires `this._super` it wraps it in a function that sets `this._super` to the parent method of the same name. This wrapping only happens where necessary.
 
 `Ractive.extend()` can be used with multiple prototypes, which will be applied from left to right.
 ```js
