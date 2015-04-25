@@ -110,12 +110,12 @@ Then the resulting output would be
 Very complex example for such a simple idea but this could drastically effect you.
 
 
-init is called after the extended component has been initialized 
+oninit is called after the extended component has been initialized 
 
 ```js
 var MyWidget = Ractive.extend({
   template: '<div on-click="activate">\{{message}}</div>',
-  init: function () {
+  oninit: function () {
     this.on( 'activate', function () {
       alert( 'Activating!' );
     });
@@ -207,7 +207,7 @@ logData()
 
 ## <a name="events"></a>Events
 
-You can subscribe to events that emanate from a component in the normal way. For example, our widget template contains a `<div>` element with an `on-click="activate"` directive. We're listening for that event inside the MyWidget `init` method, but we can also listen for it like so:
+You can subscribe to events that emanate from a component in the normal way. For example, our widget template contains a `<div>` element with an `on-click="activate"` directive. We're listening for that event inside the MyWidget `oninit` method, but we can also listen for it like so:
 
 ```html
 <widget on-activate="doSomething"/>
