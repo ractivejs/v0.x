@@ -309,7 +309,7 @@ Or you might make it possible to {{{createLink 'ractive-extend' 'extend'}}} a su
 // Create a Modal subclass
 Modal = Ractive.extend({
   template: modalTemplate,
-  init: function () {
+  onrender: function () {
     var self = this, resizeHandler;
 
     resizeHandler = function () {
