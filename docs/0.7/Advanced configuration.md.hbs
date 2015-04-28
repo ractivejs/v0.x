@@ -7,8 +7,7 @@ and re-evaluated upon {{{createLink 'ractive.reset()'}}}.
 
 An option function may be supplied to either {{{createLink 'Ractive.extend()'}}} or {{{createLink 'new Ractive()'}}}.
 
-Option functions receive the post-configured `data` option as the first argument and `this` in
-the function refers to the ractive instance being instantiated.
+Inside an option function, `this` refers to the ractive instance being instantiated.
 Bear in mind that the ractive instance is in the process of being configured, so not all options
 are necessarily configured yet, and functional methods like `observe` or `set` should not be called.
 
@@ -79,17 +78,17 @@ partials: {
 ## Components
 
 A component value can be specified using an option function. The return value can either be
-a component or (unlike partials) the string token of a registered component:
+a component constructor or (unlike partials) the string token of a registered component:
 
 ```js
-Ractive.components.view1 = Ractive.extend({...});
-Ractive.components.view2 = Ractive.extend({...});
+Ractive.components.Foo = Ractive.extend({...});
+Ractive.components.Bar = Ractive.extend({...});
 
 new Ractive({
   template: '<div><dynamicComponent/></div>',
   components: {
     dynamicComponent: function () {
-      return this.get( 'foo' ) ? 'view1' : 'view2';
+      return this.get( 'foo' ) ? 'Foo' : 'Bar';
     }
   }
 });
@@ -97,38 +96,35 @@ new Ractive({
 
 ## Data
 
-The data option function can either return a value or use the prototype inheritance chain to construct the
-data object. Use `this._super` to call the parent data option. Ractive will handle integrating
-static data options and data option functions. If a return value is specified, further parent data options
-will not be considered.
+The return values of `data` functions are 'rolled up' like so:
 
 ```js
-
-var Component1 = Ractive.extend({
-  data: {
-    formatTitle: function (title) {
-      return '"' + title.toUpperCase() + '"';
+var A = Ractive.extend({
+  data: function () {
+    return {
+      foo: 1,
+      bar: 2
     }
   }
 });
 
-var Component2 = Component1.extend({
-  data: function( data ) {
-    this._super( data );
-    data.scale = 5;
+var B = A.extend({
+  data: function () {
+    return {
+      bar: 3, // because B extends A, this overrides the previous value
+      baz: 4
+    }
   }
 });
 
-var ractive = new Component2({
-  data: { foo: 'bar' }
+var ractive = new B({
+  data: {
+    baz: 5 // instance data overrides component default data
+  }
 });
 
-// ractive.data: { foo: "bar", formatTitle: function, scale: 5 }
+console.log( ractive.get() ); // { foo: 1, bar: 3, baz: 5 }
 ```
-
-The data object instance passed to the instantiated ractive instance will always be retained as
-the `ractive.data` instance, _unless_ a return value is specified from an option function in which
- case that return value instance will be used as `ractive.data`
 
 ### Copying Parent Data
 
