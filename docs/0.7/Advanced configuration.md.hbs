@@ -18,10 +18,10 @@ The template can be specified using the return value of an option function:
 
 ```js
 new Ractive({
-	template: function ( data ) {
-		return data.foo ? '<p>hello world</p>' : '<div>yes, we have no foo</div>';
-	},
-	data: { foo: true }
+  template: function () {
+    return this.get( 'foo' ) ? '<p>hello world</p>' : '<div>yes, we have no foo</div>';
+  },
+  data: { foo: true }
 });
 ```
 The return value can be any of the valid template options: a preparsed template,
@@ -29,7 +29,7 @@ a string that will be parsed as a template, or a string starting with `#` that r
 the template should be retrieved.
 
 In general, these should be sufficient for most use cases. However, if you need to dissect templates or extract
-partials dynamically, the template option function also receives a second argument
+partials dynamically, the template option function also receives an argument
 with a helper parser object `p` that offers the following methods:
 
 > ### p.fromId( id )
@@ -51,12 +51,12 @@ The value for a named partial can also be specified using a function:
 
 ```js
 new Ractive({
-	template: '<div>\{{>dynamicPartial}}</div>',
-	partials: {
-		dynamicPartial: function ( data ) {
-			return data.foo ? '<p>hello world</p>' : '<div>yes, we have no foo</div>';
-		}
-	}
+  template: '<div>\{{>dynamicPartial}}</div>',
+  partials: {
+    dynamicPartial: function () {
+      return this.get( 'foo' ) ? '<p>hello world</p>' : '<div>yes, we have no foo</div>';
+    }
+  }
 });
 ```
 
@@ -68,12 +68,12 @@ Partial functions also cannot directly return the string token of a registered p
 return the value from the ractive instance:
 
 ```js
-	partials: {
-		dynamicPartial: function ( data ) {
-			// assuming data.partial is the string token of a registered partial:
-			return this.partials[data.partial];
-		}
-	}
+partials: {
+  dynamicPartial: function () {
+    // assuming this.get( 'partial' ) is the string token of a registered partial:
+    return this.partials[ this.get( 'partial' ) ];
+  }
+}
 ```
 
 ## Components
@@ -86,12 +86,12 @@ Ractive.components.view1 = Ractive.extend({...});
 Ractive.components.view2 = Ractive.extend({...});
 
 new Ractive({
-	template: '<div><dynamicComponent/></div>',
-	components: {
-		dynamicComponent: function ( data ) {
-			return data.foo ? 'view1' : 'view2';
-		}
-	}
+  template: '<div><dynamicComponent/></div>',
+  components: {
+    dynamicComponent: function () {
+      return this.get( 'foo' ) ? 'view1' : 'view2';
+    }
+  }
 });
 ```
 
@@ -105,26 +105,25 @@ will not be considered.
 ```js
 
 var Component1 = Ractive.extend({
-    data: {
-	    formatTitle: function (title) {
-		    return '"' + title.toUpperCase() + '"';
-		}
-	}
+  data: {
+    formatTitle: function (title) {
+      return '"' + title.toUpperCase() + '"';
+    }
+  }
 });
 
 var Component2 = Component1.extend({
-    data: function( data ) {
-	    this._super( data );
-	    data.scale = 5;
-	}
+  data: function( data ) {
+    this._super( data );
+    data.scale = 5;
+  }
 });
 
 var ractive = new Component2({
-    data: { foo: 'bar' }
-})
+  data: { foo: 'bar' }
+});
 
 // ractive.data: { foo: "bar", formatTitle: function, scale: 5 }
-
 ```
 
 The data object instance passed to the instantiated ractive instance will always be retained as
@@ -139,9 +138,9 @@ unique copy of the data.
 ```js
 
 var Shared = Ractive.extend({
-	data: {
-		foo: { bar: 42 }
-	}
+  data: {
+    foo: { bar: 42 }
+  }
 });
 
 var shared1 = new Shared();
@@ -151,18 +150,17 @@ shared2.get( 'foo.bar' ); // returns 12
 
 
 var NotShared = Ractive.extend({
-	data: function () {
-		return {
-			foo: { bar: 42 }
-		};
-	}
+  data: function () {
+    return {
+      foo: { bar: 42 }
+    };
+  }
 });
 
 var notShared1 = new NotShared();
 var notShared2 = new NotShared();
 notShared1.set( 'foo.bar', 12 );
 notShared2.get( 'foo.bar' ); // returns 42
-
 ```
 
 ### Asynchronous Data
@@ -171,14 +169,13 @@ A data option function can be a handy way to fetch asynchronous data _and_ suppl
 
 ```js
 data: function () {
+  $.get( 'somedata.url', function( data ) {
+    this.set( '', data );
+  }.bind(this) );
 
-	$.get( 'somedata.url', function( data ) {
-		this.set( '', data );
-	}.bind(this) );
-
-	return {
-		foo: 'default'
-	};
+  return {
+    foo: 'default'
+  };
 }
 ```
 
@@ -188,7 +185,7 @@ Another use of the data option function is to provide a model:
 
 ```js
 data: function ( data ) {
-	return new Model( data );
+  return new Model( data );
 }
 ```
 
@@ -198,15 +195,15 @@ you can directly supply the model:
 
 ```js
 function Model ( data ) {
-	if ( !( this instanceof Model) ) { return new Model( data ); }
-	// model setup
+  if ( !( this instanceof Model) ) { return new Model( data ); }
+  // model setup
 }
 
 var MyComponent = Ractive.extend({
-    data: Model
+  data: Model
 });
 
 var r = new MyComponent({
-    data: { foo: 'bar' }
-})
+  data: { foo: 'bar' }
+});
 ```
