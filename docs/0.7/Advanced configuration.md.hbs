@@ -126,38 +126,25 @@ var ractive = new B({
 console.log( ractive.get() ); // { foo: 1, bar: 3, baz: 5 }
 ```
 
-### Copying Parent Data
-
-Because parent data is common to all instances, you can use an option function to return a
-unique copy of the data.
+Note: the `data` option passed to `Ractive.extend` can be an object rather than a function, but this
+is discouraged as it can cause mutability-related bugs:
 
 ```js
-
-var Shared = Ractive.extend({
+var BuggyComponent = Ractive.extend({
   data: {
-    foo: { bar: 42 }
+    user: { name: 'Alice' }
   }
 });
 
-var shared1 = new Shared();
-var shared2 = new Shared();
-shared1.set( 'foo.bar', 12 );
-shared2.get( 'foo.bar' ); // returns 12
+var ractive1 = new BuggyComponent();
+var ractive2 = new BuggyComponent();
 
-
-var NotShared = Ractive.extend({
-  data: function () {
-    return {
-      foo: { bar: 42 }
-    };
-  }
-});
-
-var notShared1 = new NotShared();
-var notShared2 = new NotShared();
-notShared1.set( 'foo.bar', 12 );
-notShared2.get( 'foo.bar' ); // returns 42
+ractive1.set( 'user.name', 'Bob' );
+console.log( ractive2.get( 'user.name' ) ); // Bob, not Alice!
 ```
+
+Ractive will print a warning to the console if this happens, suggesting that you use a function instead.
+
 
 ### Asynchronous Data
 
