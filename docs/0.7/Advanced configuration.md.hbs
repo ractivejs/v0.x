@@ -161,32 +161,3 @@ data: function () {
   };
 }
 ```
-
-### Specifying a Model
-
-Another use of the data option function is to provide a model:
-
-```js
-data: function ( data ) {
-  return new Model( data );
-}
-```
-
-If you use a constructor guard clause (currently popular for `new`-less use of javascript constructors),
-you can directly supply the model:
-
-
-```js
-function Model ( data ) {
-  if ( !( this instanceof Model) ) { return new Model( data ); }
-  // model setup
-}
-
-var MyComponent = Ractive.extend({
-  data: Model
-});
-
-var r = new MyComponent({
-  data: { foo: 'bar' }
-});
-```
