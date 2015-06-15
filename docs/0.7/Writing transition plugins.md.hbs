@@ -4,7 +4,7 @@ title: Writing transition plugins
 
 ## Creating transitions
 
-We're going to create a `flash` transition, that flashes text green on intro, and red on outro. To skip ahead and see the result, [open the JSFiddle](http://jsfiddle.net/rich_harris/Hf2ea/).
+We're going to create a `flash` transition, that flashes text green on intro, and red on outro. To skip ahead and see the result, [open the JSFiddle](http://jsfiddle.net/madgvox/peLaq5pd).
 
 All we need to do is create a function that receives a transition object, `t`. This function is called when a new element is added to the DOM (if it has an `intro="flash"` directive), and when that element is removed from the DOM.
 
@@ -126,7 +126,7 @@ By convention, if a user passes a single numeric argument, or the string 'fast' 
 
 ## Our example flash transition
 
-You can see the finished product at [this JSFiddle](http://jsfiddle.net/rich_harris/Hf2ea/).
+You can see the finished product at [this JSFiddle](http://jsfiddle.net/madgvox/peLaq5pd).
 
 ```js
 flashTransition = function ( t, params ) {
