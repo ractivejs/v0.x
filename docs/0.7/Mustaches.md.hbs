@@ -473,7 +473,7 @@ In this example, clicking the button gets a "random" coin flip result, sets it i
 <a name="aliasing"></a>
 ### Aliasing
 
-Since a section with a non-falsy value uses the value as its context, an object expression can be used to create an arbitrary context within a section. Any currently visible context keypaths can be referenced within the new context object, which allows you to keep keypaths available that would otherwise be unreachable.
+Since a section with a non-falsy value uses the value as its context, an object expression can be used to create an arbitrary context within a section. Any currently visible context keypaths can be referenced within the new context object, which gives up another way to avoid name collisions.
 
 ```html
 \{{# { id: '10t' } }}
