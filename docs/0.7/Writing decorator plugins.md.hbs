@@ -172,6 +172,18 @@ Ractive.decorators.tooltip = tooltipDecorator;
 Ractive.decorators.tooltip.className = 'tooltips-ftw';
 ```
 
+You can use a tooltip like this in your app with the [ractive-tooltip](http://github.com/JonDum/ractive-tooltip) package available on NPM.
+Install it via `npm install ractive-tooltip --save` and use it in your app with
+```js
+ractive = new Ractive({
+    ...
+    decorators: {
+        tooltip: require('ractive-tooltip')
+    },
+    ...
+});
+```
+
 
 ## Sharing your decorators
 
