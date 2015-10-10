@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Two-way binding | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Two-way binding</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.6/Two-way binding.md.hbs'>edit this page</a>
+			</header>
+
+			<p>By default, a Ractive instance will update its internal model based on user input, if you have <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code> or <code>&lt;select&gt;</code> elements.</p>
+<p>If that&#39;s unhelpful for your app, you can disable it by passing <code>twoway: false</code> as an <a href="options">initialisation option</a>.</p>
+<h2 id="-input-elements"><code>&lt;input&gt;</code> elements</h2>
+<p>Two-way binding works with <code>&lt;input&gt;</code> elements of any type, including the new HTML5 types such as <code>color</code> or <code>email</code>. In most cases, you just add a mustache as the <code>value</code> attribute - this must be a single, standard <em>interpolator</em> mustache, like this:</p>
+<pre><code class="language-html">&lt;input placeholder=&#39;Type your name&#39; value=&#39;{{user.name}}&#39;&gt;</code></pre>
+<p>In the example above, any changes the user makes to the input will be reflected in the <code>user.name</code> property.</p>
+<h3 id="checkboxes">Checkboxes</h3>
+<p>Checkboxes are used to flag a property as <code>true</code> or <code>false</code>. Rather than binding the <code>value</code> attribute, we bind the <code>checked</code> attribute:</p>
+<pre><code class="language-html">&lt;label&gt;
+    &lt;input type=&#39;checkbox&#39; checked=&#39;{{on}}&#39;&gt;
+    The lights are {{ on ? &#39;on&#39; : &#39;off&#39; }}
+&lt;/label&gt;</code></pre>
+<p>(True HTML nerds will recognise that <em>boolean attributes</em> such as checked don&#39;t have a value, as such - they either exist on an element or they don&#39;t. This makes life unnecessarily difficult; Ractive treats dynamic (i.e., controlled by a mustache) boolean attributes as present if the mustache is <code>true</code>, absent if <code>false</code>.)</p>
+<p>Checkboxes may also be bound by the <code>name</code> attribute, which will result in the value specified in the <code>name</code> attribute containing an array of selected checkbox values.</p>
+<pre><code class="language-html">{{#colors}}
+  &lt;label&gt;
+    &lt;input type=&#39;checkbox&#39; name=&#39;{{selected}}&#39; value=&#39;{{.}}&#39; /&gt;{{.}}
+  &lt;/label&gt;
+{{/}}</code></pre>
+<p>If <code>colors</code> is an array, <code>[&#39;Red&#39;, &#39;Yellow&#39;, &#39;Green&#39;, &#39;Blue&#39;]</code>, then checking the first box will result in <code>selected</code> becoming <code>[&#39;Red&#39;]</code>. Checking the third box will result in <code>selected</code> becoming <code>[&#39;Red&#39;, &#39;Green&#39;]</code>. The array may also be updated from code using <code>set</code> or any of the array modification methods available to Ractive, and the checkboxes will be updated to reflect the contents of the array in the Ractive viewmodel.</p>
+<p><strong>Note</strong> that checkboxes may be bound by either <code>checked</code> or <code>name</code> but not both.</p>
+<h3 id="radios">Radios</h3>
+<p>Radio buttons can be controlled in the same way as checkboxes. However the chances are, if you&#39;re using radio buttons, you have a set of mutually exclusive options to choose between. In this case, if you set the <code>name</code> attribute on a radio input to e.g. <code>{{someValue}}</code>, <code>someValue</code> will reflect the <code>value</code> of the currently checked option:</p>
+<pre><code class="language-html">&lt;label&gt;&lt;input type=&#39;radio&#39; name=&#39;{{color}}&#39; value=&#39;red&#39; checked&gt; Red&lt;/label&gt;
+&lt;label&gt;&lt;input type=&#39;radio&#39; name=&#39;{{color}}&#39; value=&#39;green&#39;&gt; Green&lt;/label&gt;
+&lt;label&gt;&lt;input type=&#39;radio&#39; name=&#39;{{color}}&#39; value=&#39;blue&#39;&gt; Blue&lt;/label&gt;
+
+&lt;p&gt;The currently selected color is &lt;span style=&#39;color: {{color}};&#39;&gt;{{color}}&lt;/span&gt;&lt;/p&gt;</code></pre>
+<p>In the example above, the value of <code>color</code> will initially be <code>&#39;red&#39;</code> (because that input is checked in the template), and will update as and when the user selects another option.</p>
+<h2 id="-textarea-elements"><code>&lt;textarea&gt;</code> elements</h2>
+<p>Textareas work exactly the same as standard text inputs - slap a dynamic <code>value</code> attribute on them, and you&#39;re done:</p>
+<pre><code class="language-html">&lt;textarea value=&#39;{{content}}&#39;&gt;&lt;/textarea&gt;</code></pre>
+<h2 id="-select-elements"><code>&lt;select&gt;</code> elements</h2>
+<p>Drop-down select menus are good when you have many options to choose from. They&#39;re straightforward to use in Ractive:</p>
+<pre><code class="language-html">&lt;select value=&#39;{{selectedCountry}}&#39;&gt;
+    &lt;option selected disabled&gt;Select a country&lt;/option&gt;
+    {{#countries}}
+        &lt;option value=&#39;{{id}}&#39;&gt;{{name}}&lt;/option&gt;
+    {{/countries}}
+&lt;/select&gt;</code></pre>
+<pre><code class="language-js">ractive = <span class="keyword">new</span> Ractive({
+    el: myContainer,
+    template: myTemplate,
+    data: {
+        countries: [
+            { id: <span class="string">'AFG'</span>, name: <span class="string">'Afghanistan'</span> },
+            { id: <span class="string">'ALB'</span>, name: <span class="string">'Albania'</span> },
+            { id: <span class="string">'DZA'</span>, name: <span class="string">'Algeria'</span> },
+            { id: <span class="string">'ASM'</span>, name: <span class="string">'American Samoa'</span> }
+            <span class="comment">// and so on...</span>
+        ]
+    }
+});</code></pre>
+<p>In the example above, no country will initially be selected. If the user were to select Afghanistan from the list, the value of <code>selectedCountry</code> would change to <code>&#39;AFG&#39;</code>.</p>
+<h2 id="-contenteditable-"><code>contenteditable</code></h2>
+<p>Ractive can two-way data bind contenteditable elements.</p>
+<pre><code class="language-js"><span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({
+    el: myContainer,
+    template: myTemplate,
+    data: {
+        content: <span class="string">'Edit me'</span>
+    }
+});
+
+ractive.observe(<span class="string">'content'</span>, <span class="function"><span class="keyword">function</span><span class="params">(newValue, oldValue, keypath)</span> {</span>
+    <span class="comment">//newValue will contain the new content of the div</span>
+});</code></pre>
+<p><code>myTemplate</code></p>
+<pre><code class="language-html">&lt;div contenteditable=&quot;true&quot; value=&quot;{{content}}&quot;&gt;&lt;/div&gt;</code></pre>
+<p>This will be rendered as</p>
+<pre><code class="language-html">&lt;div contenteditable=&quot;true&quot;&gt;Edit Me&lt;/div&gt;</code></pre>
+<p>As the user edits the data the <code>content</code> will update, and observe will fire.</p>
+<p>There are a few caveats that you need to know. Despite the value binding with only two curly braces <code>{{content}}</code> (double curly braces are required for two way data binding) the returned content may or may not be a string of HTML. If a user presses enter after most browsers will insert a <code>&lt;br /&gt;</code>. The <code>content</code> would be set to <code>Edit Me&lt;br/&gt;</code>. Additionally anything you set to <code>content</code> would be rendered as HTML and not escaped despite the lack of triple curly braces(<code>{{{content}}}</code>).</p>
+<pre><code class="language-js">ractive.set(<span class="string">'content'</span>, <span class="string">'&lt;ul&gt;&lt;li&gt;Edit Me&lt;/li&gt;&lt;/ul&gt;'</span>);</code></pre>
+<p>This would actually render an editable unordered list.</p>
+<p>Be aware that not all browsers actually operate the same way when it comes to interacting with contenteditable. HTML generated by one browser may differ from another.</p>
+<h2 id="ambiguous-references">Ambiguous references</h2>
+<p>A mustache used in a two-way binding context must have an <em>unambiguous reference</em>. Consider the following:</p>
+<pre><code class="language-html">{{#foo}}
+    &lt;input value=&#39;{{bar}}&#39;&gt;
+{{/foo}}</code></pre>
+<pre><code class="language-js">ractive = <span class="keyword">new</span> Ractive({
+    el: myContainer,
+    template: myTemplate,
+    data: { foo: {} }
+});</code></pre>
+<p>Ractive must decide, straight away, what <a href="keypaths">keypath</a> to bind the input&#39;s <code>value</code> attribute to. It will first see if it can <a href="references">resolve the reference</a> (<code>&#39;bar&#39;</code>) given the current context stack (which includes a single context - <code>&#39;foo&#39;</code>). It can&#39;t, so it is forced to make an assumption - that the <code>&#39;bar&#39;</code> reference should resolve to the <code>&#39;bar&#39;</code> keypath.</p>
+<p>But this might not be what you want - maybe you <em>did</em> want it to resolve to <code>&#39;foo.bar&#39;</code>.</p>
+<p>You have two options - either use a <a href="mustaches#restricted-references">restricted reference</a>, i.e. <code>&lt;input value=&#39;{{.bar}}&#39;&gt;</code>, or ensure that <code>foo</code> has a <code>bar</code> property (even if the initial value is <code>undefined</code>).</p>
+<h2 id="lazy-updates">Lazy updates</h2>
+<p>Under the hood, Ractive always binds to the <code>change</code> event (and the <code>click</code> event in IE, in the case of checkboxes, due to an IE bug). By default, it will also bind to the <code>input</code> event, which means the model is updated instantly when the user enters data (the <code>change</code> event fires when a change is <a href="https://developer.mozilla.org/en-US/docs/Web/Reference/Events/change">&#39;committed by the user&#39;</a>). In some situations, that&#39;s not what you want - if you want to only bind to <code>change</code>, pass in <code>lazy: true</code> as an <a href="options#twoway">initialisation option</a>.</p>
+<h2 id="observing-changes">Observing changes</h2>
+<p>To use user input elsewhere in your app, you&#39;ll need to observe it using <a href="ractive-observe">ractive.observe()</a>:</p>
+<pre><code class="language-html">&lt;input placeholder=&#39;Type your name&#39; value=&#39;{{user.name}}&#39;&gt;</code></pre>
+<pre><code class="language-js">ractive = <span class="keyword">new</span> Ractive({
+    el: myContainer,
+    template: myTemplate
+});
+
+ractive.observe( <span class="string">'user.name'</span>, <span class="function"><span class="keyword">function</span> <span class="params">( newValue )</span> {</span>
+    app.user.name = newValue;
+    triggerSomeBehaviour();
+});</code></pre>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="tips">Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+		<li><a href="migrating">Migrating from previous versions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Configuration</h1>
+	<ul>
+		<li><a href="options">Options</a></li>
+		<li><a href="ractive-defaults">Defaults</a></li>
+		<li><a href="advanced-configuration">Advanced configuration</a></li>
+	</ul>
+</section>
+<section>
+	<h1>Core Concepts</h1>
+	<h2>Templates</h2>
+	<ul>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="decorators">Decorators</a></li>
+	</ul>
+	<h2>Data & Binding</h2>
+	<ul>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="computed-properties">Computed Properties</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+	</ul>
+	<h2>Events</h2>
+	<ul>
+		<li><a href="events-overview">Overview</a></li>
+		<li><a href="event-directives">Event directives</a></li>
+		<li><a href="proxy-events">Proxy events</a></li>
+		<li><a href="method-calls">Method calls</a></li>
+		<li><a href="publish-subscribe">Publish/subscribe</a></li>
+		<li><a href="event-bubbling">Event bubbling</a></li>
+		<li><a href="lifecycle-events">Lifecycle events</a></li>
+	</ul>
+	<h2>Transitions and Animations</h2>
+	<ul>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="ractive-easing">Easings</a></li>
+	</ul>
+	<h2>Components</h2>
+	<ul>
+		<li><a href="components">Components</a></li>
+	</ul>
+</section>
+<section>
+	<h1>API Reference</h1>
+	<h2>Constructor</h2>
+	<ul>
+		<li><a href="new-ractive">new Ractive(...)</a></li>
+	</ul>
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-pop">ractive.pop()</a></li>
+		<li><a href="ractive-push">ractive.push()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-shift">ractive.shift()</a></li>
+		<li><a href="ractive-splice">ractive.splice()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-unrender">ractive.unrender()</a></li>
+		<li><a href="ractive-unshift">ractive.unshift()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+	</ul>
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+		<li><a href="ractive-easing">Ractive.easing</a></li>
+	</ul>
+</ul>
+</section>
+<section>
+	<h1>Plugins</h1>
+	<h2>Using</h2>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+	</ul>
+	<h2>Writing</h2>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

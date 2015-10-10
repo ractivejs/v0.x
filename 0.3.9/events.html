@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Events | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Events</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.3.9/Events.md.hbs'>edit this page</a>
+			</header>
+
+			<p>Like many libraries, Ractive implements the <a href="http://addyosmani.com/blog/understanding-the-publishsubscribe-pattern-for-greater-javascript-scalability/">publish/subscribe</a> mechanism to allow you to trigger behaviour at certain points.</p>
+<p>There are three types of events - standard events, proxy events, and custom events. They all use the same interface - <a href="ractive-on">ractive.on()</a>:</p>
+<pre><code class="language-js">ractive = <span class="keyword">new</span> Ractive({
+  el: myContainer,
+  template: myTemplate
+});
+
+ractive.on( <span class="string">'teardown'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  alert( <span class="string">'Bye!'</span> );
+});</code></pre>
+<p>In all cases, event handlers will be called with <code>ractive</code> as <code>this</code>.</p>
+<h2 id="standard-events">Standard events</h2>
+<p>Standard events are those emitted by all Ractive instances:</p>
+<h3 id="set">set</h3>
+<p>Fired whenever <a href="ractive-set">ractive.set()</a> is called. The handler&#39;s arguments will be <code>(keypath, value)</code> or <code>(map)</code> depending on the arguments to <a href="ractive-set">ractive.set()</a>.</p>
+<h3 id="update">update</h3>
+<p>Fired whenever <a href="ractive-update">ractive.update()</a> is called, with <code>(keypath)</code> as the sole argument (unless no keypath was specified, in which case there are no arguments).</p>
+<h3 id="teardown">teardown</h3>
+<p>Fired whenever <a href="ractive-teardown">ractive.teardown()</a> is called. No arguments.</p>
+<h2 id="proxy-events">Proxy events</h2>
+<p>Proxy events are a convenient way of handling user interaction. Instead of doing <code>someElement.addEventListener( eventName, handler )</code> or <code>$( someSelector ).on( eventName, handler )</code>, you can write the name of a <em>proxy event</em> right into your template:</p>
+<pre><code class="language-html">&lt;button on-click=&#39;activate&#39;&gt;Activate!&lt;/button&gt;
+&lt;button on-click=&#39;deactivate&#39;&gt;Deactivate!&lt;/button&gt;</code></pre>
+<pre><code class="language-js">ractive = <span class="keyword">new</span> Ractive({
+  el: myContainer,
+  template: myTemplate
+});
+
+ractive.on({
+  activate: <span class="function"><span class="keyword">function</span> <span class="params">( event )</span> {</span>
+    <span class="comment">// do something</span>
+  },
+  deactivate: <span class="function"><span class="keyword">function</span> <span class="params">( event )</span> {</span>
+    <span class="comment">// do something</span>
+  }
+});</code></pre>
+<p>This way we don&#39;t have to bother traversing the DOM or storing references to elements and handlers. We also don&#39;t need to worry about removing event handlers when we detach chunks of the DOM - Ractive takes care of it.</p>
+<p>Proxy event handlers receive an <code>event</code> argument. This isn&#39;t the same as the <code>event</code> argument you&#39;d receive in a traditional handler (i.e. bound with <code>node.addEventListener</code> or <code>$(node).on()</code> etc), but an object with five properties:</p>
+<ul>
+<li><code>node</code> - the relevant element</li>
+<li><code>original</code> - the underlying DOM event (useful for <code>event.original.preventDefault()</code> etc)</li>
+<li><code>keypath</code> - the keypath of the current context</li>
+<li><code>context</code> - the value of <code>ractive.get(event.keypath)</code></li>
+<li><code>index</code> - a map of index references</li>
+</ul>
+<p><em>TODO - explain what the hell the last three of those things meant... In the meantime folks, do a <code>console.log( event )</code> inside your handlers and all will be revealed!</em></p>
+<p>Because of the way proxy events work, they more or less eliminate the need for event delegation.</p>
+<p>Any standard DOM event that an element supports can be used (e.g. <code>on-mouseover=&#39;highlight&#39;</code>, <code>on-touchstart=&#39;dragstart&#39;</code>, <code>on-blur=&#39;submit&#39;</code>, <code>on-error=&#39;loadFallbackImage&#39;</code>, and so on), as can non-standard events defined in <a href="ractive-eventdefinitions">Ractive.eventDefinitions</a> such as <code>on-tap</code>.</p>
+<p><em>TODO - chained proxy events, additional arguments in custom event definitions</em></p>
+<h2 id="custom-events">Custom events</h2>
+<p>You can easily create events of your own with <a href="ractive-fire">ractive.fire()</a>. This is most useful in the context of subclasses created with <a href="ractive-extend">Ractive.extend()</a>.</p>
+<p>In this example, we respond to the user clicking on an item by firing a <code>selected</code> event with the item data as the first (and only) argument:</p>
+<pre><code class="language-html">&lt;div class=&#39;catalogue&#39;&gt;
+  {{#items:i}}
+    &lt;div on-tap=&#39;select&#39; data-index=&#39;{{i}}&#39;&gt;
+      {{&gt;content}}
+    &lt;/div&gt;
+  {{/items}}
+&lt;/div&gt;</code></pre>
+<pre><code class="language-js"><span class="keyword">var</span> Catalogue = Ractive.extend({
+  template: catalogueTemplate,
+  partials: { content: contentPartial }, <span class="comment">// pretend we made one</span>
+  init: <span class="function"><span class="keyword">function</span> <span class="params">( options )</span> {</span>
+    <span class="keyword">var</span> self = <span class="keyword">this</span>, items = options.items;
+
+    <span class="keyword">this</span>.on( <span class="string">'select'</span>, <span class="function"><span class="keyword">function</span> <span class="params">( event )</span> {</span>
+      <span class="keyword">var</span> index = event.node.getAttribute( <span class="string">'data-index'</span> );
+      self.fire( <span class="string">'selected'</span>, items[ index ] );
+    });
+  }
+});</code></pre>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>API Reference</h1>
+	<h2>new Ractive(...)</h2>
+	<ul>
+		<li><a href="initialisation-options">Initialisation options</a></li>
+	</ul>
+
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+	</ul>
+
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+	</ul>
+</ul>
+
+<section>
+	<h1>Plugins</h1>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+		<li><a href="writing-plugins">Writing plugins</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Glossary</h1>
+	<ul>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="components">Components</a></li>
+		<li><a href="decorators">Decorators</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="events">Events</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

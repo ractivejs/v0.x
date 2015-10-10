@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Writing adaptor plugins | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Writing adaptor plugins</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.6/Writing adaptor plugins.md.hbs'>edit this page</a>
+			</header>
+
+			<p>An <a href="adaptors">adaptor</a> is an object with two methods - <code>filter</code> and <code>wrap</code>:</p>
+<pre><code class="language-js">myAdaptor = {
+  filter: <span class="function"><span class="keyword">function</span> <span class="params">( object, keypath, ractive )</span> {</span>
+    <span class="comment">// return `true` if a particular object is of the type we want to adapt</span>
+  },
+  wrap: <span class="function"><span class="keyword">function</span> <span class="params">( ractive, object, keypath, prefixer )</span> {</span>
+    <span class="comment">// set up event bindings etc, and return a 'wrapper'</span>
+  }
+};</code></pre>
+<p>The &#39;wrapper&#39; allows Ractive to interact with the object. The easiest way to explain it is with an example.</p>
+<h2 id="bear-with-me-there-s-quite-a-lot-of-code-here">Bear with me, there&#39;s quite a lot of code here</h2>
+<p>Suppose you have a <code>Box</code> class, which looks like this:</p>
+<pre><code class="language-js">Box = <span class="function"><span class="keyword">function</span> <span class="params">( width, height )</span> {</span>
+  <span class="keyword">this</span>.width = width;
+  <span class="keyword">this</span>.height = height;
+};
+
+Box.prototype = {
+  getArea: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> <span class="keyword">this</span>.width * <span class="keyword">this</span>.height;
+  },
+  setWidth: <span class="function"><span class="keyword">function</span> <span class="params">( width )</span> {</span>
+    <span class="keyword">this</span>.width = width;
+  },
+  setHeight: <span class="function"><span class="keyword">function</span> <span class="params">( height )</span> {</span>
+    <span class="keyword">this</span>.height = height;
+  }
+};</code></pre>
+<p>Now suppose we&#39;d like to have a setup like this:</p>
+<pre><code class="language-html">&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;&lt;th&gt;Width&lt;/th&gt;&lt;th&gt;Height&lt;/th&gt;&lt;th&gt;Area&lt;/th&gt;&lt;/tr&gt;
+  &lt;/thead&gt;
+
+  &lt;tbody&gt;
+
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+<pre><code class="language-js"><span class="keyword">var</span> littleBox, mediumBox, bigBox, ractive;
+
+littleBox = <span class="keyword">new</span> Box( <span class="number">5</span>, <span class="number">7</span> );
+mediumBox = <span class="keyword">new</span> Box( <span class="number">12</span>, <span class="number">20</span> );
+bigBox = <span class="keyword">new</span> Box( <span class="number">35</span>, <span class="number">45</span> );
+
+ractive = <span class="keyword">new</span> Ractive({
+  el: <span class="string">'container'</span>,
+  template: myTemplate,
+  data: { boxes: [ littleBox, mediumBox, bigBox ] }
+});</code></pre>
+<p>What we want is to be able to interact with the boxes themselves, and have our table update itself:</p>
+<pre><code class="language-js"><span class="comment">// This should update both the width and area cells of the first table row</span>
+littleBox.setWidth( <span class="number">7</span> );</code></pre>
+<p>We can do that with a box adaptor:</p>
+<pre><code class="language-js">boxAdaptor = {
+  <span class="comment">// Ractive uses the `filter` function to determine whether something</span>
+  <span class="comment">// needs to be wrapped or not. For example 'boxes' doesn't need to be</span>
+  <span class="comment">// wrapped because it's an array, but 'boxes.0' - which is the same as</span>
+  <span class="comment">// our `littleBox` variable - does.</span>
+  filter: <span class="function"><span class="keyword">function</span> <span class="params">( object )</span> {</span>
+    <span class="keyword">return</span> object <span class="keyword">instanceof</span> Box;
+  },
+
+  <span class="comment">// If an object passes the filter, we wrap it.</span>
+  wrap: <span class="function"><span class="keyword">function</span> <span class="params">( ractive, box, keypath, prefixer )</span> {</span>
+    <span class="comment">// We can simply overwrite the prototype methods with ones that</span>
+    <span class="comment">// do the same thing, but also notify Ractive about the changes</span>
+    box.setWidth = <span class="function"><span class="keyword">function</span> <span class="params">( width )</span> {</span>
+
+      <span class="keyword">this</span>.width = width;
+
+      <span class="comment">// Very often, inside adaptors, we need to turn _relative keypaths_</span>
+      <span class="comment">// into _absolute keypaths_. For example if this box's keypath is</span>
+      <span class="comment">// 'boxes.0', we need to turn 'width' and 'area' into 'boxes.0.width'</span>
+      <span class="comment">// and 'boxes.0.area'.</span>
+      <span class="comment">//</span>
+      <span class="comment">// This is such a common requirement that a helper function -</span>
+      <span class="comment">// `prefixer` - is automatically generated for each wrapper.</span>
+      ractive.set( prefixer({
+        width: width,
+        area: box.getArea()
+      }));
+    };
+
+    box.setHeight = <span class="function"><span class="keyword">function</span> <span class="params">( height )</span> {</span>
+      <span class="keyword">this</span>.height = height;
+
+      ractive.set( prefixer({
+        height: height,
+        area: box.getArea()
+      }));
+    };
+
+    <span class="comment">// The wrapper we return is used by Ractive to interact with each box.</span>
+    <span class="comment">// It must have a `teardown` method and a `get` method.</span>
+    <span class="comment">//</span>
+    <span class="comment">// If you want to be able to interact with the object via Ractive (e.g.</span>
+    <span class="comment">// `ractive.set( 'boxes[0].width', 10 )` as well as the other way round,</span>
+    <span class="comment">// then you should also provide `set` and `reset` methods.</span>
+    <span class="keyword">return</span> {
+      <span class="comment">// When a given Box instance is no longer relevant to Ractive, we</span>
+      <span class="comment">// revert it to its normal state</span>
+      teardown: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="comment">// we just remove the setWidth and setHeight methods,</span>
+        <span class="comment">// so that the prototype methods get used instead</span>
+        <span class="keyword">delete</span> box.setWidth;
+        <span class="keyword">delete</span> box.setHeight;
+      },
+
+      <span class="comment">// The `get()` method returns an object representing how Ractive should</span>
+      <span class="comment">// 'see' each Box instance</span>
+      get: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">return</span> {
+          width: box.width,
+          height: box.height,
+          area: box.getArea()
+        };
+      },
+
+      <span class="comment">// The `set()` method is called when you do `ractive.set()`, if the keypath</span>
+      <span class="comment">// is _downstream_ of the wrapped object. So if, for example, you do</span>
+      <span class="comment">// `ractive.set( 'boxes[0].width', 10 )`, this `set()` method will be called</span>
+      <span class="comment">// with 'width' and 10 as arguments.</span>
+      set: <span class="function"><span class="keyword">function</span> <span class="params">( property, value )</span> {</span>
+        <span class="keyword">if</span> ( property === <span class="string">'width'</span> || property === <span class="string">'height'</span> ) {
+          box[ property ] = value;
+          ractive.set( keypath + <span class="string">'.area'</span>, box.getArea() );
+        }
+      },
+
+      <span class="comment">// The `reset()` method is called when you do `ractive.set()`, if the keypath</span>
+      <span class="comment">// is _identical_ to the keypath of the wrapped object. Two things could happen</span>
+      <span class="comment">// - the wrapped object could modify itself to reflect the new data, or (if it</span>
+      <span class="comment">// doesn't know what to do with the new data) it could return `false`, in which</span>
+      <span class="comment">// case it will be torn down.</span>
+      reset: <span class="function"><span class="keyword">function</span> <span class="params">( data )</span> {</span>
+        <span class="comment">// if `data` is a new Box instance, or if it isn't an object at all,</span>
+        <span class="comment">// we should get rid of this one</span>
+        <span class="keyword">if</span> ( <span class="keyword">typeof</span> data !== <span class="string">'object'</span> || data <span class="keyword">instanceof</span> Box ) {
+          <span class="keyword">return</span> <span class="literal">false</span>;
+        }
+
+        <span class="keyword">if</span> ( data.width !== <span class="literal">undefined</span> ) {
+          box.width = width;
+        }
+
+        <span class="keyword">if</span> ( data.height !== <span class="literal">undefined</span> ) {
+          box.height = width;
+        }
+      }
+    };
+  }
+};</code></pre>
+<p>You can see this adaptor in action <a href="http://jsfiddle.net/rich_harris/ATAgH/">in a JSFiddle here</a>. Notice that because our wrapper includes a <code>set</code> method, <a href="two-way-binding">two-way binding</a> works seamlessly.</p>
+<h2 id="adding-polish">Adding polish</h2>
+<p>This adaptor works, but we can improve it. Rather than re-creating the <code>teardown</code>, <code>get</code>, <code>set</code>, and <code>reset</code> methods each time we wrap a box, we can use prototypal inheritance instead. Study the existing adaptors to see this in action.</p>
+<p>Something else to be aware of: there is no built-in mechanism for avoiding infinite loops. If your wrapper calls <code>ractive.set()</code>, and that causes the wrapper&#39;s <code>set()</code> method to be called, which causes the underlying object to change, triggering an event which causes <code>ractive.set()</code> to be called, then a &#39;Maximum call stack size exceeded&#39; message isn&#39;t far away.</p>
+<p>This isn&#39;t a problem with primitive values (numbers, strings, booleans and so on) because Ractive doesn&#39;t bother calling <code>set()</code> if a value hasn&#39;t changed. But with objects and arrays, there&#39;s no easy and performant way to tell if the contents have changed, so <code>set()</code> gets called <em>in case something changed</em> rather than <em>because something changed</em>. You can solve this problem with a short-circuiting mechanism - again, study the examples.</p>
+<h2 id="share-your-adaptors-">Share your adaptors!</h2>
+<p>If you create an adaptor that you think other developers would be able to use, please share it via <a href="http://twitter.com/RactiveJS">@RactiveJS</a>!</p>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="tips">Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+		<li><a href="migrating">Migrating from previous versions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Configuration</h1>
+	<ul>
+		<li><a href="options">Options</a></li>
+		<li><a href="ractive-defaults">Defaults</a></li>
+		<li><a href="advanced-configuration">Advanced configuration</a></li>
+	</ul>
+</section>
+<section>
+	<h1>Core Concepts</h1>
+	<h2>Templates</h2>
+	<ul>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="decorators">Decorators</a></li>
+	</ul>
+	<h2>Data & Binding</h2>
+	<ul>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="computed-properties">Computed Properties</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+	</ul>
+	<h2>Events</h2>
+	<ul>
+		<li><a href="events-overview">Overview</a></li>
+		<li><a href="event-directives">Event directives</a></li>
+		<li><a href="proxy-events">Proxy events</a></li>
+		<li><a href="method-calls">Method calls</a></li>
+		<li><a href="publish-subscribe">Publish/subscribe</a></li>
+		<li><a href="event-bubbling">Event bubbling</a></li>
+		<li><a href="lifecycle-events">Lifecycle events</a></li>
+	</ul>
+	<h2>Transitions and Animations</h2>
+	<ul>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="ractive-easing">Easings</a></li>
+	</ul>
+	<h2>Components</h2>
+	<ul>
+		<li><a href="components">Components</a></li>
+	</ul>
+</section>
+<section>
+	<h1>API Reference</h1>
+	<h2>Constructor</h2>
+	<ul>
+		<li><a href="new-ractive">new Ractive(...)</a></li>
+	</ul>
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-pop">ractive.pop()</a></li>
+		<li><a href="ractive-push">ractive.push()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-shift">ractive.shift()</a></li>
+		<li><a href="ractive-splice">ractive.splice()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-unrender">ractive.unrender()</a></li>
+		<li><a href="ractive-unshift">ractive.unshift()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+	</ul>
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+		<li><a href="ractive-easing">Ractive.easing</a></li>
+	</ul>
+</ul>
+</section>
+<section>
+	<h1>Plugins</h1>
+	<h2>Using</h2>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+	</ul>
+	<h2>Writing</h2>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

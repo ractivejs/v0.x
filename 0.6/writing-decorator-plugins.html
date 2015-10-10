@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Writing decorator plugins | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Writing decorator plugins</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.6/Writing decorator plugins.md.hbs'>edit this page</a>
+			</header>
+
+			<p>A <a href="decorators">decorator</a> is a way to add behaviour to a node when it is rendered, or to augment it in some way.</p>
+<p>For this example we&#39;ll create a tooltip decorator. For the impatient, you can see the <a href="http://jsfiddle.net/tomByrer/9g3pB/11/">finished result in this JSFiddle</a>.</p>
+<p>Firstly, we need to add the <code>decorator</code> <em>directive</em> to any nodes that the decorator should apply to:</p>
+<pre><code class="language-html">&lt;p&gt;This text contains &lt;span decorator=&#39;tooltip:This is a tooltip&#39;&gt;tooltips&lt;/span&gt;.&lt;/p&gt;</code></pre>
+<p>(Directives are just instructions to Ractive - they don&#39;t actually get added to the element as attributes.)</p>
+<p>Now, the <code>tooltip</code> decorator function will be called when the <code>&lt;span&gt;</code> is added to the DOM. The first argument to the function is the <code>&lt;span&gt;</code> itself; subsequent arguments given after the <code>:</code> in the directive will be passed to the function - in this case, there will be a second argument, which is the &#39;This is a tooltip&#39; message.</p>
+<p>Within that function, we can do whatever we like - the only rule is that it must return an object with a <code>teardown()</code> method that gets called if the <code>&lt;span&gt;</code> is removed from the DOM:</p>
+<pre><code class="language-js"><span class="keyword">var</span> tooltipDecorator = <span class="function"><span class="keyword">function</span> <span class="params">( node, content )</span> {</span>
+  <span class="comment">// setup work goes here...</span>
+
+  <span class="keyword">return</span> {
+    teardown: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      <span class="comment">// ...any cleanup work goes here</span>
+    }
+  };
+};</code></pre>
+<p>There are a couple of ways to make the decorator available to Ractive:</p>
+<pre><code class="language-js"><span class="comment">// decorator is available to all Ractive instances</span>
+Ractive.decorators.tooltip = tooltipDecorator;
+
+<span class="comment">// decorator is available to a single Ractive instance:</span>
+ractive = <span class="keyword">new</span> Ractive({
+  el: <span class="string">'body'</span>,
+  template: template,
+  decorators: {
+    tooltip: tooltipDecorator
+  }
+});
+
+<span class="comment">// decorator is available to all instances of e.g. RactiveWithTooltip:</span>
+RactiveWithTooltip = Ractive.extend({
+  decorators: {
+    tooltip: tooltipDecorator
+  }
+});</code></pre>
+<h2 id="adding-the-logic">Adding the logic</h2>
+<p>So far, we&#39;ve got a decorator that doesn&#39;t actually do anything. Let&#39;s fix that.</p>
+<pre><code class="language-js"><span class="keyword">var</span> tooltipDecorator = <span class="function"><span class="keyword">function</span> <span class="params">( node, content )</span> {</span>
+  <span class="keyword">var</span> tooltip, handlers, eventName;
+
+  <span class="comment">// Create some event handlers. NB we can use addEventListener</span>
+  <span class="comment">// with impunity, even in old IE, by using a legacy build:</span>
+  <span class="comment">// https://docs.ractivejs.org/latest/Legacy-builds</span>
+  handlers = {
+    mouseover: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      <span class="comment">// Create a tooltip...</span>
+      tooltip = document.createElement( <span class="string">'p'</span> );
+      tooltip.className = <span class="string">'ractive-tooltip'</span>;
+      tooltip.textContent = content;
+
+      <span class="comment">// ...and insert it before the node</span>
+      node.parentNode.insertBefore( tooltip, node );
+    },
+
+    mousemove: <span class="function"><span class="keyword">function</span> <span class="params">( event )</span> {</span>
+      <span class="comment">// Keep the tooltip near where the mouse is</span>
+      tooltip.style.left = event.clientX + <span class="string">'px'</span>;
+      tooltip.style.top = ( event.clientY - tooltip.clientHeight - <span class="number">20</span> ) + <span class="string">'px'</span>;
+    },
+
+    mouseleave: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      <span class="comment">// Destroy the tooltip when the mouse leaves the node</span>
+      tooltip.parentNode.removeChild( tooltip );
+    }
+  };
+
+  <span class="comment">// Add event handlers to the node</span>
+  <span class="keyword">for</span> ( eventName <span class="keyword">in</span> handlers ) {
+    <span class="keyword">if</span> ( handlers.hasOwnProperty( eventName ) ) {
+      node.addEventListener( eventName, handlers[ eventName ], <span class="literal">false</span> );
+    }
+  }
+
+  <span class="comment">// Return an object with a `teardown()` method that removes the</span>
+  <span class="comment">// event handlers when we no longer need them</span>
+  <span class="keyword">return</span> {
+    teardown: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      <span class="keyword">for</span> ( eventName <span class="keyword">in</span> handlers ) {
+        <span class="keyword">if</span> ( handlers.hasOwnProperty( eventName ) ) {
+          node.removeEventListener( eventName, handlers[ eventName ], <span class="literal">false</span> );
+        }
+      }
+    }
+  };
+};</code></pre>
+<p>We&#39;ll need to add some CSS to complete the effect:</p>
+<pre><code class="language-css"><span class="class">.ractive-tooltip</span> <span class="rules">{
+  <span class="rule"><span class="attribute">display</span>:<span class="value"> block</span></span>;
+  <span class="rule"><span class="attribute">position</span>:<span class="value"> fixed</span></span>;
+  <span class="rule"><span class="attribute">max-width</span>:<span class="value"> <span class="number">300</span>px</span></span>;
+  <span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="hexcolor">#f4f4f4</span></span></span>;
+  <span class="rule"><span class="attribute">border</span>:<span class="value"> <span class="number">1</span>px solid <span class="hexcolor">#eee</span></span></span>;
+  <span class="rule"><span class="attribute">box-shadow</span>:<span class="value"> <span class="number">1</span>px <span class="number">1</span>px <span class="number">3</span>px <span class="function">rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.1</span>)</span></span></span>;
+  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">0.5</span>em</span></span>;
+  <span class="rule"><span class="attribute">font-size</span>:<span class="value"> <span class="number">0.8</span>em</span></span>;
+<span class="rule">}</span></span></code></pre>
+<h2 id="adding-parameters">Adding parameters</h2>
+<p>But wait - what if we don&#39;t want to use the <code>ractive-tooltip</code> class name? In fact, come to mention it, there&#39;s a whole load of hard-coded assumptions in there.</p>
+<p>There are two ways we could address this. Firstly, we could add a whole load of additional arguments to the decorator directive:</p>
+<pre><code class="language-html">&lt;span decorator=&#39;tooltip:&quot;This is a tooltip&quot;,&quot;p&quot;,&quot;tooltips-ftw&quot;,0,-20&#39;&gt;tooltips&lt;/span&gt;</code></pre>
+<pre><code class="language-js">tooltipDecorator = <span class="function"><span class="keyword">function</span> <span class="params">( node, content, elementName, className, offsetX, offsetY )</span> {</span>
+  <span class="comment">/* ... */</span>
+};</code></pre>
+<p>That gives you lots of flexibility but it&#39;s pretty verbose.</p>
+<p>Luckily there&#39;s another way. Because, in JavaScript, functions are also objects, we can add properties to the decorator function itself, like so:</p>
+<pre><code class="language-js">tooltipDecorator = <span class="function"><span class="keyword">function</span> <span class="params">( node, content )</span> {</span>
+  <span class="comment">/*
+    Instead of...
+
+      tooltip = document.createElement( 'p' );
+      tooltip.className = 'ractive-tooltip';
+
+    ...we do
+
+      tooltip = document.createElement( tooltipDecorator.elementName );
+      tooltip.className = tooltipDecorator.className;
+  */</span>
+};
+
+<span class="comment">// Default parameters</span>
+tooltipDecorator.elementName = <span class="string">'p'</span>;
+tooltipDecorator.className = <span class="string">'ractive-tooltip'</span>;
+tooltipDecorator.offsetX = <span class="number">0</span>;
+tooltipDecorator.offsetX = -<span class="number">20</span>;
+
+Ractive.decorators.tooltip = tooltipDecorator;
+
+<span class="comment">// Later, a developer using the tooltip decorator can customise it, e.g.</span>
+Ractive.decorators.tooltip.className = <span class="string">'tooltips-ftw'</span>;</code></pre>
+<h2 id="sharing-your-decorators">Sharing your decorators</h2>
+<p>If you create a decorator that you find useful, other developers probably will too. Share it! An easy way to get started is to use the <a href="https://github.com/RactiveJS/Plugin-template">plugin template</a>, which uses <a href="http://gruntjs.com">Grunt</a> and walks you through the steps necessary to create a plugin with a demo page.</p>
+<p>Once you&#39;re ready to share it with the world, ping <a href="http://twitter.com/RactiveJS">@RactiveJS</a> on Twitter. Thanks!</p>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="tips">Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+		<li><a href="migrating">Migrating from previous versions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Configuration</h1>
+	<ul>
+		<li><a href="options">Options</a></li>
+		<li><a href="ractive-defaults">Defaults</a></li>
+		<li><a href="advanced-configuration">Advanced configuration</a></li>
+	</ul>
+</section>
+<section>
+	<h1>Core Concepts</h1>
+	<h2>Templates</h2>
+	<ul>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="decorators">Decorators</a></li>
+	</ul>
+	<h2>Data & Binding</h2>
+	<ul>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="computed-properties">Computed Properties</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+	</ul>
+	<h2>Events</h2>
+	<ul>
+		<li><a href="events-overview">Overview</a></li>
+		<li><a href="event-directives">Event directives</a></li>
+		<li><a href="proxy-events">Proxy events</a></li>
+		<li><a href="method-calls">Method calls</a></li>
+		<li><a href="publish-subscribe">Publish/subscribe</a></li>
+		<li><a href="event-bubbling">Event bubbling</a></li>
+		<li><a href="lifecycle-events">Lifecycle events</a></li>
+	</ul>
+	<h2>Transitions and Animations</h2>
+	<ul>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="ractive-easing">Easings</a></li>
+	</ul>
+	<h2>Components</h2>
+	<ul>
+		<li><a href="components">Components</a></li>
+	</ul>
+</section>
+<section>
+	<h1>API Reference</h1>
+	<h2>Constructor</h2>
+	<ul>
+		<li><a href="new-ractive">new Ractive(...)</a></li>
+	</ul>
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-pop">ractive.pop()</a></li>
+		<li><a href="ractive-push">ractive.push()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-shift">ractive.shift()</a></li>
+		<li><a href="ractive-splice">ractive.splice()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-unrender">ractive.unrender()</a></li>
+		<li><a href="ractive-unshift">ractive.unshift()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+	</ul>
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+		<li><a href="ractive-easing">Ractive.easing</a></li>
+	</ul>
+</ul>
+</section>
+<section>
+	<h1>Plugins</h1>
+	<h2>Using</h2>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+	</ul>
+	<h2>Writing</h2>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

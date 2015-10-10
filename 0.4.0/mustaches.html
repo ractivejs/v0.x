@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Mustaches | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Mustaches</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.4.0/Mustaches.md.hbs'>edit this page</a>
+			</header>
+
+			<h2 id="what-is-mustache-">What is Mustache?</h2>
+<p><a href="http://mustache.github.com">Mustache</a> is one of the most popular templating languages. It&#39;s a very lightweight, readable syntax with a comprehensive specification - which means that implementations (such as Ractive) can test that they&#39;re doing things correctly.</p>
+<p>Other templating languages borrow liberally from Mustache. <a href="http://handlebarsjs.com">Handlebars</a> has a mustache-like syntax, as does <a href="http://angularjs.org">Angular</a>.</p>
+<h2 id="what-are-mustaches-">What are mustaches?</h2>
+<p>Within this documentation, and within Ractive&#39;s code, &#39;mustache&#39; means two things - a snippet of a template which uses mustache delimiters, such as <code>{{name}}</code>, and the object within our <a href="parallel-dom">parallel DOM</a> that is responsible for listening to data changes and updating the (real) DOM.</p>
+<p>We say that the <code>{{name}}</code> mustache has a <em><a href="references">reference</a></em> of <code>name</code>. When it gets rendered, and we create the object whose job it is to represent <code>name</code> in the DOM, we attempt to <em>resolve the reference according to the current context stack</em>. For example if we&#39;re in the <code>user</code> context, and <code>user</code> has a property of <code>name</code>, <code>name</code> will resolve to a <a href="keypaths">keypath</a> of <code>user.name</code>.</p>
+<p>As soon as the mustache knows what its keypath is (which may not be at render time, if data has not yet been set), it registers itself as a <em><a href="dependants">dependant</a></em> of the keypath. Then, whenever data changes, Ractive scans the dependency graph to see which mustaches need to update, and notifies them accordingly.</p>
+<p>As well as simple <em>interpolators</em> like <code>{{name}}</code>, the other mustaches types - sections, partials, and even delimiter changes - are supported. Consult the <a href="http://learn.ractivejs.org">tutorials</a> to learn about these.</p>
+<h2 id="extensions">Extensions</h2>
+<p>Ractive is 99% backwards-compatible with Mustache, but adds five additional features (array index references, object iteration, restricted references, ancestor references and expressions) which are detailed below.</p>
+<h3 id="array-index-references">Array Index references</h3>
+<p>Index references are a way of determining where we are within a list section. It&#39;s best explained with an example:</p>
+<pre><code class="language-html">{{#items:i}}
+  &lt;!-- within here, {{i}} refers to the current index --&gt;
+  &lt;p&gt;Item {{i}}: {{content}}&lt;/p&gt;
+{{/items}}</code></pre>
+<p>If you then set <code>items</code> to <code>[{content: &#39;zero&#39;}, {content: &#39;one&#39;}, {content: &#39;two&#39;}]</code>, the result would be</p>
+<pre><code class="language-html">&lt;p&gt;Item 0: zero&lt;/p&gt;
+&lt;p&gt;Item 1: one&lt;/p&gt;
+&lt;p&gt;Item 2: two&lt;/p&gt;</code></pre>
+<p>This is particularly useful when you need to respond to user interaction. For example you could add a <code>data-index=&#39;{{i}}&#39;</code> attribute, then easily find which item a user clicked on.</p>
+<h3 id="object-iteration">Object Iteration</h3>
+<p>Mustache can also iterate over objects, rather than array. The syntax is the same as for Array indices. Given the following ractive:</p>
+<pre><code class="language-javascript">ractive = <span class="keyword">new</span> Ractive({
+  el: container,
+  template: template,
+  data: {
+    users: {
+      <span class="string">'joe@example.com'</span>: { name: <span class="string">'Joe'</span> },
+      <span class="string">'jane@example.com'</span>: { name: <span class="string">'Jane'</span> },
+      <span class="string">'mary@example.com'</span>: { name: <span class="string">'Mary'</span> }
+    }
+  }
+});</code></pre>
+<p>We can iterate over the users object with the following:</p>
+<pre><code class="language-html">&lt;ul&gt;
+  {{#users:email}}
+    &lt;li&gt;{{email}}: {{name}}&lt;/li&gt;
+  {{/users}}
+&lt;/ul&gt;
+
+&lt;!-- becomes... --&gt;
+&lt;ul&gt;
+  &lt;li&gt;joe@example.com: Joe&lt;/li&gt;
+  &lt;li&gt;jane@example.com: Jane&lt;/li&gt;
+  &lt;li&gt;mary@example.com: Mary&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<p>In previous versions of Ractive it was required to close a section with the opening keypath. In the example above <code>{{#users}}</code> is closed by <code>{{/users}}</code>. This is no longer the case, you can now simply close an iterator with <code>{{/}}</code>. Ractive will attempt to warn you in the event of a mismatch, <code>{{#users}}</code> cannot be closed by <code>{{/comments}}</code>. This will not effect <a href="expressions">Expressions</a> as they have always been able to be closed by <code>{{/}}</code>.</p>
+<pre><code class="language-html">&lt;!--- valid markup --&gt;
+{{#users}}
+
+{{/users}}
+
+{{#users:i}}
+
+{{/users}}
+
+{{#users}}
+
+{{/}}
+
+{{#users.topUsers}}
+&lt;!-- still matches the first part of the keypath, thus a valid closing tag --&gt;
+{{/users}}
+
+&lt;!-- invalid markup --&gt;
+{{#users}}
+
+{{/comments}}</code></pre>
+<h3 id="restricted-references">Restricted references</h3>
+<p>Normally, references are resolved according to a specific algorithm, which involves <em>moving up the context stack</em> until a property matching the reference is found. In the vast majority of cases this is exactly what you want, but occasionally (for example when dealing with <a href="parials#recursive-partials">recursive partials</a>) it is useful to be able to specify that a property must exist <em>in the current context</em>.</p>
+<p>To restrict a reference to the current context, prefix it with a <code>.</code>, e.g. <code>{{#.bar}}</code>:</p>
+<pre><code class="language-html">{{#foo}}
+  {{#bar}}This section will render, because it will resolve to &#39;bar&#39;{{/bar}}
+  {{#.bar}}This section will NOT render, because it resolves to &#39;foo.bar&#39;{{/.bar}}
+{{/foo}}</code></pre>
+<pre><code class="language-js">ractive = <span class="keyword">new</span> Ractive({
+  el: myContainer,
+  template: myTemplate,
+  data: { bar: <span class="literal">true</span>, foo: {} }
+});</code></pre>
+<h3 id="ancestor-references">Ancestor references</h3>
+<p>Very occasionally, you might need to refer explicitly to a property higher up in the tree to avoid naming conflicts. You can do that by prefixing references with <code>../</code> (or <code>../../</code>, or <code>../../../</code>...):</p>
+<pre><code class="language-html">&lt;h1&gt;Blog posts by {{name}}&lt;/p&gt;
+
+&lt;ul class=&#39;blog-posts&#39;&gt;
+  {{#posts}}
+    &lt;li&gt;&lt;a href=&#39;{{ slugify(../../name) }}/{{ slugify(name) }}&#39;&gt;{{name}}&lt;/a&gt;&lt;/li&gt;
+  {{/posts}}
+&lt;/ul&gt;</code></pre>
+<pre><code class="language-js"><span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({
+  el: document.body,
+  template: myTemplate,
+  data: {
+    name: <span class="string">'Rich'</span>,
+    posts: [
+      { name: <span class="string">'This is a blog post'</span> },
+      { name: <span class="string">'And so is this'</span> }
+    ],
+    slugify: <span class="function"><span class="keyword">function</span> <span class="params">( str )</span> {</span>
+      <span class="keyword">var</span> slug;
+      <span class="comment">/* SOME CODE HAPPENS */</span>
+      <span class="keyword">return</span> slug;
+    }
+  }
+});</code></pre>
+<p>In this example, some damn fool decided it would be a good idea to give posts a &#39;name&#39; property as well as authors. Which means that in the <code>href</code> attribute, it wouldn&#39;t be possible to refer to the root-level <code>name</code> property, because it would always resolve to the <code>name</code> property of the current post - and that&#39;s no good, because the root-level <code>name</code> property is used to construct the URL.</p>
+<p>By using <code>../../name</code> instead of <code>name</code>, we&#39;re saying &#39;go up one level (to <code>posts</code>), then up one more (to the root), and <em>then</em> look for the <code>name</code> property&#39;.</p>
+<h3 id="expressions">Expressions</h3>
+<p>Expressions are a big topic, so they have a <a href="expressions">page of their own</a>. But this section is about explaining the difference between vanilla Mustache and Ractive Mustache, so they deserve a mention here.</p>
+<p>Expressions look like any normal mustache. For example this expression converts <code>num</code> to a percentage:</p>
+<pre><code class="language-html">&lt;p&gt;{{ num * 100 }}%&lt;/p&gt;</code></pre>
+<p>The neat part is that this expression will recognise it has a dependency on whatever keypath <code>num</code> resolves to, and will re-evaluate whenever the value of <code>num</code> changes.</p>
+<p>Mustache fans may bristle at expressions - after all, the whole point is that mustache templates are <em>logic-less</em>, right? But what that really means is that the logic is <em>embedded in the syntax</em> (what are conditionals and iterators if not forms of logic?) rather than being language dependent. Expressions just allow you to add a little more, and in so doing make complex tasks simple.</p>
+<h2 id="footnote">Footnote</h2>
+<p>*Ractive implements the Mustache specification as closely as possible. 100% compliance is impossible, because it&#39;s unlike other templating libraries - rather than turning a string into a string, Ractive turns a string into DOM, which has to be restringified so we can test compliance. Some things, like lambdas, get lost in translation - it&#39;s unavoidable, and unimportant.</p>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="tips">Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>API Reference</h1>
+	<h2>new Ractive(...)</h2>
+	<ul>
+		<li><a href="initialisation-options">Initialisation options</a></li>
+	</ul>
+
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+	</ul>
+
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+	</ul>
+</ul>
+
+<section>
+	<h1>Using plugins</h1>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="decorators">Decorators</a></li>
+		<li><a href="events">Events</a></li>
+		<li><a href="transitions">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Writing plugins</h1>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Glossary</h1>
+	<ul>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="components">Components</a></li>
+		<li> <a href="computed-properties">Computed Properties</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

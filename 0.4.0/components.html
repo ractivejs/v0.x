@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Components | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Components</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.4.0/Components.md.hbs'>edit this page</a>
+			</header>
+
+			<p>In many situations, you want to encapsulate behaviour and markup into a single reusable <em>component</em>, which can be dropped in to Ractive applications.</p>
+<p>First, you need to <strong>create the component</strong> with <a href="ractive-extend">Ractive.extend()</a>, which allows you to define a template, initialisation behaviour, default data, and so on. (If you&#39;re not familiar with Ractive.extend() you should read that page first.)</p>
+<h2 id="initialisation-options">Initialisation Options</h2>
+<h3 id="beforeinit-function-">beforeInit <em><code>Function</code></em></h3>
+<p>beforeInit will be passed all the data that will initialize the particular component. This is where you should modify the component with dynamic logic.
+This could include setting/changing partials, adding decorators, adding other subcomponents, or anything you would use to initialise a normal Ractive instance. This is great for dynamic templating, an example can be found below.</p>
+<h3 id="init-function-">init <em><code>Function</code></em></h3>
+<p>Init is called after the component has been initialised. This means that <code>this</code> will reference that component instance. This allows you to observe on, or listen on events/keypaths for this particular component.</p>
+<h3 id="isolated-boolean-">isolated <em><code>Boolean</code></em></h3>
+<p>Isolated is defaulted to false. This applies to your template scope being isolated to only the data that is passed in.
+For example if you wanted to access a particular variable on your parent data as if it existed on your component then setting isolated false would allow this. However if you wanted your template scoped to only data you give it so that everything was very module then set isolated to true.</p>
+<p>Setting isolated to false</p>
+<pre><code class="language-js">
+
+<span class="keyword">var</span> Component = Ractive.extend({
+  isolated: <span class="literal">false</span>,
+  template: <span class="string">'#component'</span>
+
+});
+
+<span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({
+  el: <span class="string">'body'</span>,
+  template: <span class="string">'#template'</span>,
+  data: {
+    nonIsolatedSetting: <span class="string">'This is a non isolated setting, get it anywhere'</span>
+  }
+});</code></pre>
+<pre><code class="language-html">
+&lt;script id=&quot;template&quot; type=&quot;text/ractive&quot;&gt;
+  &lt;div&gt;
+    &lt;Component&gt;
+  &lt;/div&gt;
+&lt;/script&gt;
+
+&lt;script id=&quot;component&quot; type=&quot;text/ractive&quot;&gt;
+
+  {{nonIsolatedString}}
+
+&lt;/script&gt;</code></pre>
+<p>The result of this would be</p>
+<pre><code class="language-html">  &lt;div&gt;
+    This is a non isolated setting, get it anywhere
+  &lt;/div&gt;</code></pre>
+<p>But if we used the same example and set isolated to true</p>
+<pre><code class="language-js">
+<span class="keyword">var</span> Component = Ractive.extend({
+  isolated: <span class="literal">true</span>,
+  template: <span class="string">'#template'</span>
+})</code></pre>
+<p>Then the resulting output would be</p>
+<pre><code class="language-html">  &lt;div&gt;
+  &lt;/div&gt;</code></pre>
+<p>Very complex example for such a simple idea but this could drastically effect you.</p>
+<p>init is called after the extended compoent has been initialized </p>
+<pre><code class="language-js"><span class="keyword">var</span> MyWidget = Ractive.extend({
+  template: <span class="string">'&lt;div on-click="activate"&gt;{{message}}&lt;/p&gt;'</span>,
+  init: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">this</span>.on( <span class="string">'activate'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      alert( <span class="string">'Activating!'</span> );
+    });
+  },
+  data: {
+    message: <span class="string">'No message specified, using the default'</span>
+  }
+});</code></pre>
+<p>Then, you need to <strong>register the component</strong> by adding it to <code>Ractive.components</code>:</p>
+<pre><code class="language-js">Ractive.components.widget = MyWidget;
+
+<span class="comment">// or, if you don't want to make it globally available,</span>
+<span class="comment">// you can use it with only a single Ractive instance</span>
+<span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({
+  el: <span class="string">'body'</span>,
+  template: mainTemplate,
+  components: {
+    widget: MyWidget
+  }
+});</code></pre>
+<p>Finally, you <strong>use the component</strong> by referring to it within another template:</p>
+<pre><code class="language-html">&lt;div class=&#39;application&#39;&gt;
+  &lt;h1&gt;I&#39;ve got a widget&lt;/h1&gt;
+  &lt;widget message=&#39;Click to activate!&#39;/&gt;
+&lt;/div&gt;</code></pre>
+<p>Using the &#39;widget&#39; component like this is more or less equivalent to doing the following:</p>
+<pre><code class="language-js"><span class="keyword">new</span> MyWidget({
+  el: document.querySelector( <span class="string">'.application'</span> ),
+  append: <span class="literal">true</span>, <span class="comment">// so the component doesn't nuke the &lt;h1&gt;</span>
+  data: {
+    message: <span class="string">'Click to activate!'</span>
+  }
+});</code></pre>
+<h2 id="binding">Binding</h2>
+<p>Instead of passing a static message (&#39;Click to activate!&#39;) through, we could have passed a dynamic one:</p>
+<pre><code class="language-html">&lt;widget message=&#39;{{foo}}&#39;/&gt;</code></pre>
+<p>In this case, the value of <code>message</code> within the component would be bound to the value of <code>foo</code> in the parent Ractive instance. When the value of parent-<code>foo</code> changes, the value of child-<code>message</code> also changes, and vice-versa.</p>
+<h3 id="data-context">Data Context</h3>
+<p>A new data context gets created for the component, so any parameters don&#39;t pollute the primary data (bound values still update):</p>
+<pre><code class="language-js"><span class="keyword">var</span> data = {
+    name: <span class="string">'Colors'</span>,
+    colors: [<span class="string">'red'</span>, <span class="string">'blue'</span>, <span class="string">'yellow'</span>],
+    style: <span class="string">'tint'</span>
+}
+Ractive.components.widget = Ractive.extend({})
+<span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({ 
+    template: <span class="string">'&lt;widget items='</span>{{colors}}<span class="string">' option1='</span>A<span class="string">' option2='</span>{{style}}<span class="string">'/&gt;'</span>,
+    data: data 
+})
+
+<span class="function"><span class="keyword">function</span> <span class="title">logData</span><span class="params">()</span>{</span>
+    console.log(<span class="string">'main'</span>, JSON.stringify(ractive.data))
+    console.log(<span class="string">'widget'</span>, JSON.stringify(ractive.findComponent(<span class="string">'widget'</span>).data))
+}
+
+logData()
+<span class="comment">// main {"name":"Colors","colors":["red","blue","yellow"],"style":"tint"}</span>
+<span class="comment">// widget {"items":["red","blue","yellow"],"option1":"A","option2":"tint"}</span>
+
+ractive.set(<span class="string">'colors.1'</span>, <span class="string">'green'</span>)
+
+logData()
+<span class="comment">// main {"name":"Colors","colors":["red","green","yellow"],"style":"tint"}</span>
+<span class="comment">// widget {"items":["red","green","yellow"],"option1":"A","option2":"tint"}</span></code></pre>
+<h2 id="events">Events</h2>
+<p>You can subscribe to events that emanate from a component in the normal way. For example, our widget template contains a <code>&lt;div&gt;</code> element with an <code>on-click=&quot;activate&quot;</code> directive. We&#39;re listening for that event inside the MyWidget <code>init</code> method, but we can also listen for it like so:</p>
+<pre><code class="language-html">&lt;widget on-activate=&quot;doSomething&quot;/&gt;</code></pre>
+<pre><code class="language-js">ractive.on( <span class="string">'doSomething'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  alert( <span class="string">'Widget activated!'</span> );
+});</code></pre>
+<p>(The same goes for any events that are fired programmatically by the component, rather than as a result of user interaction.)</p>
+<h2 id="the-content-directive">The <code>{{&gt;content}}</code> Directive</h2>
+<p>Any content in the template calling the component:</p>
+<pre><code class="language-html">&lt;list items=&#39;{{gunas}}&#39;&#39;&gt;
+    {{name}} ({{qualities}})
+&lt;/list&gt;
+
+&lt;list items=&#39;{{fates}}&#39;&gt;
+    &quot;{{.}}&quot;
+&lt;/list&gt;</code></pre>
+<p>is exposed in the component as a partial named &quot;content&quot;:</p>
+<pre><code class="language-html">&lt;!-- template for &quot;list&quot; component --&gt;
+&lt;ul&gt;
+    {{#items}}
+    &lt;li&gt;{{&gt;content}}&lt;/li&gt;
+    {{/}}
+&lt;/ul&gt;</code></pre>
+<p>A partial, or component, can be used as well:</p>
+<pre><code class="language-html">&lt;list items=&#39;{{gunas}}&#39;&#39;&gt;
+    {{&gt;partialA}})
+&lt;/list&gt;
+
+&lt;list items=&#39;{{fates}}&#39;&#39;&gt;
+    &lt;widget value=&#39;{{.}}&#39;/&gt; 
+&lt;/list&gt;</code></pre>
+<p>Currently, the content markup resolves in the component&#39;s context. In the second example above the <code>value</code> parameter for <code>&lt;widget&gt;</code> is the individual list item of <code>{{fates}}</code>. And in the first case, the partial would need to be defined globally (<code>Ractive.partials</code>) or on the component, as it won&#39;t be found if it is defined, for example, inline in the outer context:</p>
+<pre><code class="language-html">&lt;list items=&quot;{{fates}}&quot;&gt;
+    {{&gt;partialB}}
+&lt;/list&gt;
+&lt;!-- {{&gt;partialB}} --&gt;
+    //won&#39;t be found by list component,
+    //because this markup is handed off 
+    //and rendered inside component
+&lt;!-- {{/partial}} --&gt;</code></pre>
+<p>Be aware that the context scope for resolution may change or be expanded in a future release to control whether it resolves in the calling or component context. </p>
+<h2 id="pseudo-dynamic-templating">Pseudo Dynamic Templating</h2>
+<p>In some cases you want to render a different template depending on the data that is passed in.</p>
+<h3 id="form-element-component">Form Element Component</h3>
+<pre><code class="language-js"><span class="keyword">var</span> formElement = Ractive.extend({
+  template: <span class="string">'{{&gt;element}}'</span>,
+  setTemplate: <span class="function"><span class="keyword">function</span><span class="params">(options)</span> {</span>
+    options.partials.element = options.data.template;
+  },
+  beforeInit: <span class="function"><span class="keyword">function</span><span class="params">(options)</span> {</span>
+    <span class="keyword">this</span>.setTemplate(options)
+  }
+});</code></pre>
+<h3 id="form-template">Form Template</h3>
+<pre><code class="language-html">{{#items}}
+&lt;formElement value=&quot;{{value}}&quot; template=&quot;{{template}}&quot;/&gt;
+{{/items}}</code></pre>
+<h3 id="ractive-form">Ractive Form</h3>
+<pre><code class="language-js"><span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({
+  el: <span class="string">'body'</span>,
+  template: formTemplate,
+  components: {
+    formElement: formElement
+  }
+  data: {
+    items: [
+        {
+          template: <span class="string">'&lt;h1&gt;{{value}}&lt;/h1&gt;'</span>,
+          value: <span class="string">'This is a title'</span>
+        },
+        {
+          template: <span class="string">'&lt;input type="text" value="{{value}}" style="display:block; clear: both;" /&gt;'</span>,
+          value: <span class="string">'Input Value'</span>
+        },
+        {
+          template: <span class="string">'&lt;textarea value="{{value}}"&gt;&lt;/textarea&gt;'</span>,
+          value: <span class="string">'Textarea Value'</span>
+        }
+    ]
+  }
+
+});
+
+ractive.observe(<span class="string">'items.*.value'</span>, <span class="function"><span class="keyword">function</span><span class="params">(newValue, oldValue, keypath)</span> {</span>
+  console.log(keypath + <span class="string">' '</span> + newValue);
+});</code></pre>
+<h2 id="caveat">Caveat</h2>
+<p>Components are a stable feature, but still relatively new - certain aspects have yet to be implemented. Pardon the dust! There is a <a href="https://github.com/RactiveJS/Ractive/issues/74">long-running GitHub issue</a>, which may be of interest.</p>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="tips">Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>API Reference</h1>
+	<h2>new Ractive(...)</h2>
+	<ul>
+		<li><a href="initialisation-options">Initialisation options</a></li>
+	</ul>
+
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+	</ul>
+
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+	</ul>
+</ul>
+
+<section>
+	<h1>Using plugins</h1>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="decorators">Decorators</a></li>
+		<li><a href="events">Events</a></li>
+		<li><a href="transitions">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Writing plugins</h1>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Glossary</h1>
+	<ul>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="components">Components</a></li>
+		<li> <a href="computed-properties">Computed Properties</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

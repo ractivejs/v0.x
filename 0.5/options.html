@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Initialisation Options | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Initialisation Options</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.5/Options.md.hbs'>edit this page</a>
+			</header>
+
+			<p>The following is a complete list of initialisation options, with full descriptions below grouped by category.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#adapt">adapt</a></td>
+<td><a href="#data-binding">data</a></td>
+<td>adaptors to use</td>
+</tr>
+<tr>
+<td><a href="#adaptors">adaptors</a></td>
+<td><a href="#data-binding">data</a></td>
+<td>registry of available adaptors</td>
+</tr>
+<tr>
+<td><a href="#append">append</a></td>
+<td><a href="#dom-placement">placement</a></td>
+<td>how to handle existing content in the dom</td>
+</tr>
+<tr>
+<td><a href="#complete">complete</a></td>
+<td><a href="#transitions-animations">transitions</a></td>
+<td>fine-tune template placement in the dom</td>
+</tr>
+<tr>
+<td><a href="#components">components</a></td>
+<td><a href="#templating">templating</a></td>
+<td>components to include for use by the template</td>
+</tr>
+<tr>
+<td><a href="#computed">computed</a></td>
+<td><a href="#data-binding">data</a></td>
+<td>computed properties to include</td>
+</tr>
+<tr>
+<td><a href="#css">css</a></td>
+<td><a href="#templating">templating</a></td>
+<td>component only css to include on render</td>
+</tr>
+<tr>
+<td><a href="#data">data</a></td>
+<td><a href="#data-binding">data</a></td>
+<td>the data to bind to the template</td>
+</tr>
+<tr>
+<td><a href="#debug">debug</a></td>
+<td><a href="environment">environment</a></td>
+<td>increases app feedback</td>
+</tr>
+<tr>
+<td><a href="#decorators">decorators</a></td>
+<td><a href="#templating">templating</a></td>
+<td>decorators to include for use by the template</td>
+</tr>
+<tr>
+<td><a href="#delimiters">delimiters</a></td>
+<td><a href="#parsing">parsing</a></td>
+<td>delimiters to use when parsing the template</td>
+</tr>
+<tr>
+<td><a href="#easing">easing</a></td>
+<td><a href="#transitions-animations">transitions</a></td>
+<td>easing functions to use in transitions</td>
+</tr>
+<tr>
+<td><a href="#el">el</a></td>
+<td><a href="#dom-placement">placement</a></td>
+<td>render to this element in the dom</td>
+</tr>
+<tr>
+<td><a href="#events">events</a></td>
+<td><a href="#templating">templating</a></td>
+<td>events to include for use by the template</td>
+</tr>
+<tr>
+<td><a href="#interpolators">interpolators</a></td>
+<td><a href="#transitions-animations">transitions</a></td>
+<td>interpolators to use for animating values</td>
+</tr>
+<tr>
+<td><a href="#isolated">isolated</a></td>
+<td><a href="#data-binding">data</a></td>
+<td>prevent components from accessing parent data and registries</td>
+</tr>
+<tr>
+<td><a href="#lazy">lazy</a></td>
+<td><a href="#data-binding">binding</a></td>
+<td>don&#39;t bind to every keypress</td>
+</tr>
+<tr>
+<td><a href="#magic">magic</a></td>
+<td><a href="#data-binding">binding</a></td>
+<td>data object getters and setters that update view</td>
+</tr>
+<tr>
+<td><a href="#modifyArrays">modifyArrays</a></td>
+<td><a href="#data-binding">binding</a></td>
+<td>array modification methods update the view</td>
+</tr>
+<tr>
+<td><a href="#noCssTransform">noCssTransform</a></td>
+<td><a href="#templating">templating</a></td>
+<td>prevent transformation of component css</td>
+</tr>
+<tr>
+<td><a href="#noIntro">noIntro</a></td>
+<td><a href="#transitions-animations">transitions</a></td>
+<td>do not apply transitions on render</td>
+</tr>
+<tr>
+<td><a href="#partials">partials</a></td>
+<td><a href="#templating">templating</a></td>
+<td>partials to include for use by the template</td>
+</tr>
+<tr>
+<td><a href="#preserveWhitespace">preserveWhitespace</a></td>
+<td><a href="#parsing">parsing</a></td>
+<td>don&#39;t normalize template whitespace</td>
+</tr>
+<tr>
+<td><a href="#sanitize">sanitize</a></td>
+<td><a href="#parsing">parsing</a></td>
+<td>remove designated elements and event attributes</td>
+</tr>
+<tr>
+<td><a href="#staticDelimiters">staticDelimiters</a></td>
+<td><a href="#parsing">parsing</a></td>
+<td>one-time binding parsing delimiters</td>
+</tr>
+<tr>
+<td><a href="#staticTripleDelimiters">staticTripleDelimiters</a></td>
+<td><a href="#parsing">parsing</a></td>
+<td>one-time binding non-escaped parsing delimiters</td>
+</tr>
+<tr>
+<td><a href="#stripComments">stripComments</a></td>
+<td><a href="#parsing">parsing</a></td>
+<td>remove HTML comments from templates</td>
+</tr>
+<tr>
+<td><a href="#template">template</a></td>
+<td><a href="#templating">templating</a></td>
+<td>specifies the template to use</td>
+</tr>
+<tr>
+<td><a href="#transitions">transitions</a></td>
+<td><a href="#transitions-animations">transitions</a></td>
+<td>transitions to include for use by the template</td>
+</tr>
+<tr>
+<td><a href="#transitionsEnabled">transitionsEnabled</a></td>
+<td><a href="#transitions-animations">transitions</a></td>
+<td>allow transitions</td>
+</tr>
+<tr>
+<td><a href="#tripleDelimiters">tripleDelimiters</a></td>
+<td><a href="#parsing">parsing</a></td>
+<td>non-escaped parsing delimiters</td>
+</tr>
+<tr>
+<td><a href="#twoway">twoway</a></td>
+<td><a href="#data-binding">binding</a></td>
+<td>prevent updates from the view back to the model</td>
+</tr>
+</tbody>
+</table>
+<h2 id="templating">Templating</h2>
+<blockquote>
+<p><a id="template"></a></p>
+<h3 id="-template-string-or-if-a-href-preparsing-preparsing-a-array-or-object-"><strong>template</strong> <em><code>String</code> or (if <a href="preparsing">preparsing</a>) <code>Array</code> or <code>Object</code></em></h3>
+<p>The template to use. If this is a string, it must be valid (if meaningless, until rendered) HTML:</p>
+<pre><code class="language-js">template: <span class="string">'&lt;p&gt;{{greeting}} world!&lt;/p&gt;'</span>,</code></pre>
+<p>Otherwise this must be the output of <a href="ractive-parse">Ractive.parse()</a>, usually precompiled for use in the browser:</p>
+<pre><code class="language-js">template: parsedTemplates.foo,</code></pre>
+<p>Or alternatively, you can pass an id selector string like <code>#myTemplate</code> - in this case, Ractive will use the contents of an element whose ID is <code>myTemplate</code>:</p>
+<pre><code class="language-js">template: <span class="string">'#myTemplate'</span></code></pre>
+<p>See the <a href="http://ractivejs.org/60-second-setup">60 second setup</a> for an example of this.</p>
+<p>Please note that while Ractive will fetch any element by ID and use its content as the template, browsers may escape the contents of tags like <code>&lt;div&gt;</code> when initially rendered, leading to unexpected results in your template.</p>
+<p>The <code>&lt;script&gt;</code> tag is a good option as browsers will not modify the contents and is the canonical way to include inline Ractive templates in the document. However, make sure to set <code>type=&#39;text/ractive&#39;</code> or the browser will try and execute the contents as javascript and you&#39;ll get an exception.</p>
+<p><a id="partials"></a></p>
+<h3 id="partials-object-">partials <em><code>Object</code></em></h3>
+<p>A <code>key: value</code> hash of partials that are specific to this instance, where <code>key</code> is the name of the partial (as referenced within templates as <code>{{&gt;myPartial}}</code>), and <code>value</code> is either a valid template string or the output of <a href="ractive-parse">Ractive.parse()</a>.</p>
+<pre><code class="language-js">partials: {
+    myPartial: <span class="string">"&lt;p&gt;I'm a partial!&lt;p&gt;"</span>
+}</code></pre>
+<p>The partial name used in the template can also be used to lookup the partial by ID.  See <a href="partials">Partials</a> for more info.</p>
+<p><a id="components"></a></p>
+<h3 id="components-object-">components <em><code>Object</code></em></h3>
+<p>A <code>key: value</code> hash of components that are specific to this instance, where <code>key</code> is the name of the component (as referenced within templates as <code>&lt;my-component&gt;&lt;/my-component&gt;</code>), and <code>value</code> is a valid component created by <a href="ractive-extend">Ractive.extend()</a>.</p>
+<pre><code class="language-js">components: {
+    <span class="string">'my-component'</span>: Ractive.extend({
+        template: <span class="string">'#componentTemplate'</span>,
+        init: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>...}
+    })
+}</code></pre>
+<p>See <a href="components">Components</a> for more info.</p>
+<p><a id="decorators"></a></p>
+<h3 id="decorators-object-">decorators <em><code>Object</code></em></h3>
+<p>A <code>key: value</code> hash of decorators that are specific to this instance, where <code>key</code> is the name of the decorator (as referenced within templates as <code>&lt;div decorator=&quot;myDecorator&quot;/&gt;</code>), and <code>value</code> is a is a decorator functions.  See <a href="decorators">Decorators</a> for more info.</p>
+<pre><code class="language-js">decorators: {
+    <span class="string">'myDomponent'</span>: <span class="function"><span class="keyword">function</span><span class="params">( node, fire)</span> {</span>...}
+}</code></pre>
+<p><a id="css"></a></p>
+<h3 id="css-string-">css <em><code>String</code></em></h3>
+<p>Used on components to specify <code>css</code> styles to be inserted into the document.</p>
+<p><a id="noCssTransform"></a></p>
+<h3 id="nocsstransform-boolean-">noCSSTransform <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>false</code>. Prevents component css from being transformed with scoping guids.</p>
+</blockquote>
+<h2 id="dom-placement">DOM Placement</h2>
+<blockquote>
+<p><a id="el"></a></p>
+<h3 id="el-string-or-htmlelement-or-jquery-like-collection-">el <em> <code>String</code> or <code>HTMLElement</code> or jQuery-like collection</em></h3>
+<p>Directives for the element to render to. Use <code>append</code> option (see below) to control whether existing content is replaced.</p>
+<ul>
+<li><code>string</code> id or selector, see <a href="valid-selectors">valid selectors</a><pre><code class="language-js">el: <span class="string">'#container'</span></code></pre>
+</li>
+<li><code>HTMLElement</code> DOM element<pre><code class="language-js">el: document.body</code></pre>
+</li>
+<li>any <code>obj</code> where <code>obj[0]</code> is an <code>HTMLElement</code>, see <a href="valid-selectors#jquery-collections">jquery collections</a><pre><code class="language-js">el: $(<span class="string">'#container'</span>)</code></pre>
+</li>
+</ul>
+<p><a id="append"></a></p>
+<h3 id="append-boolean-or-anchor-">append <em><code>Boolean</code> or anchor</em></h3>
+<p>Defaults to <code>false</code>. Controls whether existing content is replace and optionally where to place the rendered content.</p>
+<ul>
+<li><code>false</code> - rendered content replaces any existing contents of <code>el</code><pre><code class="language-html">  // dom
+  &lt;div id=&#39;container&#39;&gt;&lt;p&gt;existing content&lt;/p&gt;&lt;/div&gt;</code></pre>
+<pre><code class="language-js">  <span class="comment">// options</span>
+  el: <span class="string">'#container'</span>,
+  append: <span class="literal">false</span>, <span class="comment">//default</span>
+  template: <span class="string">'&lt;p&gt;new content&lt;/p&gt;'</span></code></pre>
+<pre><code class="language-html">  // result
+  &lt;div id=&#39;container&#39;&gt;&lt;p&gt;new content&lt;/p&gt;&lt;/div&gt;</code></pre>
+</li>
+<li><code>true</code> rendered content is appended to <code>el</code><pre><code class="language-html">  // dom
+  &lt;div id=&#39;container&#39;&gt;&lt;p&gt;existing content&lt;/p&gt;&lt;/div&gt;</code></pre>
+<pre><code class="language-js">  <span class="comment">// options</span>
+  el: <span class="string">'#container'</span>,
+  append: <span class="literal">true</span>,
+  template: <span class="string">'&lt;p&gt;new content&lt;/p&gt;'</span></code></pre>
+<pre><code class="language-html">  // result
+  &lt;div id=&#39;container&#39;&gt;&lt;p&gt;existing content&lt;/p&gt;&lt;p&gt;new content&lt;/p&gt;&lt;/div&gt;</code></pre>
+</li>
+<li>anchor is any valid option as specified in <code>el</code> that resolves to an <code>HTMLElement</code>. Rendered content is appended to <code>el</code> before anchor, see <a href="ractive-insert">ractive.insert()</a><pre><code class="language-html">  // dom
+  &lt;div id=&#39;container&#39;&gt;&lt;p&gt;red&lt;/p&gt;&lt;p&gt;blue&lt;/p&gt;&lt;p&gt;yellow&lt;/p&gt;&lt;/div&gt;</code></pre>
+<pre><code class="language-js">  <span class="comment">// options</span>
+  el: <span class="string">'#container'</span>,
+  append: document.querySelector(<span class="string">'p:nth-child(2)'</span>),
+  template: <span class="string">'&lt;p&gt;green&lt;/p&gt;'</span></code></pre>
+<pre><code class="language-html">  // result
+  &lt;div id=&#39;container&#39;&gt;&lt;p&gt;red&lt;/p&gt;&lt;p&gt;green&lt;/p&gt;&lt;p&gt;blue&lt;/p&gt;&lt;p&gt;yellow&lt;/p&gt;&lt;/div&gt;</code></pre>
+</li>
+</ul>
+</blockquote>
+<h2 id="data-binding">Data &amp; Binding</h2>
+<blockquote>
+<p><a id="data"></a></p>
+<h3 id="data-object-or-array-or-string-">data <em><code>Object</code> or <code>Array</code> or <code>String</code></em></h3>
+<p>The data with which to initialise.</p>
+<pre><code class="language-js"><span class="comment">// object</span>
+data: { foo: <span class="string">'bar'</span> }
+
+<span class="comment">// array</span>
+data: [ <span class="string">'red'</span>, <span class="string">'blue'</span>, <span class="string">'yellow'</span> ]
+
+<span class="comment">// string</span>
+data: <span class="string">'foo'</span></code></pre>
+<p><a id="computed"></a></p>
+<h3 id="computed-object-">computed <em><code>Object</code></em></h3>
+<p>An object that maps to a set of computed values.</p>
+<pre><code class="language-js">computed: {
+    area: <span class="string">'${width} * ${height}'</span>
+}</code></pre>
+<p>See <a href="computed-properties">Computed Properties</a> for more information and examples .</p>
+<p><a id="magic"></a></p>
+<h3 id="magic-boolean-">magic <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>false</code>. Whether or not to wrap data in ES5 accessors for automatic binding (see <a href="magic-mode">magic mode</a>).</p>
+<pre><code class="language-js"><span class="keyword">var</span> data = { foo: <span class="string">'bar'</span> };
+<span class="keyword">new</span> Ractive({ data: data } );
+<span class="comment">// will update automagically:</span>
+data.foo = <span class="string">'fizz'</span></code></pre>
+<p><a id="adapt"></a></p>
+<h3 id="adapt-array-">adapt <em><code>Array</code></em></h3>
+<p>Custom wrappers to be used with all or part of the supplied data, see <a href="adaptors">Adaptors</a>.
+Can either be the adaptor itself, or the name of an adaptor registred via <code>Ractive.adaptors</code>:</p>
+<pre><code class="language-js">Ractive.adaptors.myAdaptor = MyAdaptor1;
+
+<span class="keyword">new</span> Ractive({
+   adapt: [ <span class="string">'myAdaptor'</span>, MyAdaptor2 ]
+}</code></pre>
+<p><a id="adaptors"></a></p>
+<h3 id="adaptors-object-">adaptors <em><code>Object</code></em></h3>
+<p>A <code>key: value</code> hash of <a href="adaptors">adaptors</a> that are specific to this instance. Usually the <code>adapt</code> property can directly specify which adaptors
+to use on this instance and the <code>adaptors</code> property is used to register an adaptor on components or <code>Ractive.adaptors</code>.</p>
+<pre><code class="language-js">adaptors: {
+    myAdaptor: MyAdaptor
+}</code></pre>
+<p><a id="modifyArrays"></a></p>
+<h3 id="modifyarrays-boolean-">modifyArrays <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>true</code>. Whether or not to modify array mutator methods to enable frictionless data binding with lists (see <a href="array-modification">array modification</a>).</p>
+<pre><code class="language-js"><span class="keyword">var</span> items = [ <span class="string">'red'</span>, <span class="string">'blue'</span> ];
+<span class="keyword">new</span> Ractive({
+    data: data,
+    modifyArrays: <span class="literal">true</span> <span class="comment">//default</span>
+} );
+<span class="comment">// will update automagically:</span>
+items.push( <span class="string">'green'</span> );</code></pre>
+<p><a id="twoway"></a></p>
+<h3 id="twoway-boolean-">twoway <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>true</code>. Whether or not two-way data binding is enabled (see <a href="two-way-binding">Two‐way binding</a>).</p>
+<pre><code class="language-js"><span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({
+    template: <span class="string">'&lt;input value="{{foo}}"&gt;'</span>,
+    data: { foo: <span class="string">'bar'</span> },
+    twoway: <span class="literal">false</span>
+});
+<span class="comment">// user types "fizz" into &lt;input&gt;, but data value is not changed:</span>
+console.log( ractive.get( <span class="string">'foo'</span> ) ); <span class="comment">//logs "bar"</span>
+<span class="comment">// updates from the model are still pushed to the view</span>
+ractive.set( <span class="string">'foo'</span>, <span class="string">'fizz'</span> );
+<span class="comment">// input now displays "fizz"</span></code></pre>
+<p>Also see <a href="#staticDelimiters">static delimiters</a> for one-time binding</p>
+<p><a id="lazy"></a></p>
+<h3 id="lazy-boolean-">lazy <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>false</code>. If two-way data binding is enabled, whether to only update data based on text inputs on <code>change</code> and <code>blur</code> events, rather than any event (such as key events) that may result in new data.</p>
+<pre><code class="language-js"><span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({
+    template: <span class="string">'&lt;input value="{{foo}}"&gt;'</span>,
+    data: { foo: <span class="string">'bar'</span> },
+    lazy: <span class="literal">true</span>
+});
+
+<span class="comment">// will not fire as user is typing</span>
+ractive.on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+      <span class="comment">// only happens on exiting &lt;input&gt; or return if submit</span>
+      console.log(<span class="string">'changed!'</span>)
+})</code></pre>
+<p><a id="isolated"></a></p>
+<h3 id="isolated-boolean-">isolated <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>false</code>. This option is typically only relevant as an extension option for <a href="components">Components</a>. Controls whether the component will look outside itself for data and registry items.</p>
+</blockquote>
+<h2 id="transitions-animations">Transitions &amp; Animations</h2>
+<blockquote>
+<p><a id="transitions"></a></p>
+<h3 id="transitions-object-">transitions <em><code>Object</code></em></h3>
+<p>A <code>key: value</code> hash of transitions that are specific to this instance. The <code>key</code> is referenced within templates using <code>intro</code> and <code>outro</code> attributes on elements, and <code>value</code> is a transition functions, see <a href="transitions">Transitions</a> for more info.</p>
+<pre><code class="language-js">template: <span class="string">'&lt;p intro="slide" outro="slide"&gt;hello world&lt;/p&gt;'</span>,
+transitions: {
+    slide: <span class="function"><span class="keyword">function</span> <span class="params">( t, params )</span> {</span>...}
+}</code></pre>
+<p><a id="noIntro"></a></p>
+<h3 id="nointro-boolean-">noIntro <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>false</code>. Whether or not to skip intro transitions on render.</p>
+<pre><code class="language-js"><span class="keyword">var</span> ractive = <span class="keyword">new</span> Ractive({
+    template: <span class="string">'&lt;ul&gt;{{#items}}&lt;li intro="fade"&gt;{{.}}&lt;/li&gt;{{/items}}&lt;/ul&gt;'</span>,
+     data: { items: [ <span class="string">'red'</span>, <span class="string">'blue'</span> ] },
+    transitions: { fade: <span class="function"><span class="keyword">function</span> <span class="params">( t, params )</span> {</span>...} },
+    noIntro: <span class="literal">true</span>
+});
+<span class="comment">// 'red' and 'blue' list items do not fade in on intro</span>
+
+ractive.get(<span class="string">'items'</span>).push( <span class="string">'green'</span> );
+<span class="comment">// 'green' list item will fade in</span></code></pre>
+<p><a id="complete"></a></p>
+<h3 id="complete-function-">complete <em><code>Function</code></em></h3>
+<p>A function that will be called when render is complete (i.e. all intro transitions have finished). If there are no intro transitions, this function will be called as soon as the instance is created)</p>
+<pre><code class="language-js">template: <span class="string">'&lt;p intro="fade"&gt;hello&lt;/p&gt;'</span>,
+transitions: { fade: <span class="function"><span class="keyword">function</span> <span class="params">( t, params )</span> {</span>...} },
+complete: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    console.log( <span class="string">'&lt;p&gt; has completed fade in!'</span> );
+}</code></pre>
+<p><a id="easing"></a></p>
+<h3 id="easing-object-">easing <em><code>Object</code></em></h3>
+<p>A <code>key: value</code> hash of easing function. See <a href="ractive-easing">Ractive.easing</a></p>
+<p><a id="interpolators"></a></p>
+<h3 id="interpolators-object-">interpolators <em><code>Object</code></em></h3>
+<p>A <code>key: value</code> hash of interpolators use by <a href="ractive-animate">ractive.animate()</a></p>
+</blockquote>
+<h2 id="parsing">Parsing</h2>
+<blockquote>
+<p><a id="delimiters"></a></p>
+<h3 id="delimiters-array-where-open-close-">delimiters <em><code>Array</code> where <code>[ open, close ]</code></em></h3>
+<p>Defaults to <code>[ &#39;{{&#39;, &#39;}}&#39; ]</code>. Used to set what delimiters to use when parsing templates.</p>
+<pre><code>template: &#39;hello &lt;%= world %&gt;&#39;,
+delimiters: [ &#39;&lt;%=&#39;, &#39;%&gt;&#39; ],
+data: { world: &#39;earth&#39; }
+
+// result:
+hello earth</code></pre>
+<p><a id="tripleDelimiters"></a></p>
+<h3 id="tripledelimiters-array-where-open-close-">tripleDelimiters <em><code>Array</code> where <code>[ open, close ]</code></em></h3>
+<p>Defaults to <code>[ &#39;{{{&#39;, &#39;}}}&#39; ]</code>. Used to set what triple delimiters to use when parsing templates.</p>
+<pre><code>template: &#39;hello @html@&#39;,
+tripleDelimiters: [ &#39;@&#39;, &#39;@&#39; ],
+data: { html: &#39;&lt;span&gt;world&lt;/span&gt;&#39; }
+
+// result:
+hello &lt;span&gt;world&lt;/span&gt;</code></pre>
+<p><a id="staticDelimiters"></a></p>
+<h3 id="staticdelimiters-array-where-open-close-">staticDelimiters <em><code>Array</code> where <code>[ open, close ]</code></em></h3>
+<p>Defaults to <code>[ &#39;[[&#39;, &#39;]]&#39; ]</code>. Used to set what static (one-time binding) delimiters to use when parsing templates.</p>
+<pre><code>var ractive = new Ractive({
+    template: &#39;hello [[foo]]&#39;,
+    staticDelimiters: [ &#39;[[&#39;, &#39;]]&#39; ], /default
+      data: { foo: &#39;world&#39; }
+});
+// result: &quot;hello world&quot;
+
+ractive.set( &#39;foo&#39;, &#39;mars&#39; );
+// still is: &quot;hello world&quot;</code></pre>
+<p><a id="staticTripleDelimiters"></a></p>
+<h3 id="statictripledelimiters-array-where-open-close-">staticTripleDelimiters <em><code>Array</code> where <code>[ open, close ]</code></em></h3>
+<p>Defaults to <code>[ &#39;[[[&#39;, &#39;]]]&#39; ]</code>. Used to set what static (one-time binding) triple delimiters to use when parsing templates.</p>
+<pre><code>var ractive = new Ractive({
+    template: &#39;hello [[[html]]]&#39;,
+    staticTripleDelimiters: [ &#39;[[[&#39;, &#39;]]]&#39; ], /default
+      data: { html: &#39;&lt;span&gt;world&lt;/span&gt;&#39; }
+});
+// result: &quot;hello &lt;span&gt;world&lt;/span&gt;&quot;
+
+ractive.set( &#39;html&#39;, &#39;&lt;span&gt;mars&lt;/span&gt;&#39; );
+// still is: &quot;hello world&quot;</code></pre>
+<p><a id="preserveWhitespace"></a></p>
+<h3 id="preservewhitespace-boolean-">preserveWhitespace <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>false</code>. Whether or not to preserve whitespace in templates when parsing. (Whitespace in <code>&lt;pre&gt;</code> elements is always preserved.)</p>
+<pre><code>var ractive = new Ractive({
+    template: &#39;&lt;p&gt;hello\n\n  \tworld   &lt;/p&gt;&#39;,
+    preserveWhitespace: false //default
+});
+console.log( ractive.toHTML() );
+// &quot;&lt;p&gt;hello world&lt;/p&gt;&quot;
+
+var ractive = new Ractive({
+    template: &#39;&lt;p&gt;hello\n\n  \tworld   &lt;/p&gt;&#39;,
+    preserveWhitespace: true
+});
+console.log( ractive.toHTML() );
+// &quot;&lt;p&gt;hello
+
+     world   &lt;/p&gt;&quot;</code></pre>
+<p>Please note that the browser will still deal with whitespace in the normal fashion.</p>
+<p><a id="stripComments"></a></p>
+<h3 id="stripcomments-boolean-">stripComments <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>true</code>. Whether or not to remove comments in templates when parsing.</p>
+<pre><code class="language-js">template: <span class="string">'&lt;!-- html comment --&gt;hello world'</span>,
+stripComments: <span class="literal">false</span>
+
+<span class="comment">// result:</span>
+&lt;!-- html comment --&gt;hello world</code></pre>
+<p><a id="sanitize"></a></p>
+<h3 id="sanitize-boolean-or-object-">sanitize <em><code>Boolean</code> or <code>Object</code></em></h3>
+<p>Defaults to <code>false</code>. If <code>true</code>, certain elements will be stripped from templates at parse time - <code>&lt;applet&gt;</code>, <code>&lt;base&gt;</code>, <code>&lt;basefont&gt;</code>, <code>&lt;body&gt;</code>, <code>&lt;frame&gt;</code>, <code>&lt;frameset&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;html&gt;</code>, <code>&lt;isindex&gt;</code>, <code>&lt;link&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;noframes&gt;</code>, <code>&lt;noscript&gt;</code>, <code>&lt;object&gt;</code>, <code>&lt;param&gt;</code>, <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code> and <code>&lt;title&gt;</code> - as will event attributes (e.g. <code>onclick</code>).</p>
+<pre><code class="language-js">template: <span class="string">'&lt;p&gt;some content&lt;/p&gt;&lt;frame&gt;Am I a bad element or just misunderstood?&lt;/frame&gt;'</span>,
+sanitize: <span class="literal">true</span>
+
+<span class="comment">// result:</span>
+&lt;p&gt;some content&lt;<span class="regexp">/p&gt;</code></pre>
+<p>Alternatively, pass in an object with an <code>elements</code> property containing an array of blacklisted elements, and an optional <code>eventAttributes</code> boolean (<code>true</code> means &#39;disallow event attributes&#39;).</p>
+<pre><code class="language-js">template: <span class="string">'&lt;p&gt;some content&lt;/p&gt;&lt;div onclick="doEvil()"&gt;the good stuff&lt;/div&gt;'</span>,
+sanitize: {
+    elements: [ <span class="string">'p'</span> ],
+    eventAttributes: <span class="literal">true</span>
+}
+
+<span class="comment">// result:</span>
+&lt;div&gt;the good stuff&lt;<span class="regexp">/div&gt;</code></pre>
+<h2 id="environment">Environment</h2>
+<p><a id="debug"></a></p>
+<h3 id="debug-boolean-">debug <em><code>Boolean</code></em></h3>
+<p>Defaults to <code>false</code>. Increases the severity of response to unexpected events or unfound resources to help debug applications.
+Generally will throw errors or print console messages when otherwise things would print a console messages or fail silently.</p>
+<pre><code class="language-js"><span class="comment">// throws when 'myPartial' not found:</span>
+template: <span class="string">'&lt;p&gt;{{&gt;myPartial}}&lt;/p&gt;'</span>,
+debug: <span class="literal">true</span></code></pre>
+</blockquote>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="tips">Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Configuration</h1>
+	<ul>
+		<li><a href="options">Options</a></li>
+		<li><a href="ractive-defaults">Defaults</a></li>
+		<li><a href="advanced-configuration">Advanced configuration</a></li>
+	</ul>
+</section>
+<section>
+	<h1>Core Concepts</h1>
+	<h2>Templates</h2>
+	<ul>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="decorators">Decorators</a></li>
+		<li><a href="events">Events</a></li>
+	</ul>
+	<h2>Data & Binding</h2>
+	<ul>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="computed-properties">Computed Properties</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+	</ul>
+	<h2>Transitions and Animations</h2>
+	<ul>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="ractive-easing">Easings</a></li>
+	</ul>
+	<h2>Components</h2>
+	<ul>
+		<li><a href="components">Components</a></li>
+	</ul>
+</section>
+<section>
+	<h1>API Reference</h1>
+	<h2>Constructor</h2>
+	<ul>
+		<li><a href="new-ractive">new Ractive(...)</a></li>
+	</ul>
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-pop">ractive.pop()</a></li>
+		<li><a href="ractive-push">ractive.push()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-shift">ractive.shift()</a></li>
+		<li><a href="ractive-splice">ractive.splice()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-unshift">ractive.unshift()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+	</ul>
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+		<li><a href="ractive-easing">Ractive.easing</a></li>
+	</ul>
+</ul>
+</section>
+<section>
+	<h1>Plugins</h1>
+	<h2>Using</h2>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+	</ul>
+	<h2>Writing</h2>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

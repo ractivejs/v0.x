@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Ractive.extend() | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Ractive.extend()</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.6/Ractive.extend().md.hbs'>edit this page</a>
+			</header>
+
+			<p>Ractive is more than a library; it is a platform. It makes it easier to create reusable, but specialised, blocks of functionality such as to-do lists, slideshows, bar charts, text editors, and so on.</p>
+<p>Default options can also be provided using <a href="ractive-extend">Ractive.extend()</a>. While the result
+is a fully instantiable on its own, the main value is that they can then be used as components
+within your templates:</p>
+<pre><code class="language-js"><span class="keyword">var</span> MyRactive = Ractive.extend({
+  template: <span class="string">'I can be instantiated _or_ be a component!'</span>
+});
+
+<span class="keyword">var</span> ractive = <span class="keyword">new</span> MyRactive({
+  el: <span class="string">'container'</span>
+});
+
+<span class="keyword">var</span> ractive2 = <span class="keyword">new</span> Ractive({
+  el: <span class="string">'container2'</span>,
+  template: <span class="string">'&lt;widget/&gt;'</span>,
+  components: {
+    widget: MyRactive
+  }
+});</code></pre>
+<p>Though it&#39;s technically incorrect, we&#39;ll refer to these as <em>subclasses</em> of the Ractive <em>base class</em>. In order to create them, we use <code>Ractive.extend()</code>.</p>
+<p>Here&#39;s a simple example - we&#39;ll create a <code>Modal</code> subclass which has a default template, and which always stays centred on the page:</p>
+<pre><code class="language-css"><span class="class">.modal-background</span> <span class="rules">{
+  <span class="rule"><span class="attribute">position</span>:<span class="value"> fixed</span></span>;
+  <span class="rule"><span class="attribute">top</span>:<span class="value"> <span class="number">0</span></span></span>; <span class="rule"><span class="attribute">left</span>:<span class="value"> <span class="number">0</span></span></span>; <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%</span></span>; <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100</span>%</span></span>;
+  <span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="function">rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.5</span>)</span></span></span>;
+  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">0.5</span>em</span></span>;
+  <span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span>;
+  <span class="rule"><span class="attribute">-moz-box-sizing</span>:<span class="value"> border-box</span></span>; <span class="rule"><span class="attribute">box-sizing</span>:<span class="value"> border-box</span></span>;
+<span class="rule">}</span></span>
+
+<span class="class">.modal-outer</span> <span class="rules">{
+  <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;
+  <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%</span></span>;
+  <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">100</span>%</span></span>;
+<span class="rule">}</span></span>
+
+<span class="class">.modal</span> <span class="rules">{
+  <span class="rule"><span class="attribute">position</span>:<span class="value"> relative</span></span>;
+  <span class="rule"><span class="attribute">background-color</span>:<span class="value"> white</span></span>;
+  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">2</span>em</span></span>;
+  <span class="rule"><span class="attribute">box-shadow</span>:<span class="value"> <span class="number">1</span>px <span class="number">1</span>px <span class="number">3</span>px <span class="function">rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.1</span>)</span></span></span>;
+  <span class="rule"><span class="attribute">margin</span>:<span class="value"> <span class="number">0</span> auto</span></span>;
+  <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;
+  <span class="rule"><span class="attribute">max-width</span>:<span class="value"> <span class="number">100</span>%</span></span>;
+  <span class="rule"><span class="attribute">max-height</span>:<span class="value"> <span class="number">100</span>%</span></span>;
+  <span class="rule"><span class="attribute">overflow-y</span>:<span class="value"> auto</span></span>;
+  <span class="rule"><span class="attribute">-moz-box-sizing</span>:<span class="value"> border-box</span></span>; <span class="rule"><span class="attribute">box-sizing</span>:<span class="value"> border-box</span></span>;
+<span class="rule">}</span></span>
+
+<span class="class">.modal-button</span> <span class="rules">{
+  <span class="rule"><span class="attribute">text-align</span>:<span class="value"> center</span></span>;
+  <span class="rule"><span class="attribute">background-color</span>:<span class="value"> <span class="function">rgb(<span class="number">70</span>,<span class="number">70</span>,<span class="number">180</span>)</span></span></span>;
+  <span class="rule"><span class="attribute">color</span>:<span class="value"> white</span></span>;
+  <span class="rule"><span class="attribute">padding</span>:<span class="value"> <span class="number">0.5</span>em <span class="number">1</span>em</span></span>;
+  <span class="rule"><span class="attribute">display</span>:<span class="value"> inline-block</span></span>;
+  <span class="rule"><span class="attribute">cursor</span>:<span class="value"> pointer</span></span>;
+<span class="rule">}</span></span></code></pre>
+<pre><code class="language-html">&lt;div class=&#39;modal-background&#39; on-tap=&#39;close&#39; intro=&#39;fade&#39; outro=&#39;fade&#39;&gt;
+  &lt;div class=&#39;modal-outer&#39;&gt;
+    &lt;div class=&#39;modal&#39;&gt;
+      {{&gt;modalContent}}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<pre><code class="language-js"><span class="comment">// Create our Modal subclass</span>
+Modal = Ractive.extend({
+  <span class="comment">// by default, the modal should sit atop the &lt;body&gt;...</span>
+  el: document.body,
+
+  <span class="comment">// ...but it should append to it rather than overwriting its contents</span>
+  append: <span class="literal">true</span>,
+
+  <span class="comment">// all Modal instances will share a template (though you can override it</span>
+  <span class="comment">// on a per-instance basis, if you really want to)</span>
+  template: modalTemplate,
+
+  <span class="comment">// the init function will be called as soon as the instance has</span>
+  <span class="comment">// finished rendering</span>
+  init: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">var</span> self = <span class="keyword">this</span>, resizeHandler;
+
+    <span class="comment">// store references to the background, and to the modal itself</span>
+    <span class="comment">// we'll assume we're in a modern browser and use querySelector</span>
+    <span class="keyword">this</span>.outer = <span class="keyword">this</span>.find( <span class="string">'.modal-outer'</span> );
+    <span class="keyword">this</span>.modal = <span class="keyword">this</span>.find( <span class="string">'.modal'</span> );
+
+    <span class="comment">// if the user taps on the background, close the modal</span>
+    <span class="keyword">this</span>.on( <span class="string">'close'</span>, <span class="function"><span class="keyword">function</span> <span class="params">( event )</span> {</span>
+      <span class="keyword">if</span> ( !<span class="keyword">this</span>.modal.contains( event.original.target ) ) {
+        <span class="keyword">this</span>.teardown();
+      }
+    });
+
+    <span class="comment">// when the window resizes, keep the modal horizontally and vertically centred</span>
+    window.addEventListener( <span class="string">'resize'</span>, resizeHandler = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      self.center();
+    }, <span class="literal">false</span> );
+
+    <span class="comment">// clean up after ourselves later</span>
+    <span class="keyword">this</span>.on( <span class="string">'teardown'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      window.removeEventListener( <span class="string">'resize'</span>, resizeHandler );
+    }, <span class="literal">false</span> );
+
+    <span class="comment">// manually call this.center() the first time</span>
+    <span class="keyword">this</span>.center();
+  },
+
+  center: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">var</span> outerHeight, modalHeight, verticalSpace;
+
+    <span class="comment">// horizontal centring is taken care of by CSS, but we need to</span>
+    <span class="comment">// vertically centre</span>
+    outerHeight = <span class="keyword">this</span>.outer.clientHeight;
+    modalHeight = <span class="keyword">this</span>.modal.clientHeight;
+
+    verticalSpace = ( outerHeight - modalHeight ) / <span class="number">2</span>;
+
+    <span class="keyword">this</span>.modal.style.top = verticalSpace + <span class="string">'px'</span>;
+  }
+});
+
+<span class="comment">// We can now instantiate our modal</span>
+basicModal = <span class="keyword">new</span> Modal({
+  partials: {
+    modalContent: <span class="string">'&lt;p&gt;This is some important content!&lt;/p&gt;&lt;a class="modal-button" on-tap="okay"&gt;Okay&lt;/a&gt;'</span>
+  }
+});
+
+basicModal.on( <span class="string">'okay'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">this</span>.teardown();
+});</code></pre>
+<p>Subclasses can themselves be extended. Lets say we wanted to be able to create lots of modals similar to this one:</p>
+<pre><code class="language-js">BasicModal = Modal.extend({
+  partials: {
+    modalContent: <span class="string">'&lt;p&gt;This is some important content!&lt;/p&gt;&lt;a class="modal-button" on-tap="okay"&gt;Okay&lt;/a&gt;'</span>
+  },
+
+  init: <span class="function"><span class="keyword">function</span> <span class="params">( options )</span> {</span>
+    <span class="comment">// wherever we overwrite methods, such as `init`, we can call the</span>
+    <span class="comment">// overwritten method as `this._super`</span>
+    <span class="keyword">this</span>._super( options );
+
+    <span class="keyword">this</span>.on( <span class="string">'okay'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+      <span class="keyword">this</span>.teardown();
+    });
+  }
+});
+
+basicModal = <span class="keyword">new</span> BasicModal();</code></pre>
+<p>The <code>init</code> method is able to call <code>this._super</code> because when Ractive detects (with regex, essentially by calling <code>init.toString()</code>) that a child method requires <code>this._super</code> it wraps it in a function that sets <code>this._super</code> to the parent method of the same name. This wrapping only happens where necessary.</p>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="tips">Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+		<li><a href="migrating">Migrating from previous versions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Configuration</h1>
+	<ul>
+		<li><a href="options">Options</a></li>
+		<li><a href="ractive-defaults">Defaults</a></li>
+		<li><a href="advanced-configuration">Advanced configuration</a></li>
+	</ul>
+</section>
+<section>
+	<h1>Core Concepts</h1>
+	<h2>Templates</h2>
+	<ul>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="decorators">Decorators</a></li>
+	</ul>
+	<h2>Data & Binding</h2>
+	<ul>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="computed-properties">Computed Properties</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+	</ul>
+	<h2>Events</h2>
+	<ul>
+		<li><a href="events-overview">Overview</a></li>
+		<li><a href="event-directives">Event directives</a></li>
+		<li><a href="proxy-events">Proxy events</a></li>
+		<li><a href="method-calls">Method calls</a></li>
+		<li><a href="publish-subscribe">Publish/subscribe</a></li>
+		<li><a href="event-bubbling">Event bubbling</a></li>
+		<li><a href="lifecycle-events">Lifecycle events</a></li>
+	</ul>
+	<h2>Transitions and Animations</h2>
+	<ul>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="ractive-easing">Easings</a></li>
+	</ul>
+	<h2>Components</h2>
+	<ul>
+		<li><a href="components">Components</a></li>
+	</ul>
+</section>
+<section>
+	<h1>API Reference</h1>
+	<h2>Constructor</h2>
+	<ul>
+		<li><a href="new-ractive">new Ractive(...)</a></li>
+	</ul>
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-pop">ractive.pop()</a></li>
+		<li><a href="ractive-push">ractive.push()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-shift">ractive.shift()</a></li>
+		<li><a href="ractive-splice">ractive.splice()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-unrender">ractive.unrender()</a></li>
+		<li><a href="ractive-unshift">ractive.unshift()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+	</ul>
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+		<li><a href="ractive-easing">Ractive.easing</a></li>
+	</ul>
+</ul>
+</section>
+<section>
+	<h1>Plugins</h1>
+	<h2>Using</h2>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+	</ul>
+	<h2>Writing</h2>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

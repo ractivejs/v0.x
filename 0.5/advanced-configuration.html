@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Advanced Configuration | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Advanced Configuration</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.5/Advanced configuration.md.hbs'>edit this page</a>
+			</header>
+
+			<p>In addition to supplying static values for configurations options, some of the Ractive options
+can be specified using a function that will resolve when the ractive instance is instantiated,
+and re-evaluated upon <a href="ractive-reset">ractive.reset()</a>.</p>
+<p>An option function may be supplied to either <a href="ractive-extend">Ractive.extend()</a> or <a href="new-ractive">new Ractive()</a>.</p>
+<p>Option functions receive the post-configured <code>data</code> option as the first argument and <code>this</code> in
+the function refers to the ractive instance being instantiated.
+Bear in mind that the ractive instance is in the process of being configured, so not all options
+are necessarily configured yet, and functional methods like <code>observe</code> or <code>set</code> should not be called.</p>
+<h2 id="template">Template</h2>
+<p>The template can be specified using the return value of an option function:</p>
+<pre><code class="language-js"><span class="keyword">new</span> Ractive({
+    template: <span class="function"><span class="keyword">function</span> <span class="params">( data )</span> {</span>
+        <span class="keyword">return</span> data.foo ? <span class="string">'&lt;p&gt;hello world&lt;/p&gt;'</span> : <span class="string">'&lt;div&gt;yes, we have no foo&lt;/div&gt;'</span>;
+    },
+    data: { foo: <span class="literal">true</span> }
+});</code></pre>
+<p>The return value can be any of the valid template options: a preparsed template,
+a string that will parsed as a template, or an string starting with <code>#</code> that refers to an element id from which
+the template should be retrieved.</p>
+<p>In general, these should be sufficient for most use cases. However, if you need to dissect templates or extract
+partials dynamically, the template option function also receives a second argument
+with a helper parser object <code>p</code> that offers the following methods:</p>
+<blockquote>
+<h3 id="p-fromid-id-">p.fromId( id )</h3>
+<p>Retrieves the template from the DOM element specified by <code>id</code>. Leading <code>#</code> is optional</p>
+<h3 id="p-isparsed-template-">p.isParsed( template )</h3>
+<p>Test whether the supplied instance has already been parsed</p>
+<h3 id="p-parse-template-parseoptions-">p.parse( template [, parseOptions ] )</h3>
+<p>Parses the template via <a href="ractive-parse">Ractive.parse()</a>. If no <code>parseOptions</code> specified, defaults to those
+of the current instance. Full Ractive runtime must be loaded.</p>
+</blockquote>
+<p>During a <a href="ractive-reset">ractive.reset()</a> operation, an option function for a template will be re-evaluated
+and <em>if</em> the return value changes the ractive instance will be re-rendered.</p>
+<p>Used in a component, an option function can be used to dynamically control the template from the parent
+and self-update when the value changes:</p>
+<pre><code class="language-html">&lt;widget template=&#39;{{template}}&#39;/&gt;</code></pre>
+<pre><code class="language-js"><span class="keyword">var</span> Widget = Ractive.extend({
+    template: <span class="function"><span class="keyword">function</span><span class="params">( data )</span> {</span>
+        <span class="keyword">return</span> data.template
+    },
+    init : <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+        <span class="keyword">this</span>.observe( <span class="string">'template'</span>, <span class="function"><span class="keyword">function</span><span class="params">( newTemplate, oldTemplate )</span> {</span>
+            <span class="keyword">if</span>( newTemplate === oldTemplate ) { <span class="keyword">return</span>; }
+            <span class="keyword">this</span>.reset( <span class="keyword">this</span>.data )
+        }.bind(<span class="keyword">this</span>), {init: <span class="literal">false</span>} )
+    }
+});</code></pre>
+<h2 id="partials">Partials</h2>
+<p>The value for a named partial can also be specified using a function:</p>
+<pre><code class="language-js"><span class="keyword">new</span> Ractive({
+    template: <span class="string">'&lt;div&gt;{{&gt;dynamicPartial}}&lt;/div&gt;'</span>,
+    partials: {
+        dyanamicPartial: <span class="function"><span class="keyword">function</span> <span class="params">( data )</span> {</span>
+            <span class="keyword">return</span> data.condition ? <span class="string">'&lt;p&gt;hello world&lt;/p&gt;'</span> : <span class="string">'&lt;div&gt;yes, we have no foo&lt;/div&gt;'</span>;
+        }
+    }
+});</code></pre>
+<p>Partial option functions also received the helper parser <code>p</code> as the second argument. This is useful in
+partials as you cannot return an element id from a partial function and must use <code>p.fromId</code> to return
+the template content of an element.</p>
+<p>Partial functions also cannot directly return the string token of a registered partial. Instead,
+return the value from the ractive instance:</p>
+<pre><code class="language-js">    partials: {
+        dyanamicPartial: <span class="function"><span class="keyword">function</span> <span class="params">( data )</span> {</span>
+            <span class="comment">// assuming data.partial is the string token of a registered partial:</span>
+            <span class="keyword">return</span> <span class="keyword">this</span>.partials[data.partial];
+        }
+    }</code></pre>
+<h2 id="components">Components</h2>
+<p>A component value can be specified using an option function. The return value can either be
+a component or (unlike partials) the string token of a registered component:</p>
+<pre><code class="language-js">Ractive.components.view1 = Ractive.extend({...});
+Ractive.components.view2 = Ractive.extend({...});
+
+<span class="keyword">new</span> Ractive({
+    template: <span class="string">'&lt;div&gt;&lt;dynamicComponent/&gt;&lt;/div&gt;'</span>,
+    components: {
+        dyanamicComponent: <span class="function"><span class="keyword">function</span> <span class="params">( data )</span> {</span>
+            <span class="keyword">return</span> data.foo ? <span class="string">'view1'</span> : <span class="string">'view2'</span>;
+        }
+    }
+});</code></pre>
+<h2 id="data">Data</h2>
+<p>The data option function can either return a value or use the prototype inheritance chain to construct the
+data object. Use <code>this._super</code> to call the parent data option. Ractive will handle integrating
+static data options and data option functions. If a return value is specified, further parent data options
+will not be considered.</p>
+<pre><code class="language-js">
+<span class="keyword">var</span> Component1 = Ractive.extend({
+    data: {
+        formatTitle: <span class="function"><span class="keyword">function</span> <span class="params">(title)</span> {</span>
+            <span class="keyword">return</span> <span class="string">'"'</span> + title.toUpperCase() + <span class="string">'"'</span>;
+        }
+    }
+});
+
+<span class="keyword">var</span> Component2 = Component1.extend({
+    data: <span class="function"><span class="keyword">function</span><span class="params">( data )</span> {</span>
+        <span class="keyword">this</span>._super( data );
+        data.scale = <span class="number">5</span>;
+    }
+});
+
+<span class="keyword">var</span> ractive = <span class="keyword">new</span> Component2({
+    data: { foo: <span class="string">'bar'</span> }
+})
+
+<span class="comment">// r.data: { foo: "bar", formatTitle: function, scale: 5 }</span></code></pre>
+<p>The data object instance passed to the instantiated ractive instance will always be retained as
+the <code>ractive.data</code> instance, <em>unless</em> a return value is specified from an option function in which
+ case that return value instance will be used as <code>ractive.data</code></p>
+<h3 id="copying-parent-data">Copying Parent Data</h3>
+<p>Because parent data is common to all instances, you can use an option function to return a
+unique copy of the data.</p>
+<pre><code class="language-js">
+<span class="keyword">var</span> Shared = Ractive.extend({
+    data: {
+        foo: { bar: <span class="number">42</span> }
+    }
+});
+
+<span class="keyword">var</span> shared1 = <span class="keyword">new</span> Shared();
+<span class="keyword">var</span> shared2 = <span class="keyword">new</span> Shared();
+shared1.set( <span class="string">'foo.bar'</span>, <span class="number">12</span> );
+shared2.get( <span class="string">'foo.bar'</span> ); <span class="comment">// returns 12</span>
+
+
+<span class="keyword">var</span> NotShared = Ractive.extend({
+    data: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+        <span class="keyword">return</span> {
+            foo: { bar: <span class="number">42</span> }
+        };
+    }
+});
+
+<span class="keyword">var</span> notShared1 = <span class="keyword">new</span> NotShared();
+<span class="keyword">var</span> notShared2 = <span class="keyword">new</span> NotShared();
+notShared1.set( <span class="string">'foo.bar'</span>, <span class="number">12</span> );
+notShared2.get( <span class="string">'foo.bar'</span> ); <span class="comment">// returns 42</span></code></pre>
+<h3 id="asynchronous-data">Asynchronous Data</h3>
+<p>A data option function can be a handy way to fetch asynchronous data <em>and</em> supply initial synchronous values:</p>
+<pre><code class="language-js">data: <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+
+    $.get( <span class="string">'somedata.url'</span>, <span class="function"><span class="keyword">function</span><span class="params">( data )</span> {</span>
+        <span class="keyword">this</span>.set( <span class="string">''</span>, data );
+    }.bind(<span class="keyword">this</span>) );
+
+    <span class="keyword">return</span> {
+        foo: <span class="string">'default'</span>
+    };
+}</code></pre>
+<h3 id="specifying-a-model">Specifying a Model</h3>
+<p>Another use of the data option function is to provide a model:</p>
+<pre><code class="language-js">data: <span class="function"><span class="keyword">function</span> <span class="params">( data )</span> {</span>
+    <span class="keyword">return</span> <span class="keyword">new</span> Model( data );
+}</code></pre>
+<p>If you use a constructor guard clause (currently popular for <code>new</code>-less use of javascript constructors),
+you can directly supply the model:</p>
+<pre><code class="language-js"><span class="function"><span class="keyword">function</span> <span class="title">Model</span> <span class="params">( data )</span> {</span>
+    <span class="keyword">if</span> ( !( <span class="keyword">this</span> <span class="keyword">instanceof</span> Model) ) { <span class="keyword">return</span> <span class="keyword">new</span> Model( data ); }
+    <span class="comment">// model setup</span>
+}
+
+<span class="keyword">var</span> MyComponent = Ractive.extend({
+    data: Model
+});
+
+<span class="keyword">var</span> r = <span class="keyword">new</span> MyComponent({
+    data: { foo: <span class="string">'bar'</span> }
+})</code></pre>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="tips">Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Configuration</h1>
+	<ul>
+		<li><a href="options">Options</a></li>
+		<li><a href="ractive-defaults">Defaults</a></li>
+		<li><a href="advanced-configuration">Advanced configuration</a></li>
+	</ul>
+</section>
+<section>
+	<h1>Core Concepts</h1>
+	<h2>Templates</h2>
+	<ul>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="decorators">Decorators</a></li>
+		<li><a href="events">Events</a></li>
+	</ul>
+	<h2>Data & Binding</h2>
+	<ul>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="computed-properties">Computed Properties</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+	</ul>
+	<h2>Transitions and Animations</h2>
+	<ul>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="ractive-easing">Easings</a></li>
+	</ul>
+	<h2>Components</h2>
+	<ul>
+		<li><a href="components">Components</a></li>
+	</ul>
+</section>
+<section>
+	<h1>API Reference</h1>
+	<h2>Constructor</h2>
+	<ul>
+		<li><a href="new-ractive">new Ractive(...)</a></li>
+	</ul>
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-pop">ractive.pop()</a></li>
+		<li><a href="ractive-push">ractive.push()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-shift">ractive.shift()</a></li>
+		<li><a href="ractive-splice">ractive.splice()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-unshift">ractive.unshift()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+	</ul>
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+		<li><a href="ractive-easing">Ractive.easing</a></li>
+	</ul>
+</ul>
+</section>
+<section>
+	<h1>Plugins</h1>
+	<h2>Using</h2>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+	</ul>
+	<h2>Writing</h2>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

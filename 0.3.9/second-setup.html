@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> 60 Second Setup | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>60 Second Setup</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.3.9/60-second setup.md.hbs'>edit this page</a>
+			</header>
+
+			<p>Create a folder with a blank <code>index.html</code> page:</p>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html lang=&#39;en-GB&#39;&gt;
+&lt;head&gt;
+    &lt;meta charset=&#39;utf-8&#39;&gt;
+    &lt;title&gt;My blank page&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;My blank page&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Download the <a href="https://raw.github.com/RactiveJS/Ractive/master/Ractive.js">latest released version of Ractive.js</a> and put it in the same folder as <code>index.html</code>. Include it with a script tag just before the closing <code>&lt;/body&gt;</code> tag:</p>
+<pre><code class="language-html">&lt;body&gt;
+    &lt;h1&gt;My blank page&lt;/h1&gt;
+
+    &lt;script src=&#39;Ractive.js&#39;&gt;&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+<p>Then, add a container element to render a Ractive to:</p>
+<pre><code class="language-html">&lt;body&gt;
+    &lt;h1&gt;My blank page&lt;/h1&gt;
+
+    &lt;div id=&#39;container&#39;&gt;&lt;/div&gt;
+
+    &lt;script src=&#39;Ractive.js&#39;&gt;&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+<p>There are a number of different ways to load templates. For now, the easiest way is to use another script tag. Because we&#39;re specifying a type other than <code>text/javascript</code>, it won&#39;t be executed:</p>
+<pre><code class="language-html">&lt;body&gt;
+    &lt;h1&gt;My blank page&lt;/h1&gt;
+
+    &lt;div id=&#39;container&#39;&gt;&lt;/div&gt;
+
+    &lt;script id=&#39;myTemplate&#39; type=&#39;text/ractive&#39;&gt;
+        &lt;p&gt;, !&lt;/p&gt;
+    &lt;/script&gt;
+
+    &lt;script src=&#39;Ractive.js&#39;&gt;&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+<p>Everything is in place to create a Ractive. Add another script tag at the bottom:</p>
+<pre><code class="language-html">&lt;body&gt;
+    &lt;h1&gt;My blank page&lt;/h1&gt;
+
+    &lt;div id=&#39;container&#39;&gt;&lt;/div&gt;
+
+    &lt;script id=&#39;myTemplate&#39; type=&#39;text/ractive&#39;&gt;
+        &lt;p&gt;, !&lt;/p&gt;
+    &lt;/script&gt;
+
+    &lt;script src=&#39;Ractive.js&#39;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        var ractive = new Ractive({
+            el: &#39;container&#39;,
+            template: &#39;#myTemplate&#39;,
+            data: { greeting: &#39;Hello&#39;, recipient: &#39;world&#39; }
+        });
+    &lt;/script&gt;
+&lt;/body&gt;</code></pre>
+<p>Open the page in a browser. You should see a &#39;Hello, world!&#39; message. If you open the console and type <code>ractive.set(&#39;recipient&#39;, &#39;Jim&#39;)</code> the text will update.</p>
+<p>That&#39;s it - you&#39;re in business.</p>
+<h3 id="next-steps">Next steps</h3>
+<ul>
+<li>You could pass in a template string as the <code>template</code> option, rather than the ID of a script tag containing the template. In that case, if your template is more than a couple of lines you&#39;ll probably want to keep it in a separate file and load it (e.g. with <code>$.ajax</code>, if you&#39;re using jQuery)</li>
+<li>As your app grows in complexity, you&#39;ll want to keep your application code (i.e. the bit that calls <code>new Ractive()</code>) in a separate file. You can also <a href="using-ractive-with-requirejs">use Ractive with RequireJS</a>.</li>
+<li>Work your way through the <a href="http://learn.ractivejs.org">tutorials</a> to learn how to use Ractive. You can also consult the <a href="api-reference">API reference</a>.</li>
+</ul>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>API Reference</h1>
+	<h2>new Ractive(...)</h2>
+	<ul>
+		<li><a href="initialisation-options">Initialisation options</a></li>
+	</ul>
+
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+	</ul>
+
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+	</ul>
+</ul>
+
+<section>
+	<h1>Plugins</h1>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+		<li><a href="writing-plugins">Writing plugins</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Glossary</h1>
+	<ul>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="components">Components</a></li>
+		<li><a href="decorators">Decorators</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="events">Events</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

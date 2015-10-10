@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Transitions | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+
+		<ul>
+			<li><a href='http://ractivejs.org/60-second-setup'>60 second setup</a></li>
+			<li><a href='http://learn.ractivejs.org'>Tutorials</a></li>
+			<li><a href='http://examples.ractivejs.org'>Examples</a></li>
+			<li class="selected"><a href='http://docs.ractivejs.org'>Docs</a></li>
+			<li><a href='http://docs.ractivejs.org/latest/plugins'>Plugins</a></li>
+			<li><a href='http://blog.ractivejs.org'>Blog</a></li>
+			<li class='github-small'><a href='https://github.com/ractivejs/ractive'>GitHub</a></li>
+		</ul>
+
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Transitions</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.3.9/Transitions.md.hbs'>edit this page</a>
+			</header>
+
+			<p>Transitions allow you to control how elements are first rendered and how they are removed from the DOM. They are added with <code>intro</code> and <code>outro</code> directives, which look like attributes within a template (but are not rendered to the DOM as attributes):</p>
+<pre><code class="language-html">&lt;div intro=&#39;fade&#39;&gt;This element will fade in gradually when it renders&lt;/div&gt;</code></pre>
+<p>This works because (or rather, if) Ractive is able to find a <code>fade</code> function on either <a href="ractive-transitions-instance">ractive.transitions</a> (i.e. instance-specific transitions) or <a href="ractive-transitions-global">Ractive.transitions</a> (i.e. globally-available transitions).</p>
+<p>To start using transitions, download them from the <a href="plugins">Plugins</a> page.</p>
+<h2 id="creating-transitions">Creating transitions</h2>
+<p>We&#39;re going to create a <code>flash</code> transition, that flashes text green on intro, and red on outro. To skip ahead and see the result, <a href="http://jsfiddle.net/rich_harris/Hf2ea/">open the JSFiddle</a>.</p>
+<p>All we need to do is create a function that receives a transition object, <code>t</code>. This function is called when a new element is added to the DOM (if it has an <code>intro=&quot;flash&quot;</code> directive), and when that element is removed from the DOM.</p>
+<p>Because transitions are generally asynchronous, we have to call <code>t.complete()</code> once they have finished.</p>
+<pre><code class="language-js"><span class="keyword">var</span> flashTransition = <span class="function"><span class="keyword">function</span> <span class="params">( t )</span> {</span>
+    <span class="keyword">if</span> ( t.isIntro ) {
+        <span class="comment">// we're entering the DOM</span>
+    } <span class="keyword">else</span> {
+        <span class="comment">// we're leaving the DOM</span>
+    }
+
+    doSomeAsynchronousWork().then( t.complete );
+};</code></pre>
+<h2 id="the-transition-object-t-">The transition object (<code>t</code>)</h2>
+<p>The <code>t</code> object has a few properties and methods designed to make creating transitions easier.</p>
+<blockquote>
+<h3 id="t-node">t.node</h3>
+<p>The node that&#39;s entering or leaving the DOM</p>
+<h3 id="t-isintro">t.isIntro</h3>
+<p>Should be self-explanatory...</p>
+<h3 id="t-name">t.name</h3>
+<p>The name of the transition (in our example, &#39;flash&#39;)</p>
+<h3 id="t-params">t.params</h3>
+<p>Transition parameters (see below). You won&#39;t normally need this, as they are supplied as arguments to the function.</p>
+<h3 id="t-complete-noreset-">t.complete([ noReset ])</h3>
+<p>You must call this within your transition function, otherwise Ractive has no idea whether a transition has finished or not</p>
+<blockquote>
+<h4 id="noreset-boolean-">noReset <em><code>Boolean</code></em></h4>
+<p>Defaults to <code>false</code>. Generally, you won&#39;t need this. If <code>true</code>, <code>t.resetStyle()</code> (see below) is not called, even if this is an intro transition.</p>
+</blockquote>
+<h3 id="t-getstyle-prop-">t.getStyle( prop )</h3>
+<p>A convenient way to get a particular style property for <code>t.node</code>. It uses <code>window.getComputedStyle()</code> (the <a href="legacy-builds">legacy builds</a> include a shim for old IE). Prefixes are applied automatically, so do <code>t.getStyle(&#39;transform&#39;)</code>, not <code>t.getStyle(&#39;-webkit-transform&#39;)</code> or whatever. You can use either camelcased or hyphenated styles (&#39;backgroundColor&#39; or &#39;background-color&#39;).</p>
+<blockquote>
+<h4 id="-prop-string-"><strong>prop</strong> <em><code>String</code></em></h4>
+<p>The style property to get the value of, e.g. <code>&#39;opacity&#39;</code></p>
+</blockquote>
+<h3 id="t-getstyle-props-">t.getStyle( props )</h3>
+<p>As above, but several properties simultaneously. Returns an <code>Object</code> containing a map of properties to values.</p>
+<blockquote>
+<h4 id="-props-array-"><strong>props</strong> <em><code>Array</code></em></h4>
+<p>A list of properties to get, e.g. <code>[&#39;width&#39;, &#39;height&#39;]</code>.</p>
+</blockquote>
+<h3 id="t-setstyle-prop-value-">t.setStyle( prop, value )</h3>
+<p>Sets a style on <code>t.node</code>. Again, you don&#39;t need to worry about prefixes, and you can use camelcased or hyphenated property names.</p>
+<blockquote>
+<h4 id="-prop-string-"><strong>prop</strong> <em><code>String</code></em></h4>
+<p>The style property to set, e.g. <code>&#39;color&#39;</code></p>
+<h4 id="-value-"><strong>value</strong></h4>
+<p>The value to set it to, e.g. <code>&#39;red&#39;</code></p>
+</blockquote>
+<h3 id="t-setstyle-props-">t.setStyle( props )</h3>
+<p>Sets several styles simultaneously.</p>
+<blockquote>
+<h4 id="-props-object-"><strong>props</strong> <em><code>Object</code></em></h4>
+<p>A map of properties to values, e.g. <code>{opacity: 0, transform: &#39;scale(0)&#39;}</code></p>
+</blockquote>
+<h3 id="t-animatestyle-prop-value-options-complete-">t.animateStyle( prop, value, options[, complete ])</h3>
+<p>Animates a style property, using CSS transitions.</p>
+<blockquote>
+<h4 id="-prop-string-"><strong>prop</strong> <em><code>String</code></em></h4>
+<p>The style to animate.</p>
+<h4 id="-value-"><strong>value</strong></h4>
+<p>The value to animate it to.</p>
+<h4 id="-options-object-"><strong>options</strong> <em><code>Object</code></em></h4>
+<blockquote>
+<h4 id="-duration-number-"><strong>duration</strong> <em><code>Number</code></em></h4>
+<p>The duration of the animation, in milliseconds</p>
+<h4 id="easing-string-">easing <em><code>String</code></em></h4>
+<p>Defaults to <code>&#39;linear&#39;</code>. Any <a href="http://cubic-bezier.com/#.17,.67,.83,.67">valid CSS timing function</a>, e.g. <code>ease-in-out</code>, or <code>cubic-bezier(.17,.67,.83,.67)</code></p>
+<h4 id="delay-number-">delay <em><code>Number</code></em></h4>
+<p>The number of milliseconds to wait before beginning the animation</p>
+</blockquote>
+<h4 id="complete-function-">complete <em><code>Function</code></em></h4>
+<p>A callback function that will be called when the animation is complete (or immediately, if there are no changes)</p>
+</blockquote>
+<h3 id="t-animatestyle-props-options-complete-">t.animateStyle( props, options[, complete ])</h3>
+<blockquote>
+<h4 id="-props-object-"><strong>props</strong> <em><code>Object</code></em></h4>
+<p>A map of properties to values.</p>
+<h4 id="-options-object-"><strong>options</strong> <em><code>Object</code></em></h4>
+<p>As above.</p>
+<h4 id="complete-function-">complete <em><code>Function</code></em></h4>
+<p>As above.</p>
+</blockquote>
+<h3 id="t-resetstyle-">t.resetStyle()</h3>
+<p>Resets the style of an element to how it was when you found it. Generally you won&#39;t need to use this directly, as it is called by <code>t.complete()</code> if the transition is an intro, unless you do <code>t.complete(true)</code>.</p>
+<h3 id="t-processparams-params-defaults-">t.processParams( params[, defaults ])</h3>
+<p>Interprets a parameters object or value according to the guidelines in the next section.</p>
+<blockquote>
+<h4 id="params-object-or-number-or-string-">params <em><code>Object</code> or <code>Number</code> or <code>String</code></em></h4>
+<p>An object with parameters, or either a) a number, which will be treated as a duration in milliseconds, or b) one of <code>&#39;fast&#39;</code> or <code>&#39;slow&#39;</code>, which indicate a duration of 200 or 600 milliseconds respectively.</p>
+<h4 id="defaults-object-">defaults <em><code>Object</code></em></h4>
+<p>The default options for the transition. Any options on this object that are not specified in the directive will be added to the return value.</p>
+</blockquote>
+</blockquote>
+<h2 id="parameters">Parameters</h2>
+<p>Users of your transition can pass parameters like so:</p>
+<pre><code class="language-html">&lt;p intro=&#39;flash:{duration:,color:&quot;blue&quot;}&#39;&gt;
+    this text will flash blue on intro
+&lt;/p&gt;</code></pre>
+<p>In this case, the transition function&#39;s second argument will be an object with a <code>duration</code> property, whose value is whatever <code>transitionDuration</code> is at the time the transition happens, and a <code>color</code> property whose value is <code>&quot;blue&quot;</code>.</p>
+<p>By convention, if a user passes a single numeric argument, or the string &#39;fast&#39; or &#39;slow&#39;, it should be treated as a duration. You can use <code>t.processParams(params)</code> to do this.</p>
+<pre><code class="language-html">&lt;p intro=&#39;flash:500&#39;&gt;this text will flash green (default colour) for 500 milliseconds&lt;/p&gt;
+&lt;p intro=&#39;flash:fast&#39;&gt;this text will flash for 200 milliseconds&lt;/p&gt;
+&lt;p intro=&#39;flash:slow&#39;&gt;this text will flash for 600 milliseconds&lt;/p&gt;</code></pre>
+<h2 id="our-example-flash-transition">Our example flash transition</h2>
+<p>You can see the finished product at <a href="http://jsfiddle.net/rich_harris/Hf2ea/">this JSFiddle</a>.</p>
+<pre><code class="language-js">flashTransition = <span class="function"><span class="keyword">function</span> <span class="params">( t, params )</span> {</span>
+    <span class="keyword">var</span> color, duration;
+
+    <span class="comment">// Process parameters (second argument provides defaults)</span>
+    params = t.processParams( params, {
+        duration: <span class="number">400</span>,
+        color: t.isIntro ? <span class="string">'rgb(0,255,0)'</span> : <span class="string">'rgb(255,0,0)'</span>
+    });
+
+    <span class="comment">// Then, we execute the transition itself</span>
+    t.setStyle( <span class="string">'color'</span>, params.color );
+
+    <span class="comment">// After the specified duration, call `t.complete()` to</span>
+    <span class="comment">// signal that we've finished</span>
+    setTimeout( t.complete, params.duration );
+};</code></pre>
+<h2 id="registering-transitions">Registering transitions</h2>
+<p>Now that we&#39;ve made a transition, we need to make it available to Ractive. As with other plugins, we have a few options, depending on what we plan to do:</p>
+<pre><code class="language-js"><span class="comment">// transition is available to all Ractive instances</span>
+Ractive.transitions.flash = flashTransition;
+
+<span class="comment">// transition is available to a single Ractive instance:</span>
+ractive = <span class="keyword">new</span> Ractive({
+    el: <span class="string">'body'</span>,
+    template: template,
+    transitions: {
+        flash: flashTransition
+    }
+});
+
+<span class="comment">// decorator is available to all instances of e.g. RactiveWithTransition:</span>
+RactiveWithTransition = Ractive.extend({
+    transitions: {
+        flash: flashTransition
+    }
+});</code></pre>
+<h2 id="sharing-your-transitions">Sharing your transitions</h2>
+<p>If you create a transition that you find useful, other developers probably will too. Share it! An easy way to get started is to use the <a href="https://github.com/RactiveJS/Plugin-template">plugin template</a>, which uses <a href="htp://gruntjs.com">Grunt</a> and walks you through the steps necessary to create a plugin with a demo page.</p>
+<p>Once you&#39;re ready to share it with the world, ping <a href="http://twitter.com/RactiveJS">@RactiveJS</a> on Twitter. Thanks!</p>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>API Reference</h1>
+	<h2>new Ractive(...)</h2>
+	<ul>
+		<li><a href="initialisation-options">Initialisation options</a></li>
+	</ul>
+
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+	</ul>
+
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+	</ul>
+
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+	</ul>
+</ul>
+
+<section>
+	<h1>Plugins</h1>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+		<li><a href="writing-plugins">Writing plugins</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Glossary</h1>
+	<ul>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="components">Components</a></li>
+		<li><a href="decorators">Decorators</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="events">Events</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../edge'>edge</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>
