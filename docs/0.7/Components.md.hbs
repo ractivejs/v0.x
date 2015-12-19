@@ -307,7 +307,7 @@ Partials, components, and any other valid template items can be used as well:
 </list>
 ```
 
-Currently, the content markup resolves in the component's context. In the second example above the `value` parameter for `<widget>` is the individual list item of `\{{fates}}`. Components inherit their parents partials, so in the first case, `partiaA` could be a partial defined inline within the component body, added to the component's `partials` property at creation or before use, defined in the parent Ractive instance, or defined globally (`Ractive.partials`).
+Currently, the content markup resolves in the component's context. In the second example above the `value` parameter for `<widget>` is the individual list item of `\{{fates}}`. Components inherit their parents partials, so in the first case, `partialA` could be a partial defined inline within the component body, added to the component's `partials` property at creation or before use, defined in the parent Ractive instance, or defined globally (`Ractive.partials`).
 
 Partials defined inline in the component body can be used to override partials defined on the component. This can be useful for components to allow easy customization of each instance using partials:
 
