@@ -118,7 +118,7 @@ ractive.off( 'activate', handler );
 
 In the second case, note that if you don't specify a handler, all 'activate' handlers will be removed. If you don't specify an event name, **all** event handlers will be removed from the instance. See {{{createLink 'ractive.off()'}}} for more detail.
 
-The `ractive.off()` method is chainable for easily replacing subscribtions:
+The `ractive.off()` method is chainable for easily replacing subscriptions:
 
 ```js
 ractive.off( 'activate' ).on( 'activate', function () {...} );
