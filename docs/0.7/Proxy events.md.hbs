@@ -86,7 +86,7 @@ Note: the built-in {{{createLink 'lifecycle events'}}} are **reserved**, which m
 <button on-click="\{{handler}}">click me!</button>
 ```
 
-In practive this is of limited value, but a more important side effect is that if no handler is specified (a falsey value) the DOM event is not subscribed and will unsubscribe or resubscribe as the handler value changes. Combined with a conditional section, this allows a proxy event to be conditionally subscribed _at the DOM level_:
+In practice this is of limited value, but a more important side effect is that if no handler is specified (a falsey value) the DOM event is not subscribed and will unsubscribe or resubscribe as the handler value changes. Combined with a conditional section, this allows a proxy event to be conditionally subscribed _at the DOM level_:
 
 ```html
 <button on-click="\{{#active}}select\{{/}}">click me!</button>
