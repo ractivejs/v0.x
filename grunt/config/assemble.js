@@ -5,6 +5,11 @@ module.exports = function ( grunt ) {
 
 	config = {
 		options: {
+			marked: {
+				langPrefix: "hljs language-",
+				highlight: function ( code, lang ) {
+					return require( 'highlight.js' ).highlightAuto( code ).value;
+				}},
 			assets: '/root/assets',
 			helpers: ['helpers/*.js'],
 			postprocess: function ( content ) {
