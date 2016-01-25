@@ -43,7 +43,8 @@ Checkboxes may also be bound by the `name` attribute, which will result in the v
 
 If `colors` is an array, `['Red', 'Yellow', 'Green', 'Blue']`, then checking the first box will result in `selected` becoming `['Red']`. Checking the third box will result in `selected` becoming `['Red', 'Green']`. The array may also be updated from code using `set` or any of the array modification methods available to Ractive, and the checkboxes will be updated to reflect the contents of the array in the Ractive viewmodel.
 
-**Note** that checkboxes may be bound by either `checked` or `name` but not both.
+**Note** that checkboxes with both a `checked` and `name` binding will *only* bind on `checked`, not both. The `name` binding will be treated
+as a normal mustache variable.
 
 ### Radios
 
