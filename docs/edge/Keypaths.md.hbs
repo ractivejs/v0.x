@@ -67,3 +67,7 @@ ractive = new Ractive({
 
 ractive.get( 'letters[0]' ); // returns undefined
 ```
+
+## Escaping
+
+While not ideal, sometimes properties of objects have `.`s in name e.g. `foo['bar.baz']`. Note that while numbers are supported in array notation, strings are not. To access a peypath with a literal `.` in one of the keys, you can escape it with a `\` e.g. `foo.bar\.baz`. Any keys accessible in the template will be unescaped, so if you're trying to use them with simple string concatenation to access a keypath with a `.` in it, you'll need to make sure you escape it first.

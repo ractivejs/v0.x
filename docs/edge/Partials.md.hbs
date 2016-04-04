@@ -198,10 +198,10 @@ Partials may be named with the same rules as any other identifier in Ractive or 
 Partial sections may be given explicit context by adding an expression after the name in the form of `\{{>[name expression] [context expression]}}`. The partial will then be executed with the given context instead of the context in which the partial section appears. This has the same effect as wrapping the partial section in a `#with` section.
 
 ```html
-\{{#list}}\{{>somePartial { item: ., magicNumber: 42 }}}\{{/}}
+\{{#list}}\{{>somePartial .foo.bar }}\{{/}}
 ```
 
-In this example, `\{{item}}` in `somePartial` will resolve to the current item in `list` and `magicNumber` will resolve to `42`. Ancestor references, members, object literals, and any other expressions that resolve to an object may be used as a context expression.
+In this example, `\{{this}}` of `\{{.}}` in `somePartial` will resolve to the `.foo.bar` path of the current item in `list`. Ancestor references, members, object literals, and any other expressions that resolve to an object may be used as a context expression. Aliases may also be established for use in a partial e.g. `\{{>somePartial .foo.bar as item, 42 as magicNumber}}`, and in the case of `item`, as a plain referece, can still be used for two-way binding.
 
 
 <a name="recursion"></a>

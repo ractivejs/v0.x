@@ -473,58 +473,43 @@ In this example, clicking the button gets a "random" coin flip result, sets it i
 <a name="aliasing"></a>
 ### Aliasing
 
-Since a section with a non-falsy value uses the value as its context, an object expression can be used to create an arbitrary context within a section. Any currently visible context keypaths can be referenced within the new context object, which allows you to keep keypaths available that would otherwise be unreachable.
-
-```html
-\{{# { id: '10t' } }}
-  Error: \{{id}}
-\{{/}}
-```
-
-Output:
-```html
-Error: 10t
-```
-
-Using a section with an object expression to keep references accessible or convenient:
-
-```html
-<ul>
-\{{#things:outerIndex}}
-  \{{# { thing: ., i: outerIndex } }}
-    \{{#colors:j}}
-      <li>\{{i}}-\{{j}} \{{.}} \{{thing}}</li>
-    \{{/}}
-  \{{/}}
-\{{/}}
-</ul>
-```
-
-**Note** `i` as `outerIndex` is not required, `outerIndex` is still accessible within the `\{{#colors}}` section.
-
-Data:
+Any section (or `\{{#with}}` section) provides its own context to the template that falls within it, and any references within the section will be resolved against the section context. Ambiguous references are resolved up the model hierarchy _and_ the context hierarchy. Given a data structure that looks like
 ```js
 {
-  colors: ['Purple', 'Orange', 'Green'],
-  things: ['People-Eater', 'Orange', 'Hornet']
+  foo: {
+    baz: 99,
+    bar: {
+      baz: 42
+    }
+  },
+  list: [
+    baz: 198,
+    bar: {
+      baz: 84
+    }
+  ]
 }
 ```
-
-Output:
+and a template
 ```html
-<ul>
-  <li>0-0 Purple People-Eater</li>
-  <li>0-1 Orange People-Eater</li>
-  <li>0-2 Green People-Eater</li>
-  <li>1-0 Purple Orange</li>
-  <li>1-1 Orange Orange</li>
-  <li>1-2 Green Orange</li>
-  <li>2-0 Purple Hornet</li>
-  <li>2-1 Orange Hornet</li>
-  <li>2-2 Green Hornet</li>
-</ul>
+\{{#each list}}
+  explicit 1: \{{.bar.baz}}
+  \{{#with .bar}}
+    implicit 1: \{{baz}}
+    \{{#with ~/foo}}
+      explicit 2: \{{.bar.baz}}
+      implicit 2: \{{baz}}
+    \{{/with}}
+  \{{/with}}
+\{{/each}}
 ```
+there is no way to reference `~/list.0.baz` from the second implicit site because the site has a different context (`~/foo`) and using an ambiguous reference (`baz`) results in `~/foo.baz`  being used. Aliasing offers an escape hatch for similarly complex scenarios where ambiguity can cause the wrong reference to be used or performance issues to arise, because ambiguity is expensive.
 
+Alias block use the existing `\{{#with}}` mustache, but instead of setting a context, they set names for one or more keypaths. Aliases follow the form `destination as alias`, where destination is any valid reference at that point in the template e.g. `\{{#with .foo as myFoo, @key as someKey, 10 * @index + ~/offset as someCalculation, .baz.bat as lastOne}}`. Because plain reference aliases, like the `myFoo` and `lastOne` aliases in the example, refer to exactly one non-computed keypath, they can also be used for two-way binding deeper in the template. For example, `<input value="\{{myFoo}}" />` as a child of the alias block would bind to `.foo` in the context where the alias block is defined.
+
+Aliasing is also extended to `\{{#each}}` blocks so that the iterated item can be named rather than just referred to as `this` or `.`. For instance, `\{{#each list as item}}` would make `item` equivalent to `this` directly within the `each` block, but `item` would still refer to same value in further nested contexts. Index and key aliases can still be used with an aliased iteration e.g. `\{{#each object as item: key, index}}`.
+
+Finally, partials can also be used with alias shorthand in much the same way that they can be passed context e.g. `\{{>somePartial .foo.bar as myBar, 20 * @index + baz as myComp}}`.
 
 <a name="static"></a>
 ### Static mustaches
