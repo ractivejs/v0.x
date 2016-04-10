@@ -18,4 +18,4 @@ The Ractive equivalent to ```Array.splice``` that can add new elements to the ar
 > > #### **add**
 > > Any elements to insert into the array starting at *`index`*. There can be 0 or more elements passed to add to the array.
 
-If the given keypath does not resolve to an array, an error will be thrown.
+If the given keypath does not exist (is `undefined`), an empty array will be supplied instead. Otherwise, if the given keypath does not resolve to an array, an error will be thrown.

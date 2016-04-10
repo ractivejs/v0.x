@@ -40,6 +40,12 @@ Partials defined in `<script>` tags can now contain top-level inline partial def
 
 You can now retrieve the CSS for a Ractive instance with a new `toCSS` method. You can also get the CSS for all instances with a new static Ractive method of the same name.
 
+You can now trigger a transition with `ractive.transition( transition, node, options )`, and `node` can be supplied implicitly from an event handler. Transitions can now return a Promise and `complete` will automatically be called when the promise resolves.
+
+Class and style attributes now get special treatment that keeps them from clobbering external changes. There are also special attribute forms for targeting a single class or inline style at a time using e.g. `style-left="{{x}}px"` and `class-someClass="{{someCondition || someOtherCondition}}"`. For the special style form, additional hyphens in the attribute are turned into caeml case. For the special class form, the truthiness of the value determines whether or not the class is added to the list.
+
+As `set` will create intermediate objects when setting an undefined keypath, array methods will now swap in an empty array instead of erroring when called with an undefined keypath. Trying to use an array method with a non-array value including `null` will still throw.
+
 ### Breaking changes and deprecation
 
 * Names in partial mustaches have been further relaxed to allow `/`s. They can also now handle relative contexts because partial name expressions no longer support spaces around the `.` delimiters in object paths. `\{{> foo.bar.baz .bat}}` before this change would have parsed as a single expression to get the partial name from `foo.bar.baz.bat`. It will now get the name from `foo.bar.baz` and have a context provided from `.bat`.
@@ -50,7 +56,7 @@ You can now retrieve the CSS for a Ractive instance with a new `toCSS` method. Y
 
 * The private `_ractive` tracking data added to Ractive controlled DOM nodes has changed significantly. The format of `Ractive.getNodeInfo` objects is still compatible.
 
-* `\{{#with obj}}` to not render if `obj` is falsey (https://github.com/ractivejs/ractive/issues/1856)
+* `\{{#with obj}}` will no longer render if `obj` is falsey (https://github.com/ractivejs/ractive/issues/1856)
 
 ## Migrating from 0.6.x
 
