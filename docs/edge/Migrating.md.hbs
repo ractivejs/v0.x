@@ -42,7 +42,7 @@ You can now retrieve the CSS for a Ractive instance with a new `toCSS` method. Y
 
 You can now trigger a transition with `ractive.transition( transition, node, options )`, and `node` can be supplied implicitly from an event handler. Transitions can now return a Promise and `complete` will automatically be called when the promise resolves.
 
-Class and style attributes now get special treatment that keeps them from clobbering external changes. There are also special attribute forms for targeting a single class or inline style at a time using e.g. `style-left="\{{x}}px"` and `class-someClass="\{{someCondition || someOtherCondition}}"`. For the special style form, additional hyphens in the attribute are turned into caeml case. For the special class form, the truthiness of the value determines whether or not the class is added to the list.
+Class and style attributes now get special treatment that keeps them from clobbering external changes. There are also special attribute forms for targeting a single class or inline style at a time using e.g. `style-left="\{{x}}px"` and `class-someClass="\{{someCondition || someOtherCondition}}"`. For the special style form, additional hyphens in the attribute are turned into camel case. For the special class form, the truthiness of the value determines whether or not the class is added to the list.
 
 As `set` will create intermediate objects when setting an undefined keypath, array methods will now swap in an empty array instead of erroring when called with an undefined keypath. Trying to use an array method with a non-array value including `null` will still throw.
 
