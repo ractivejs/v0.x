@@ -7,8 +7,11 @@ An {{{createLink 'Adaptors' 'adaptor'}}} is an object with two methods - `filter
 ```js
 myAdaptor = {
   filter: function ( object, keypath, ractive ) {
+    // Ractive uses the `filter` function to determine whether something
+    // needs to be wrapped or not.
     // return `true` if a particular object is of the type we want to adapt
   },
+  // If an object passes the filter, we wrap it.
   wrap: function ( ractive, object, keypath, prefixer ) {
     // set up event bindings etc, and return a 'wrapper'
   }
