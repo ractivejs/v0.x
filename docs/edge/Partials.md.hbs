@@ -161,7 +161,7 @@ This example uses a combination of partial expressions and restricted references
 
 ```html
 <script id="template" type="text/ractive">
-  Add a partial: <textarea value="\{{tpl}}" /><button on-click="add()">Add</button><br/>
+  Add a partial: <textarea value="\{{tpl}}" /><button on-click="@this.add()">Add</button><br/>
   \{{#list}}\{{>makePartial(.id, .template)}}\{{/}}
 </script>
 ```

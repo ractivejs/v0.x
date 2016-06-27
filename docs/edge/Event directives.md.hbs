@@ -11,7 +11,7 @@ DOM events are handled with template directives that take the form of element at
 You can assign multiple events by separating them with a hyphen:
 
 ```html
-<div on-mouseover-mousemove='set( "hover", true )'>...</div>
+<div on-mouseover-mousemove='@this.set( "hover", true )'>...</div>
 ```
 The structure of the attribute content will vary depending on whether you are using {{{createLink 'proxy events'}}} (the first example) or {{{createLink 'method calls'}}} (the second example). See each respective section for more details.
 

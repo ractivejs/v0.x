@@ -41,6 +41,8 @@ The event object is also available in event handlers using `this.event`, see {{{
 
 ### Custom arguments
 
+__NOTE:__ Arguments to proxy events have been deprecated because they are too easy to break. If you need to pass arguments with your event, you can use `@this.fire('myEvent', event, arg1, arg2, etc)`.
+
 We might want to pass arguments to our handler in addition to the `event` object. We can do that by listing them, comma-separated, after the event name:
 
 ```html
