@@ -18,50 +18,51 @@ ractive.myMethod(); // triggers the alert
 ```
 
 
-| Option                                    		| Category         						| Description |
-| ----------------------------------------- 		| -----------      						| -----       |
-| [adapt](#adapt)                           		| [data](#data-binding)             	| adaptors to use |
-| [adaptors](#adaptors)                     		| [data](#data-binding)             	| registry of available adaptors |
-| [append](#append)                         		| [placement](#dom-placement)    	    | how to handle existing content in the dom |
-| [complete](#complete)                     		| [transitions](#transitions-animations)| fine-tune template placement in the dom |
-| [components](#components)                 		| [templating](#templating)       		| components to include for use by the template |
-| [computed](#computed)                     		| [data](#data-binding)             	| computed properties to include |
-| [css](#css)                     		            | [templating](#templating)             | component only css to include on render |
-| [data](#data)                             		| [data](#data-binding)             	| the data to bind to the template |
-| [decorators](#decorators)                 		| [templating](#templating)       		| decorators to include for use by the template |
-| [delimiters](#delimiters)                 		| [parsing](#parsing)          			| delimiters to use when parsing the template |
-| [easing](#easing)                         		| [transitions](#transitions-animations)| easing functions to use in transitions |
-| [el](#el)                                 		| [placement](#dom-placement)    	    | render to this element in the dom |
-| [events](#events)                         		| [templating](#templating)      		| events to include for use by the template |
-| [interpolators](#interpolators)           		| [transitions](#transitions-animations)| interpolators to use for animating values |
-| [isolated](#isolated)                        		| [data](#data-binding)          		| prevent components from accessing parent data and registries |
-| [lazy](#lazy)                             		| [binding](#data-binding)         		| don't bind to every keypress |
-| [magic](#magic)                           		| [binding](#data-binding)             	| data object getters and setters that update view |
-| [modifyArrays](#modifyArrays)             		| [binding](#data-binding)             	| array modification methods update the view |
-| [noCssTransform](#noCssTransform)         		| [templating](#templating)       		| prevent transformation of component css |
-| [noIntro](#noIntro)                       		| [transitions](#transitions-animations)| do not apply transitions on render |
-| [onchange](#onchange)                             | [lifecycle events](#lifecycle-events) | event fired when data changes
-| [oncomplete](#oncomplete)                         | [lifecycle events](#lifecycle-events) | event fired once {{{createLink 'transitions'}}} have completed
-| [onconfig](#onconfig)                             | [lifecycle events](#lifecycle-events) | event fired once all configuration options have been processed
-| [onconstruct](#onconstruct)                       | [lifecycle events](#lifecycle-events) | event fired immediately after `new Ractive(...)`
-| [ondetach](#ondetach)                             | [lifecycle events](#lifecycle-events) | event fired each time `ractive.detach()` is called
-| [oninit](#oninit)                                 | [lifecycle events](#lifecycle-events) | event fired when the instance is ready to be rendered
-| [oninsert](#oninsert)                             | [lifecycle events](#lifecycle-events) | event fired each time `ractive.insert()` is called
-| [onrender](#onrender)                             | [lifecycle events](#lifecycle-events) | event fired each time the instance is rendered
-| [onteardown](#onteardown)                         | [lifecycle events](#lifecycle-events) | event fired each time the instance is destroyed
-| [onunrender](#onunrender)                         | [lifecycle events](#lifecycle-events) | event fired each time the instance is unrendered
-| [onupdate](#onupdate)                             | [lifecycle events](#lifecycle-events) | event fired after `ractive.update()` is called
-| [partials](#partials)                     		| [templating](#templating)       		| partials to include for use by the template |
-| [preserveWhitespace](#preserveWhitespace) 		| [parsing](#parsing)          			| don't normalize template whitespace |
-| [sanitize](#sanitize)                     		| [parsing](#parsing)          			| remove designated elements and event attributes |
-| [staticDelimiters](#staticDelimiters)             | [parsing](#parsing)          			| one-time binding parsing delimiters |
-| [staticTripleDelimiters](#staticTripleDelimiters) | [parsing](#parsing)          			| one-time binding non-escaped parsing delimiters  |
-| [stripComments](#stripComments)           		| [parsing](#parsing)          			| remove HTML comments from templates |
-| [template](#template)                     		| [templating](#templating)       		| specifies the template to use |
-| [transitions](#transitions)               		| [transitions](#transitions-animations)| transitions to include for use by the template |
-| [transitionsEnabled](#transitionsEnabled) 		| [transitions](#transitions-animations)| allow transitions |
-| [tripleDelimiters](#tripleDelimiters)     		| [parsing](#parsing)          			| non-escaped parsing delimiters |
-| [twoway](#twoway)                         		| [binding](#data-binding)          	| prevent updates from the view back to the model |
+| Option                                            | Category                               | Description |
+| -----------------------------------------         | -----------                            | -----       |
+| [adapt](#adapt)                                   | [data](#data-binding)                  | adaptors to use |
+| [adaptors](#adaptors)                             | [data](#data-binding)                  | registry of available adaptors |
+| [append](#append)                                 | [placement](#dom-placement)            | how to handle existing content in the dom |
+| [complete](#complete)                             | [transitions](#transitions-animations) | fine-tune template placement in the dom |
+| [components](#components)                         | [templating](#templating)              | components to include for use by the template |
+| [computed](#computed)                             | [data](#data-binding)                  | computed properties to include |
+| [csp](#csp)                                       | [parsing](#parsing)                    | output CSP compatible (inline functions for expressions) templates |
+| [css](#css)                                       | [templating](#templating)              | component only css to include on render |
+| [data](#data)                                     | [data](#data-binding)                  | the data to bind to the template |
+| [decorators](#decorators)                         | [templating](#templating)              | decorators to include for use by the template |
+| [delimiters](#delimiters)                         | [parsing](#parsing)                    | delimiters to use when parsing the template |
+| [easing](#easing)                                 | [transitions](#transitions-animations) | easing functions to use in transitions |
+| [el](#el)                                         | [placement](#dom-placement)            | render to this element in the dom |
+| [events](#events)                                 | [templating](#templating)              | events to include for use by the template |
+| [interpolators](#interpolators)                   | [transitions](#transitions-animations) | interpolators to use for animating values |
+| [isolated](#isolated)                             | [data](#data-binding)                  | prevent components from accessing parent data and registries |
+| [lazy](#lazy)                                     | [binding](#data-binding)               | don't bind to every keypress |
+| [magic](#magic)                                   | [binding](#data-binding)               | data object getters and setters that update view |
+| [modifyArrays](#modifyArrays)                     | [binding](#data-binding)               | array modification methods update the view |
+| [noCssTransform](#noCssTransform)                 | [templating](#templating)              | prevent transformation of component css |
+| [noIntro](#noIntro)                               | [transitions](#transitions-animations) | do not apply transitions on render |
+| [onchange](#onchange)                             | [lifecycle events](#lifecycle-events)  | event fired when data changes
+| [oncomplete](#oncomplete)                         | [lifecycle events](#lifecycle-events)  | event fired once {{{createLink 'transitions'}}} have completed
+| [onconfig](#onconfig)                             | [lifecycle events](#lifecycle-events)  | event fired once all configuration options have been processed
+| [onconstruct](#onconstruct)                       | [lifecycle events](#lifecycle-events)  | event fired immediately after `new Ractive(...)`
+| [ondetach](#ondetach)                             | [lifecycle events](#lifecycle-events)  | event fired each time `ractive.detach()` is called
+| [oninit](#oninit)                                 | [lifecycle events](#lifecycle-events)  | event fired when the instance is ready to be rendered
+| [oninsert](#oninsert)                             | [lifecycle events](#lifecycle-events)  | event fired each time `ractive.insert()` is called
+| [onrender](#onrender)                             | [lifecycle events](#lifecycle-events)  | event fired each time the instance is rendered
+| [onteardown](#onteardown)                         | [lifecycle events](#lifecycle-events)  | event fired each time the instance is destroyed
+| [onunrender](#onunrender)                         | [lifecycle events](#lifecycle-events)  | event fired each time the instance is unrendered
+| [onupdate](#onupdate)                             | [lifecycle events](#lifecycle-events)  | event fired after `ractive.update()` is called
+| [partials](#partials)                             | [templating](#templating)              | partials to include for use by the template |
+| [preserveWhitespace](#preserveWhitespace)         | [parsing](#parsing)                    | don't normalize template whitespace |
+| [sanitize](#sanitize)                             | [parsing](#parsing)                    | remove designated elements and event attributes |
+| [staticDelimiters](#staticDelimiters)             | [parsing](#parsing)                    | one-time binding parsing delimiters |
+| [staticTripleDelimiters](#staticTripleDelimiters) | [parsing](#parsing)                    | one-time binding non-escaped parsing delimiters  |
+| [stripComments](#stripComments)                   | [parsing](#parsing)                    | remove HTML comments from templates |
+| [template](#template)                             | [templating](#templating)              | specifies the template to use |
+| [transitions](#transitions)                       | [transitions](#transitions-animations) | transitions to include for use by the template |
+| [transitionsEnabled](#transitionsEnabled)         | [transitions](#transitions-animations) | allow transitions |
+| [tripleDelimiters](#tripleDelimiters)             | [parsing](#parsing)                    | non-escaped parsing delimiters |
+| [twoway](#twoway)                                 | [binding](#data-binding)               | prevent updates from the view back to the model |
 
 
 
@@ -372,6 +373,10 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 > A `key: value` hash of interpolators use by {{{createLink 'ractive.animate()'}}}
 
 ## Parsing
+
+> <a id="csp"></a>
+> ### csp *`Boolean`*
+> Defaults to `false`. Whether or not to add inline functions for expressions after parsing. This can effectively eliminate `eval` caused by expressions in templates. It also makes the resulting template not longer JSON compatible, so the template will have to be server from a `script` tag.
 
 > <a id="delimiters"></a>
 > ### delimiters *`Array` where `[ open, close ]`*
