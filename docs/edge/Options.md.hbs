@@ -376,7 +376,7 @@ A `key: value` hash of transitions that are specific to this instance. The `key`
 
 > <a id="csp"></a>
 > ### csp *`Boolean`*
-> Defaults to `false`. Whether or not to add inline functions for expressions after parsing. This can effectively eliminate `eval` caused by expressions in templates. It also makes the resulting template not longer JSON compatible, so the template will have to be server from a `script` tag.
+> Defaults to `false`. Whether or not to add inline functions for expressions after parsing. This can effectively eliminate `eval` caused by expressions in templates. It also makes the resulting template no longer JSON compatible, so the template will have to be served via `script` tag.
 
 > <a id="delimiters"></a>
 > ### delimiters *`Array` where `[ open, close ]`*
