@@ -187,9 +187,9 @@ There are a few things that can be useful to reference from the template that do
 1. `@index` - the current iteration index of the containing repeated section e.g. `\{{#each list}}\{{@index}}\{{/each}}`
 2. `@key` - the current key name of the containing object iteration section e.g. `\{{#each someObj}}\{{@key}}\{{/each}}`
 3. `@keypath` - the keypath to the current context e.g. `foo.bar.baz` in `\{{#foo}}\{{#with bar.baz}}\{{@keypath}}\{{/with}}\{{/}}`. If the current context happens to be a mapping in a component, the keypath will be adjusted relative to the mapping.
-3. `@rootpath` - the same as keypath, except not adjusted for component mappings.
+3. `@rootpath` - the same as keypath, except not adjusted for components.
 4. `@global` - the current global object for this environment e.g. `window` in a browser or `global` in node. This reference can be used with two-way binding, but note that if something outside of Ractive changes a value, Ractive won't know unless you tell it to `update`.
-5. `@ractive` - the current Ractive instance e.g. the current component or the Ractive root. You can access any properties or methods available on a Ractive instance with this, and due to the way capture works, you can also use `@ractive.get('...')` in a binding and it will update with the target keypath.
+5. `@this` - the current Ractive instance e.g. the current component or the Ractive root. You can access any properties or methods available on a Ractive instance with this, and due to the way capture works, you can also use `@this.get('...')` in a binding and it will update with the target keypath.
 
 ## Summary of prefixes
 
