@@ -54,14 +54,14 @@ From this point on, `info` is an object that has context methods and may be an `
 > ### info.push( keypath, ...values )
 > Pushes the given values on to the array at the given keypath. See {{{createLink 'ractive.push()'}}}.
 
-> ### info.push( keypath, ...values )
-> Pushes the given values on to the array at the given keypath. See {{{createLink 'ractive.push()'}}}.
-
 > ### info.ractive
 > This property holds a reference to the Ractive instance that controls the node represented by this info object.
 
 > ### info.resolve( [keypath][, ractive] )
 > Resolves the given keypath to a full keypath. If a `ractive` instance is supplied, the resolved path will also account for any mappings defined for the instance. This is the method used to resolve relative keypaths for all of the other info methods.
+
+> ### info.reverse( keypath )
+> Reverses the array at the given keypath. See {{{createLink 'ractive.reverse()'}}}.
 
 > ### info.set( keypath, value )
 > Sets the given keypath to the given value. See {{{createLink 'ractive.set()'}}}.
@@ -74,6 +74,9 @@ From this point on, `info` is an object that has context methods and may be an `
 
 > ### info.splice( keypath, index, drop, ...add )
 > Splices the array at the given keypath. See {{{createLink 'ractive.splice()'}}}.
+
+> ### info.sort( keypath )
+> Sorts the array at the given keypath. See {{{createLink 'ractive.sort()'}}}.
 
 > ### info.subtract( [keypath][, number] )
 > Decrements the given keypath by the given value, which defaults to `1`. See {{{createLink 'ractive.subtract()'}}}.

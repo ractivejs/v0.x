@@ -1,7 +1,7 @@
 ---
 title: Array modification
 ---
-By default, Ractive will intercept the *mutator methods* (`pop`, `push`, `shift`, `unshift`, `splice`, `sort` and `reverse`) of arrays that it [depends on](dependants) for more convenient data binding.
+Ractive can intercept the *mutator methods* (`pop`, `push`, `shift`, `unshift`, `splice`, `sort` and `reverse`) of arrays that it [depends on](dependants) for more convenient data binding.
 
 Consider the following:
 
@@ -25,7 +25,7 @@ ractive = new Ractive({
 list.push( 'd' ); // adds a new list item - <li>d</li>
 ```
 
-You can disable this behaviour by passing in `modifyArrays: false` as an {{{createLink 'options' 'initialisation options'}}}
+You can enable this behaviour by passing in `modifyArrays: true` as an {{{createLink 'options' 'initialisation options'}}}
 
 
 ## How it works
