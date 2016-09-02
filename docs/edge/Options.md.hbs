@@ -32,6 +32,7 @@ ractive.myMethod(); // triggers the alert
 | [decorators](#decorators)                         | [templating](#templating)              | decorators to include for use by the template |
 | [delimiters](#delimiters)                         | [parsing](#parsing)                    | delimiters to use when parsing the template |
 | [easing](#easing)                                 | [transitions](#transitions-animations) | easing functions to use in transitions |
+| [enhance](#enhance)                               | [placement](#dom-placement)            | try to reuse existing DOM on intial render |
 | [el](#el)                                         | [placement](#dom-placement)            | render to this element in the dom |
 | [events](#events)                                 | [templating](#templating)              | events to include for use by the template |
 | [interpolators](#interpolators)                   | [transitions](#transitions-animations) | interpolators to use for animating values |
@@ -142,6 +143,14 @@ ractive.myMethod(); // triggers the alert
 
 
 ## DOM Placement
+
+> <a id="enhance"></a>
+> ### enhance *`Boolean`*
+> Defaults to `false`. Whether or not to try to reuse the existing DOM in the target element when rendering a.k.a. progressive enhancement. This allows you to serve the fully rendered page and then render the Ractive template at load over the pre-rendered page without completely wiping out the existing content. There are a few limitations surrounding text nodes, but all matching elements will be reused.
+
+> This option cannot be used with `append`.
+
+> To expand on the limitations with text nodes, since HTML does not have a markup representation for individual adjacent text nodes where the DOM does, the loaded DOM will have all text nodes merged when the document loads from the server. Ractive needs individual adjacent text nodes in certain situations like `outer text \{{#if foo}}inner text\{{/if}}`. The `'outer text '` text node is always present, and if `foo` becomes truthy, an additional text node will be inserted next to the `'outer text '` node containing `'inner text'`. It has been suggested that Ractive could also deal with merged text nodes, but that would become quite complex because there are certain scenarios where a text node would have to split and be rejoined as the model changed e.g. `outer text \{{#if foo}}<span>hello</span>>\{{/if}} the other side`. In that case, if `foo` is initially falsey, the `'outer text '` and `' the other side'` nodes could be merged into a single node. However, if `foo` became truthy, that node would have to be split into two to place on either side of the `<span>`.
 
 > <a id="el"></a>
 > ### el * `String` or `HTMLElement` or jQuery-like collection*
