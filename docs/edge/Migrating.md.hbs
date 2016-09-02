@@ -52,6 +52,8 @@ Transitioning elements will not longer keep unrelated elements from being remove
 
 `elseif` and `else` blocks no longer include previous blocks' conditions in their own, so expensive computations are no longer repeated and conditions for `elseif` are no longer forced to be an expression. Instead, subordinate blocks connect with their siblings when they render and only show if all prior siblings have falsey conditions.
 
+`merge` can now be called with the same array that exists at the given keypath, and the differences will be computed from the model's cached array members. This allows extensive in-place modification of an array to be handled as a series of splice operations but in a single operation. Note that `merge` may be moved to a `set` option at some pooint in the future.
+
 ### Breaking changes and deprecation
 
 * **Templates parsed with previous versions of Ractive are no longer compatible.**
