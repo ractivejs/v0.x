@@ -5,7 +5,7 @@ In many situations, you want to encapsulate behaviour and markup into a single r
 
 First, you need to **create the component** with {{{createLink 'Ractive.extend()'}}}, which allows you to define a template, initialisation behaviour, default data, and so on. (If you're not familiar with Ractive.extend() you should read that page first.)
 
-* [Initiliasation Options](#init)
+* [Initialisation Options](#init)
 * [Binding](#binding)
 * [Events](#events)
 * [The \{{>content}} Directive](#content)
@@ -18,7 +18,7 @@ Most of the normal Ractive {{{ createLink 'options' 'initialisation options' }}}
 
 ### onconstruct *`Function`*
 
-`onconstruct` fires a single time immediately after the instance is created and will be passed all the data that will initialize the particular component.
+`onconstruct` fires a single time immediately after the instance is created and will be passed all the data that will initialise the particular component.
 This could include setting/changing partials, adding decorators, adding other subcomponents, or anything you would use to initialise a normal Ractive instance.
 
 ### onconfig *`Function`*
@@ -110,7 +110,7 @@ Then the resulting output would be
 Very complex example for such a simple idea but this could drastically effect you.
 
 
-init is called after the extended component has been initialized 
+init is called after the extended component has been initialised 
 
 ```js
 var MyWidget = Ractive.extend({
