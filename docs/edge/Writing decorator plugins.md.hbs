@@ -16,13 +16,22 @@ Firstly, we need to add the `decorator` *directive* to any nodes that the decora
 
 Now, the `tooltip` decorator function will be called when the `<span>` is added to the DOM. The first argument to the function is the `<span>` itself; subsequent arguments given after the `:` in the directive will be passed to the function - in this case, there will be a second argument, which is the 'This is a tooltip' message.
 
-Within that function, we can do whatever we like - the only rule is that it must return an object with a `teardown()` method that gets called if the `<span>` is removed from the DOM:
+Within that function, we can do whatever we like - the only rule is that it must return an object with a `teardown()` method that gets called if the `<span>` is removed from the DOM. An optional `update()` method can also be returned, which accepts the updated arguments provided to the decorator.
+
+Whenever the arguments provided to the decorator update, one of two things can happen:
+
+- If the `update` method IS NOT provided, the `teardown()` method is called and the decorator function is re-run.
+
+- If the `update()` method IS provided, it is called instead of tearing down and setting the decorator back up.
 
 ```js
 var tooltipDecorator = function ( node, content ) {
   // setup work goes here...
 
   return {
+    update: function( ...args ){
+      // ...code that runs on args update
+    },
     teardown: function () {
       // ...any cleanup work goes here
     }
