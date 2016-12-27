@@ -7,7 +7,7 @@ By themselves, references are useless - they must *resolve* to a *{{{createLink 
 
 The resolution algorithm looks like this:
 
-1. Is the reference a special ref? If so, resolve with the appropriate special keypath.
+1. Is the reference a special ref (starting with `@` - see <a href="#special-refs">sepcial references below</a>)? If so, resolve with the appropriate special keypath.
 2. If the reference is prefixed (`./`, `../`, `^^/`), resolve it.
 3. If the current context has a matching key, then resolve with it.
 4. Grab the current virtual node from the template hierarchy.
@@ -15,8 +15,8 @@ The resolution algorithm looks like this:
 6. If this is a component and there are any matching mappings, resolve with that keypath.
 7. If this node has context and there is a matching path, resolve with that keypath.
 8. Otherwise, remove the innermost context from the stack. Repeat (3-7).
-9. If not disabled, check to see if there's a matching Ractive instance method or property, and if so, resolve with it.
-10. If the reference is still unresolved, add it to the 'pending resolution' pile. Each time potentially matching keypaths are updated, resolution will be attempted for the unresolved reference.
+9. If {{{createLink 'Options' 'resolveInstanceMembers' 'resolveInstanceMembers'}}} is not disabled, check to see if there's a matching Ractive instance method or property, and if so, resolve with it.
+10. If the reference is still unresolved, add it to the 'pending resolution' pile, a list of unresolved keys that is registered with each model that could possibly have a matching key in the future. Each time potentially matching models are updated, resolution will be attempted for their unresolved references.
 
 ## Huh?
 
@@ -197,6 +197,7 @@ Sometimes you have a nested context that puts a parent completely out of reach b
 That's a terribly contrived example, as reasonable scenarios tend to be considerably more complex, but it gets the point across. Within the `~/bar` context, there's no way to access the current `foos` iteration. That's where the `^^/` prefix comes in. It mirrors what the `../` prefix does with keypaths, except it operates on the context stack. Like `../` it is also stackable, so if you need to access a much higher context ancestor, you can do so e.g. `^^/^^/^^/^^/ohMy`.
 
 ## Special references
+<a name="special-refs"></a>
 
 There are a few things that can be useful to reference from the template that don't really exist in your data. For instance, the current iteration index of a repeated section. These special references can be used just like any other data reference, excepting two-way binding. Here's the list of specials and their resolutions:
 
