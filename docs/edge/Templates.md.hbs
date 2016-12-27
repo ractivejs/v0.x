@@ -11,12 +11,12 @@ For reference, however, the differences between Ractive templates and HTML are l
 
 The most obvious difference is that Ractive templates contain {{{createLink 'mustaches'}}} to facilitate data binding.
 
-## Proxy event directives
+## Event directives
 
-Elements in a Ractive template can have {{{createLink 'proxy events' 'events' }}}, which look like attributes but don't get rendered to the DOM as attributes (they are intercepted, and used as event binding instructions instead):
+Elements in a Ractive template can have {{{createLink 'method calls' 'events' }}}, which look like attributes but don't get rendered to the DOM as attributes (they are intercepted, and used as event binding instructions instead):
 
 ```html
-<button on-click='activate'>Activate!</button>
+<button on-click='@this.active()'>Activate!</button>
 ```
 
 ## Transitions
@@ -24,5 +24,13 @@ Elements in a Ractive template can have {{{createLink 'proxy events' 'events' }}
 Another item in the set of things-that-look-like-attributes-but-aren't, {{{createLink 'transitions'}}} allow you to specify how elements should behave when they first get introduced to the DOM and when they get removed from it later:
 
 ```html
-<div intro='fade'>This element will fade in gradually when it renders</div>
+<div fade-in>This element will fade in gradually when it renders</div>
+```
+
+## Decorators
+
+{{{createLink 'Decorators'}}} can decorate elements as they are rendered to the DOM. These also look like attributes, but they never get added to the DOM themselves.
+
+```html
+<div as-ace-editor>This element will be turned into an Ace Editor.</div>
 ```

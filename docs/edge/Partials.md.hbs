@@ -27,6 +27,7 @@ A partial is a template snippet which can be inserted into templates, or indeed 
 * [Recursive partials](#recursion)
 * [Injecting partials](#injection)
 * [Updating partials](#updating)
+* [Dynamic partials](#dynamic)
 
 <a name="creation"></a>
 ## Creating partials
@@ -195,7 +196,7 @@ Partials may be named with the same rules as any other identifier in Ractive or 
 <a name="context"></a>
 ## Partial context
 
-Partial sections may be given explicit context by adding an expression after the name in the form of `\{{>[name expression] [context expression]}}`. The partial will then be executed with the given context instead of the context in which the partial section appears. This has the same effect as wrapping the partial section in a `#with` section.
+Partial sections may be given explicit context by adding an expression after the name in the form of `\{{>[name expression] [context expression]}}`. The partial will then be executed with the given context instead of the context in which the partial section appears. This has the same effect as wrapping the contents of the partial section in a `#with` section.
 
 ```html
 \{{#list}}\{{>somePartial .foo.bar }}\{{/}}
@@ -361,3 +362,17 @@ ractive.partials.rickroll = 'I wouldn\'t do that to you, chum.';
 ractive.set('toggle', true);
 ractive.set('toggle', false);
 ```
+
+
+<a name="dynamic"></a>
+## Dynamic Partials
+
+Partials may also be defined inline as part of their expression, resulting in an entirely dynamic partial. If the result of a partial expression is an object with a `t` array e.g. `{ t: [] }` or a `template` string e.g. `{ template: '' }`. The former expects a pre-parsed template, like the result of a call to {{{createLink 'Ractive.parse'}}}. The latter handles the parsing for you, but cannot be used with Ractive versions that do not include a parser (runtime-only). Here's an example where the template that is displayed can be edited in a textarea:
+
+```html
+<textarea value="\{{.template}}" lazy="500"></textarea>
+<br/>
+\{{> { template: .template } }}
+```
+
+If `template` was set to `<input value="\{{.input}}" />`, then the partial would output an input element that was properly bound to the `.input` keypath.

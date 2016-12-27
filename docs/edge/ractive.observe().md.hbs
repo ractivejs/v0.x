@@ -22,10 +22,14 @@ ractive.observe( 'foo bar baz', function ( newValue, oldValue, keypath ) {
 
 See {{{createLink 'Observers'}}} for more detail.
 
+> ### ractive.observe - all versions
+> Returns an `Object` with:
+> * `cancel` method, which removes all observers subscribed by the `observe` call
+> * `silence` method, which prevents the handlers from firing until they are resumed
+> * `isSilenced` method, which returns true if the listener is currently silenced
+> * `resume` method, which allows the handlers to fire until they are again silenced
 
 > ### ractive.observe( keypath, callback[, options ])
-> Returns an object with a `cancel` method, for cancelling the observer
-
 > > #### **keypath** *`String`*
 > > The [keypath](keypaths) to observe, or a group of space-separated keypaths. Any of the keys can be a `*` character, which is treated as a wildcard.
 > > #### **callback** *`Function`*
@@ -40,8 +44,6 @@ See {{{createLink 'Observers'}}} for more detail.
 
 
 > ### ractive.observe( map[, options ])
-> Returns an object with a `cancel` method, for cancelling all observers
-
 > > #### **map** *`Object`*
 > > A map of `keypath: observer` pairs
 > > #### options *`Object`*

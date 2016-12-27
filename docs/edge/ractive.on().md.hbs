@@ -3,15 +3,20 @@ title: ractive.on()
 ---
 Subscribe to {{{createLink 'events overview' 'events'}}}.
 
+> ### ractive.on - all versions
+> Returns an `Object` with:
+> * `cancel` method, which removes all listeners subscribed by the `on` call
+> * `silence` method, which prevents the handlers from firing until they are resumed
+> * `isSilenced` method, which returns true if the listener is currently silenced
+> * `resume` method, which allows the handlers to fire until they are again silenced
+
 > ### ractive.on( eventName, handler )
-> Returns an `Object` with a `cancel` method, which removes the handler.
 > > #### **eventName** *`String`*
 > > The name of the event to subscribe to
 > > #### **handler** *`Function`*
 > > The function that will be called, with `ractive` as `this`. The arguments depend on the event. Returning `false` from the handler will stop propagation and prevent default of DOM events and cancel {{{createLink 'event bubbling'}}}.
 
 > ### ractive.on( obj )
-> Returns an `Object` with a `cancel` method, which removes all handlers in the passed-in `obj`.
 > > #### **obj** *`Object`*
 > > An object with keys named for each event to subscribe to. The value at each key is the handler function for that event.
 
@@ -40,5 +45,3 @@ ractive.on({
 	'select foo.* bar': function () {...}
 });
 ```
-
-
