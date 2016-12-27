@@ -11,6 +11,7 @@ First, you need to **create the component** with {{{createLink 'Ractive.extend()
 * [The \{{>content}} Directive](#content)
 * [The \{{yield}} Directive](#yield)
 * [Parents and Containers](#parent)
+* [Anchors and Embedding External Instances](#anchors)
 
 ## <a name="init"></a>Initialisation Options
 
@@ -65,7 +66,7 @@ var ractive = new Ractive({
 
 ```
 
-```html 
+```html
 
 <script id="template" type="text/ractive">
   <div>
@@ -110,7 +111,7 @@ Then the resulting output would be
 Very complex example for such a simple idea but this could drastically effect you.
 
 
-init is called after the extended component has been initialized 
+init is called after the extended component has been initialized
 
 ```js
 var MyWidget = Ractive.extend({
@@ -183,9 +184,9 @@ var data = {
     style: 'tint'
 }
 Ractive.components.widget = Ractive.extend({})
-var ractive = new Ractive({ 
+var ractive = new Ractive({
     template: '<widget items='\{{colors}}' option1='A' option2='\{{style}}'/>',
-    data: data 
+    data: data
 })
 
 function logData(){
@@ -201,7 +202,7 @@ ractive.set('colors.1', 'green')
 
 logData()
 // main {"name":"Colors","colors":["red","green","yellow"],"style":"tint"}
-// widget {"items":["red","green","yellow"],"option1":"A","option2":"tint"} 
+// widget {"items":["red","green","yellow"],"option1":"A","option2":"tint"}
 ```
 
 
@@ -272,7 +273,7 @@ Here, `Bar.foo`, `Baz.`, and `*.bippy` events will not bubble beyond the `Foo` c
 Here, no internal component events will bubble above `Foo`.
 
 
-## <a name="content"></a>The `\{{>content}}` Directive 
+## <a name="content"></a>The `\{{>content}}` Directive
 
 Any content in the template calling the component:
 
@@ -284,7 +285,7 @@ Any content in the template calling the component:
 <list items='\{{fates}}'>
     "\{{.}}"
 </list>
-``` 
+```
 is exposed in the component as a partial named "content":
 
 ```html
@@ -303,7 +304,7 @@ Partials, components, and any other valid template items can be used as well:
 </list>
 
 <list items='\{{fates}}'>
-    <widget value='\{{.}}'/> 
+    <widget value='\{{.}}'/>
 </list>
 ```
 
@@ -351,7 +352,7 @@ ractive.on('clicked', function(ev) {
 
 Here, `1` will be displayed next to the button, and the button, when clicked, will log a message to the console.
 
-Inline partials may also be yielded within a component by specifying a name with `yield` e.g. `\{{yield item}}`. Currently, only partials defined inside the component body may be yielded.
+Inline partials may also be yielded within a component by specifying a name with `yield` e.g. `\{{yield item}}`. Any partial, including dynamic partials, may be yielded.
 
 ```html
 <Foo>
@@ -367,6 +368,23 @@ var Foo = Ractive.extend({
 });
 ```
 
+The component may provide references for the yielded content by specifying aliases in the `\{{yield}}` directive. Since the yielded content has no access to the *component* scope, injecting aliases allows the component to provide the caller with relevant contextual data. For instance, without supplying an alias, `\{{yield}}` is useless within an `\{{#each}}` section because the context for the `\{{yield}}` is always the parent context of the component. By specifying an alias, for instance, `this` as `item`, the component can provide the caller with the object in the current iteration.
+
+```html
+<Foo items="\{{items}}">
+  \{{#partial row}}
+    <li>\{{item}}</li>
+  \{{/partial}}
+</Foo>
+```
+```js
+const Foo = Ractive.extend({
+  template: `<ul>\{{#each items}}\{{yield row with this as item}}\{{/each}}</ul>`
+});
+```
+
+To yield to the default/unnamed partial, just leave out the name e.g. `\{{yield with foo as bar, baz as bat}}`. To yield to a named partial, list the aliases after the name and `with` e.g. `\{{yield foo with foo as bar, baz as bat}}`.
+
 ## <a name="parent"></a>Parents and Containers
 
 Components that are nested within other components have access to their parents, containers, and root.
@@ -377,3 +395,16 @@ Components that are nested within other components have access to their parents,
 
 `this.findParent(name)` will search up the hierarchy until it finds a parent component named `name`.
 `this.findContainer(name)` will search up the surrogate hierarchy until if finds a container named `name`.
+
+## <a name="anchors"></a>Anchors and Embedding External Instances
+
+External components or instances can be embedded at an anchor in the template. An anchor is basically a component that doesn't create its own instance when it renders but uses a supplied instance that is attached to the Ractive instance using {{{createLink 'ractive.attachChild()'}}} with a target specified that matches the anchor name. Anchors can supply inline partials and mappings in the same way that components can. An anchor looks like a component with a `#` in front of the anchor name like `<#anchorName />`.
+
+```html
+<#anchorName mapping1="\{{some.path}}">
+  \{{#partial foo}}This will be made available to the child instance.\{{/partial}}
+  And this is in the content/unnamed partial.
+</#anchorName>
+```
+
+Multiple anchors may exist with the same name, so any additional instances that are targeted to the same anchor name will inhabit the additional anchors. This allows iterative sections to usefully contain anchors. There is a special instance-maintained keypath that allows automatic tracking of attached children by anchor name at `@this.children.byName.anchorName` where `anchorName` is the name of the anchor. For instance, `\{{#each @.children.byName.foo}}<#foo />\{{/each}}` will automatically create anchors for each instance targeting a `foo` anchor.

@@ -1,0 +1,31 @@
+---
+title: ractive.attachChild()
+---
+
+Creates a parent-child relationship between two Ractive instances. The child may be an instance of a component defined by {{{createLink 'Ractive.extend()'}}}, but that is not a requirement, as children may be a plain Ractive instance created with `new Ractive()`.
+
+```js
+const child = new Ractive();
+ractive.attachChild( child );
+```
+
+When a child is attached to a parent, the child's `parent` property is updated in an observable way, so any references to `@this.parent` in the child will be notified of the change.
+
+A child may be targeted to an {{{createLink 'Components' 'anchor' 'anchors'}}} when it is attached. If a child has no specified target, then it is responsible for managing its own render cycle. If a child does have a specified target, then the parent will manage rendering and unrendering the child as appropriate in the same way that a regular component has a managed render cycle.
+
+When a child is attached targeting an anchor, only anchors that belong directly to the parent are considered as hosts. However, and element or component queries on the parent instance, including live queries, will consider the child when trying to match both elements and components. There is also an option on the query methods that allows querying remote, unmanaged instances, so that non-anchored children can also be queried for elements and components.
+
+> ### ractive.attachChild( child[, options] )
+> Returns a `Promise` (see {{{createLink 'Promises'}}}) that resolves with the child instance when any transitions are complete.
+
+> > ### **child** *`Ractive instance`*
+> > The child instance to attach.
+
+> > ### **options** *`Object`*
+> > Options to use when attaching the child:
+> > * **target** *`string`* - an anchor name at which to render the instance. See {{{createLink 'Components' 'anchors' 'anchors'}}}. If the instance is already rendered, it will be unrendered and re-rendered at an appropriate anchor.
+> > * **append** *`boolean`* - default *true* - add the instance to the end of the list for the targeted anchor.
+> > * **prepend** *`boolean`* - add the instance to the beginning of the list for the targeted anchor.
+> > * **insertAt** *`number`* - index at which to add the instance in the list for the targeted anchor.
+
+Children can be detached using {{{createLink 'ractive.detachChild()'}}}.

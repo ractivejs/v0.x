@@ -26,6 +26,9 @@ From this point on, `info` is an object that has context methods and may be an `
 > ### info.animate( keypath, value[, options] )
 > Animates the given keypath to the given value. See {{{createLink 'ractive.animate()'}}}.
 
+> ### info.decorators
+> This property gives you access to any decorator handles that are currently installed on the element. The decorators are available by name, so `<div as-foo>` would expose the `foo` decorator as `info.decorators.foo`.
+
 > ### info.get( [keypath] )
 > Retrieves the value at given keypath, if provided, or the context for this info object. See {{{createLink 'ractive.get()'}}}.
 > This can also be used to retrieve the value of index and key aliases, template aliases, and special reference.
@@ -48,6 +51,12 @@ From this point on, `info` is an object that has context methods and may be an `
 > ### info.merge( keypath, array )
 > Merges the given array into the array at the given keypath. See {{{createLink 'ractive.merge()'}}}.
 
+> ### info.observe( keypath, callback[, options] )
+> Creates an observer for the given keypath, or keypaths if keypath is an object. See {{{createLink 'ractive.observe()'}}}.
+
+> ### info.observeOnce( keypath, callback[, options] )
+> Creates an observer for the given keypath, or keypaths if the keypath is an object. See {{{createLink 'ractive.observeOnce()'}}}.
+
 > ### info.pop( [keypath] )
 > Pops a value from the array at the given keypath. See {{{createLink 'ractive.pop()'}}}.
 
@@ -56,6 +65,9 @@ From this point on, `info` is an object that has context methods and may be an `
 
 > ### info.ractive
 > This property holds a reference to the Ractive instance that controls the node represented by this info object.
+
+> ### info.raise( name, event, ...arguments )
+> Trigger an event directive callback for `name` using the given event and arguments. This does not bubble and _only_ triggers the event directive listener handled by Ractive, and no DOM event is generated or simulated. This is particularly handy for decorators.
 
 > ### info.resolve( [keypath][, ractive] )
 > Resolves the given keypath to a full keypath. If a `ractive` instance is supplied, the resolved path will also account for any mappings defined for the instance. This is the method used to resolve relative keypaths for all of the other info methods.
@@ -95,4 +107,3 @@ From this point on, `info` is an object that has context methods and may be an `
 
 > ### info.updateModel( [keypath] )
 > Triggers an update on the given keypath from its bindings. See {{{createLink 'ractive.updateModel()'}}}.
-
