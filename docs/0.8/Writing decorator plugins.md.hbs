@@ -6,15 +6,15 @@ A {{{createLink 'decorators' 'decorator'}}} is a way to add behaviour to a node 
 
 For this example we'll create a tooltip decorator. For the impatient, you can see the [finished result in this JSFiddle](http://jsfiddle.net/tomByrer/9g3pB/11/).
 
-Firstly, we need to add the `decorator` *directive* to any nodes that the decorator should apply to:
+Firstly, we need to add the decorator *directive* to any nodes that the decorator should apply to. You can tell Ractive that an element should be decorated **as** one or more behavior classes:
 
 ```html
-<p>This text contains <span decorator='tooltip:This is a tooltip'>tooltips</span>.</p>
+<p>This text contains <span as-tooltip="'This is a tooltip'">tooltips</span>.</p>
 ```
 
 (Directives are just instructions to Ractive - they don't actually get added to the element as attributes.)
 
-Now, the `tooltip` decorator function will be called when the `<span>` is added to the DOM. The first argument to the function is the `<span>` itself; subsequent arguments given after the `:` in the directive will be passed to the function - in this case, there will be a second argument, which is the 'This is a tooltip' message.
+Now, the `tooltip` decorator function will be called when the `<span>` is added to the DOM. The first argument to the function is the `<span>` itself; arguments given after the `=` in the directive will be passed to the function - in this case, there will be a second argument, which is the 'This is a tooltip' message.
 
 Within that function, we can do whatever we like - the only rule is that it must return an object with a `teardown()` method that gets called if the `<span>` is removed from the DOM. An optional `update()` method can also be returned, which accepts the updated arguments provided to the decorator.
 
@@ -141,7 +141,7 @@ But wait - what if we don't want to use the `ractive-tooltip` class name? In fac
 There are two ways we could address this. Firstly, we could add a whole load of additional arguments to the decorator directive:
 
 ```html
-<span decorator='tooltip:"This is a tooltip","p","tooltips-ftw",0,-20'>tooltips</span>
+<span as-tooltip="'This is a tooltip','p','tooltips-ftw',0,-20">tooltips</span>
 ```
 
 ```js
