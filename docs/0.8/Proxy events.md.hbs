@@ -82,13 +82,15 @@ Note: the built-in {{{createLink 'lifecycle events'}}} are **reserved**, which m
 
 ## Dynamic proxy event names
 
+__Note:__ This functionality is deprecated and will be removed in 0.9. If you need dynamic event names to fire, you can use a method event calling fire with an expression for the name. If you just need an event to be dynamically subscribed, you can place it in an `\{{#if}}` conditional.
+
 {{{createLink 'Mustaches' 'Mustache references'}}} can be used as proxy event names:
 
 ```html
 <button on-click="\{{handler}}">click me!</button>
 ```
 
-In practive this is of limited value, but a more important side effect is that if no handler is specified (a falsey value) the DOM event is not subscribed and will unsubscribe or resubscribe as the handler value changes. Combined with a conditional section, this allows a proxy event to be conditionally subscribed _at the DOM level_:
+In practice this is of limited value, but a more important side effect is that if no handler is specified (a falsey value) the DOM event is not subscribed and will unsubscribe or resubscribe as the handler value changes. Combined with a conditional section, this allows a proxy event to be conditionally subscribed _at the DOM level_:
 
 ```html
 <button on-click="\{{#active}}select\{{/}}">click me!</button>
