@@ -59,7 +59,7 @@ Drop-down select menus are good when you have many options to choose from. They'
 
 ```html
 <select value='\{{selectedCountry}}'>
-	<option selected disabled>Select a country</option>
+	<option value="" selected disabled>Select a country</option>
 	\{{#countries}}
 		<option value='\{{id}}'>\{{name}}</option>
 	\{{/countries}}
