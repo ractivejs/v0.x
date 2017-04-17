@@ -92,3 +92,4 @@ In practice this is of limited value, but a more important side effect is that i
 <button on-click="\{{#active}}select\{{/}}">click me!</button>
 ```
 In this example, the DOM `click` event is subscribed and unsubscribed as the value of `active` is truthy or falsey.
+Reserved event name (change,reset,teardown,update,construct,config,init,render, unrender,detach,insert) should not be used with on-click.
