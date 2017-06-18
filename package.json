@@ -16,9 +16,7 @@
     "surge": "^0.17.2"
   },
   "scripts": {
-    "build": "grunt build",
-    "predeploy": "npm run build",
-    "deploy": "surge build docs.ractivejs.org",
-    "grunt": "./node_modules/.bin/grunt"
+    "start": "grunt",
+    "build": "grunt build"
   }
 }
