@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Overview | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Overview</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.8/Overview.md.hbs'>edit this page</a>
+			</header>
+
+			<h2 id="welcome-">Welcome!</h2>
+<p>Thanks for swinging by to have a look at Ractive.js! This document is here to try to give you the slightly-closer-than-mile-high overview of what Ractive is and what it does while also providing links to more detailed sections of the documentation. Since you&#39;re here, you probably have a pretty good idea of what Ractive does, but in case you don&#39;t: Ractive is a relatively unopinionated library that makes creating interactive and reactive views for your data easy. Technically speaking, Ractive is a Model-View-Viewmodel library where you supply data for the Model and a template for the View, and Ractive handles the rest of it for you.</p>
+<h2 id="init-or-getting-an-instance">Init - or - getting an instance</h2>
+<p>Before you can do anything with Ractive, you need to create a Ractive instance. There are a number of different ways to do so that will be addressed later, but the simplest is to use <code>new</code> and pass in whatever options you like. The most common options are <code>el</code>, <code>data</code>, and <code>template</code>. <code>el</code> is the target element on the page where your Ractive instance should render. It can be an actual reference to a DOM element or a CSS selector string. <code>data</code> and <code>template</code> will be addressed shortly, so for now, consider this to be the basis of all further mention of your Ractive instance: <code>var ractive = new Ractive({ el: &#39;#someElement&#39; });</code>.</p>
+<h2 id="data-or-the-model">Data - or - the Model</h2>
+<p>There are two places that you can place your data in Ractive. Now, &quot;your data&quot; in this case is any JavaScript thing that you want it to be. You can stick to just JSON-compatible objects, or you can create heavy objects with methods, properties, and prototypes out of ES2015 classes, or anything in between and hand them to Ractive to use when binding a template. Data can be hierarchical, naturally, and Ractive uses keypaths to access parts or your data that are deeper than the root level. If you have special data, like Backbone models, Ractive allows you to supply adaptors that let it read and write whatever you may need.</p>
+<p>The first place for your data in Ractive is in a Ractive instance&#39;s data registry. Every Ractive instance has a data registry that defaults to an empty object <code>{}</code> and roughly correlates to the data that you pass to other templating libraries. Note that with more complex setups, as will be discussed further on, data can also be inherited from parent instances, so each data registry behaves somewhat as a prototype for any children it may have. The data registry is the default place that Ractive looks to resolve any keypaths you hand it, so it&#39;s the best place to store data that your templates will be binding to and working with. Anything that you can assign to a variable in JavaScript can be placed into a data registry, so primitives, objects, arrays, and even functions can be used as data in Ractive.</p>
+<p>The second place for your data is just about anywhere else. Ractive supports accessing properties of the Ractive instance and your environment&#39;s global object from both templates and API methods, so you can keep things like helper functions and other more globally scoped things outside of your data registry if you like. Note that Ractive won&#39;t know if you change anything outside of its data registry unless you tell it, so unless you use the Ractive API to make the change, you&#39;ll have to specifically tell Ractive what changed in order to have the changes propagate. That&#39;s why things that don&#39;t often change are better candidates for external storage than the data you work with directly in your templates.</p>
+<h3 id="keypaths">Keypaths</h3>
+<p>A keypath is simply a string of object keys separated by <code>.</code>s that is used to access some nested part of your data. If you had chunk of data that looked like <code>{ foo: { bar: { baz: &#39;hello&#39; } } }</code>, the keypath to the <code>&#39;hello&#39;</code> string would be <code>&#39;foo.bar.baz&#39;</code>. If you happen to have object keys that contain a <code>.</code>, you can still use them in a keypath by escaping the <code>.</code> with a <code>\</code>. So switching out the <code>&#39;baz&#39;</code> key for <code>&#39;bip.bop&#39;</code>, the keypath would become <code>&#39;foo.bar.bip\.bop&#39;</code>.</p>
+<p>Keypaths and arrays are a slightly odd combination because normally you&#39;d use <code>path.to.array[0]</code> to access the first element of the given array, but with Ractive, that keypath would be represented as <code>&#39;path.to.array.0&#39;</code>. Ractive will parse array-style paths, but they are always converted to dot notation.</p>
+<h3 id="manipulation">Manipulation</h3>
+<p>Once your data has been initialized, you generally should not modify it directly, because doing so will not notify your Ractive instance that your data has changed. To modify data, Ractive instances provide a <code>set</code> method that takes a keypath and a value and updates the targeted property in the data registry. If you had a chunk of data that looked like <code>{ foo: { bar: { baz: &#39;hello&#39; } } }</code>, you could update the <code>&#39;hello&#39;</code> string with <code>ractive.set( &#39;foo.bar.baz&#39;, &#39;goodbye&#39; )</code>. You can also use <code>get</code> to retrieve data at a given keypath e.g. <code>ractive.get( &#39;foo.bar.baz&#39; )</code> after the set would return <code>&#39;goodbye&#39;</code>. <code>set</code> can also take a map of keypaths with values to update multiple keypaths in one operation e.g. <code>set({ &#39;foo.bar.baz&#39;: &#39;hello&#39;, &#39;foo.bar.bat&#39;: &#39;goodbye&#39; })</code> would update <code>&#39;foo.bar.baz&#39;</code> and create a new property <code>&#39;bat&#39;</code> on <code>&#39;foo.bar&#39;</code>.</p>
+<p>There are also a number of helpful method supplied for interacting with data from your Ractive instance. <code>toggle</code> will take a truthy value at the given keypath and make it false and vice-versa. <code>add</code> will add the given number, which defaults to <code>1</code>, to the given keypath. <code>subtract</code> will subtract the given number, which also defaults to <code>1</code>, from the given keypath. <code>splice</code>, <code>shift</code>, <code>unshift</code>, <code>push</code>, and <code>pop</code> are special handlers that will perform the same operations as their JavaScript analogues, but in a more performant way with regards to the DOM updates that may go along with them.</p>
+<p>Any keypaths that don&#39;t exist when set will automatically have objects added as necessary to create them, so with an empty data registry, <code>set( &#39;foo.bar.baz&#39;, &#39;hello&#39; )</code> will create an object <code>{ bar: { baz: &#39;hello&#39; } }</code> and assign it to the <code>&#39;foo&#39;</code> property on the root of the registry. Similarly, <code>get</code>ting a keypath that doesn&#39;t exist will not throw, but will instead return <code>undefined</code>.</p>
+<p>Now that you have your data and know how to work with it, let&#39;s see what we can do with the view.</p>
+<h2 id="templates-or-the-view">Templates - or - the View</h2>
+<p>Ractive uses it&#39;s own flavor of Mustache with a strong influence from Handlebars as its template language because Mustache templates are fairly easy to grasp for anyone with any experience with HTML and any sort of templating. Unlike Mustache and Handlebars, Ractive does not operate on templates at the string level. Instead, it creates a virtual DOM from your template and uses it to keep the browser DOM in sync with your data. Since the templates aren&#39;t string-based, there are certain things that you can do with Mustaches that you can&#39;t do with Ractive, with the main one being conditionally closing one element and opening another. For instance <code>&lt;div&gt;Some stuff...{{#if condition}}&lt;/div&gt;&lt;div&gt;{{/if}}... some other stuff&lt;/div&gt;</code> is not possible in Ractive because there&#39;s no way to represent an element that may become two elements in DOM. That&#39;s the main corner case that differentiates Ractive&#39;s Mustache flavor from others.</p>
+<h3 id="interpolators">Interpolators</h3>
+<p>The simplest interesting unit of template in Ractive is the interpolator, which takes some expression and renders it into the DOM. Ractive supports four distinct but closely related forms of interpolator that are differentiated by their mustache delimiters. Plain mustaches <code>{{ ... }}</code> will safely render their content as a string, escaping any HTML out as entity references. Triple mustaches <code>{{{ ... }}}</code> do the same except they do not escape any HTML in their content. Static mustaches <code>[[ ... ]]</code> behave like plain mustaches except that they only bind once, which means that they aren&#39;t kept up to date with their source data. Triple static mustaches <code>[[[ ... ]]]</code> don&#39;t escape HTML and only bind once.</p>
+<p>Mustache delimiters can be set globally using <code>Ractive.defaults</code>, per instance using an option, or inline in the template using the Mustache syntax e.g. <code>{{=&lt;% %&gt;=}}</code> to use <code>&lt;% ... %&gt;</code> as a plain mustache. The option names for the various delimiters are    <code>delimiters</code> for plain mustaches, <code>tripleDelimiters</code> for triples, <code>staticDelimiters</code> for static mustaches, and <code>staticTripleDelimiters</code> for static triples. Values for each of those options should be an array with the start and end delimiter e.g. <code>[ &#39;&lt;%&#39;, &#39;%&gt;&#39; ]</code>.</p>
+<h3 id="references">References</h3>
+<p>To bind data into your template using an interpolator, you would use its keypath as a reference in the interpolator. If you had data that looked like <code>{ foo: { bar: { baz: &#39;world&#39; } } }</code>, you could bind it into your template with <code>`. Since</code>&#39;foo.bar.baz&#39;<code>is a keypath that resolves to data in your registry, and it is also a non-static mustache, any time you</code>set<code>`&#39;foo.bar.baz&#39;</code> in some way, the interpolator that references it will be updated.</p>
+<p>You can also use a variable in array notation to access keypaths dynamically using what Ractive calls a reference expression. Reference expressions look like <code>foo[bar].baz</code> in a template, where <code>&#39;bar&#39;</code> is a separate reference that should resolve to a key on <code>&#39;foo&#39;</code>. Any time <code>&#39;bar&#39;</code> or <code>&#39;foo&#39;</code> or the value at the combined keypath changes, the reference expression will be notified and update as well.</p>
+<h3 id="expressions">Expressions</h3>
+<p>Beyond references, you can also use many valid JavaScript expressions in your templates to perform computations with your data. Among the support expressions are any literals (object, array, number, boolean, etc), function calls, ternary conditionals, and binary operators.</p>
+<h4 id="aliases">Aliases</h4>
+<h3 id="conditionals">Conditionals</h3>
+<h3 id="iteration">Iteration</h3>
+<h3 id="special-references">Special references</h3>
+<h3 id="partials">Partials</h3>
+<h2 id="interactivity">Interactivity</h2>
+<h3 id="two-way-binding">Two-way binding</h3>
+<h3 id="events">Events</h3>
+<h2 id="more-complex-structures">More complex structures</h2>
+<h3 id="components">Components</h3>
+<h3 id="decorators">Decorators</h3>
+<h3 id="transitions">Transitions</h3>
+<h2 id="deployment">Deployment</h2>
+<h3 id="templates">Templates</h3>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../0.8'>0.8</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="overview">Overview</a></li>
+		<li><a href="known-issues-faqs-and-tips">Known issues, FAQs, and Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+		<li><a href="migrating">Migrating from previous versions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Configuration</h1>
+	<ul>
+		<li><a href="options">Options</a></li>
+		<li><a href="ractive-defaults">Defaults</a></li>
+		<li><a href="advanced-configuration">Advanced configuration</a></li>
+	</ul>
+</section>
+<section>
+	<h1>Core Concepts</h1>
+	<h2>Templates</h2>
+	<ul>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="elements">Elements</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="decorators">Decorators</a></li>
+	</ul>
+	<h2>Data & Binding</h2>
+	<ul>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="computed-properties">Computed Properties</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+	</ul>
+	<h2>Events</h2>
+	<ul>
+		<li><a href="events-overview">Overview</a></li>
+		<li><a href="event-directives">Event directives</a></li>
+		<li><a href="proxy-events">Proxy events</a></li>
+		<li><a href="method-calls">Method calls</a></li>
+		<li><a href="publish-subscribe">Publish/subscribe</a></li>
+		<li><a href="event-bubbling">Event bubbling</a></li>
+		<li><a href="lifecycle-events">Lifecycle events</a></li>
+	</ul>
+	<h2>Transitions and Animations</h2>
+	<ul>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="ractive-easing">Easings</a></li>
+	</ul>
+	<h2>Components</h2>
+	<ul>
+		<li><a href="components">Components</a></li>
+	</ul>
+</section>
+<section>
+	<h1>API Reference</h1>
+	<h2>Constructor</h2>
+	<ul>
+		<li><a href="new-ractive">new Ractive(...)</a></li>
+	</ul>
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-findcontainer">ractive.findContainer()</a></li>
+		<li><a href="ractive-findparent">ractive.findParent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="instance-getnodeinfo">ractive.getNodeInfo()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-link">ractive.link()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-observeonce">ractive.observeOnce()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-once">ractive.once()</a></li>
+		<li><a href="ractive-pop">ractive.pop()</a></li>
+		<li><a href="ractive-push">ractive.push()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-resetpartial">ractive.resetPartial()</a></li>
+		<li><a href="ractive-reverse">ractive.reverse()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-shift">ractive.shift()</a></li>
+		<li><a href="ractive-sort">ractive.sort()</a></li>
+		<li><a href="ractive-splice">ractive.splice()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-tocss">ractive.toCSS()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-transition">ractive.transition()</a></li>
+		<li><a href="ractive-unlink">ractive.unlink()</a></li>
+		<li><a href="ractive-unrender">ractive.unrender()</a></li>
+		<li><a href="ractive-unshift">ractive.unshift()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-container">ractive.container</a></li>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-parent">ractive.parent</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+		<li><a href="ractive-root">ractive.root</a></li>
+	</ul>
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-escapekey">Ractive.escapeKey()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+		<li><a href="ractive-getcss">Ractive.getCSS()</a></li>
+		<li><a href="ractive-getnodeinfo">Ractive.getNodeInfo()</a></li>
+		<li><a href="ractive-joinkeys">Ractive.joinKeys()</a></li>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-splitkeypath">Ractive.splitKeypath()</a></li>
+		<li><a href="ractive-unescapekey">Ractive.unescapeKey()</a></li>
+	</ul>
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+		<li><a href="ractive-easing">Ractive.easing</a></li>
+	</ul>
+</ul>
+</section>
+<section>
+	<h1>Plugins</h1>
+	<h2>Using</h2>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+	</ul>
+	<h2>Writing</h2>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang='en-GB'>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1'>
+
+	<title> Ractive.getNodeInfo() | Docs | Ractive.js </title >
+
+	<meta name='viewport' content='width=device-width'>
+
+	<link rel='icon' type='image/png' href='../assets/favicon.png'>
+	<link rel='stylesheet' href='../min.css'>
+
+	<!--[if lte IE 8]>
+		<script src='../assets/respond.min.js'></script>
+		<script src='../assets/html5shiv.min.js'></script>
+	<![endif]-->
+
+</head>
+
+<body class='example'>
+
+	<nav>
+	<div class='nav-inner'>
+		<a href='http://ractivejs.org'>Ractive.js</a>
+		<a class='github-wide' href='https://github.com/ractivejs/ractive'>GitHub</a>
+		<button id='nav-toggle'>&#9776;</button>
+	</div>
+</nav>
+
+
+	<main>
+		<div class='content'>
+			<header class='main-header'>
+				<h1>Ractive.getNodeInfo()</h1>
+				<a class='edit-link' href='https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/0.8/Ractive.getNodeInfo().md.hbs'>edit this page</a>
+			</header>
+
+			<p>Sometimes it is useful to know which Ractive instance a DOM node is attached to and the details of where it exists in the view. <code>Ractive.getNodeInfo()</code> is a static method that exposes this information and helper methods based on Ractive&#39;s internal tracking mechanisms.</p>
+<p>This is particularly useful for <a href="decorators">decorators</a> and debugging. Notably, in Chrome, if you inspect an element, that element will be added to the Chrome Developer Tools&#39; node list and can be referenced in the console as <code>$0</code>. Try inspecting a Ractive-controlled element and using <code>Ractive.getNodeInfo($0)</code> in the console.</p>
+<blockquote>
+<h3 id="ractive-getnodeinfo-node-">Ractive.getNodeInfo( node )</h3>
+<p>Returns an object with helper methods to interact with the Ractive instance and context associated with the given node. See <a href="#helpers">Helpers</a> below.</p>
+<blockquote>
+<h4 id="-node-domnode-"><strong>node</strong> <em><code>DOMNode</code></em></h4>
+<p>The DOM node for which you wish to retrieve the Ractive instance or view details.</p>
+<h4 id="-node-string-"><strong>node</strong> <em><code>String</code></em></h4>
+<p>A css selector that will be passed to <code>document.querySelector</code>. The resulting node will then be used to retrieve the node&#39;s Ractive helper.</p>
+</blockquote>
+</blockquote>
+<h2 id="helpers">Helpers</h2>
+<p><strong>All helpers that take a keypath as a parameter will resolve the keypath from the node&#39;s context</strong>, meaning that relative references can be used as if they were in the template. Most helper methods correspond directly to an instance method, with the only difference being that the keypath is relative. If the keypath is optional, then the method will use the keypath for its context ( a.k.a. <code>&#39;.&#39;</code>). Special references, template aliases, and key and index aliases are also supported.</p>
+<p>From this point on, <code>info</code> is an object that has context methods and may be an <code>event</code> object or the result of a <code>getNodeInfo</code> call.</p>
+<blockquote>
+<h3 id="info-add-keypath-number-">info.add( [keypath][, number] )</h3>
+<p>Increments the given keypath by the given number, which defaults to <code>1</code>. See <a href="ractive-add">ractive.add()</a>.</p>
+<h3 id="info-animate-keypath-value-options-">info.animate( keypath, value[, options] )</h3>
+<p>Animates the given keypath to the given value. See <a href="ractive-animate">ractive.animate()</a>.</p>
+<h3 id="info-get-keypath-">info.get( [keypath] )</h3>
+<p>Retrieves the value at given keypath, if provided, or the context for this info object. See <a href="ractive-get">ractive.get()</a>.
+This can also be used to retrieve the value of index and key aliases, template aliases, and special reference.</p>
+<h3 id="info-getbinding-">info.getBinding()</h3>
+<p>If the node represented by this info object has a two-way binding, this will retrieve the value of the binding. For instance, if the node template was <code>{{#with foo.bar}}&lt;input id=&quot;findMe&quot; value=&quot;{{.baz}}&quot; /&gt;{{/with}}</code>, then <code>Ractive.getNodeInfo(&#39;#findMe&#39;).getBinding()</code> would return the value of <code>&#39;foo.bar.baz&#39;</code>.</p>
+<h3 id="info-getbindingpath-ractive-">info.getBindingPath( [ractive] )</h3>
+<p>If the node represented by this info object has a two-way binding, this will return the keypath of the binding. For instance, if the node template was <code>{{#with foo.bar}}&lt;input id=&quot;findMe&quot; value=&quot;{{.baz}}&quot; /&gt;{{/with}}</code>, then <code>Ractive.getNodeInfo(&#39;#findMe&#39;).getBindingPath()</code> would return the value of <code>&#39;foo.bar.baz&#39;</code>.</p>
+<blockquote>
+<h4 id="-ractive-ractive-instance-"><strong>ractive</strong> <em><code>Ractive instance</code></em></h4>
+<p>If supplied, the returned keypath will be relative to any mappings defined for the instance.</p>
+</blockquote>
+<h3 id="info-isbound-">info.isBound()</h3>
+<p>If the node represented by this info object has a two-way binding, this will return true. Otherwise, it will return false.</p>
+<h3 id="info-link-source-destination-">info.link( source, destination )</h3>
+<p>Creates a link to the given souce at the given destination. See <a href="ractive-link">ractive.link()</a>.</p>
+<h3 id="info-merge-keypath-array-">info.merge( keypath, array )</h3>
+<p>Merges the given array into the array at the given keypath. See <a href="ractive-merge">ractive.merge()</a>.</p>
+<h3 id="info-pop-keypath-">info.pop( [keypath] )</h3>
+<p>Pops a value from the array at the given keypath. See <a href="ractive-pop">ractive.pop()</a>.</p>
+<h3 id="info-push-keypath-values-">info.push( keypath, ...values )</h3>
+<p>Pushes the given values on to the array at the given keypath. See <a href="ractive-push">ractive.push()</a>.</p>
+<h3 id="info-ractive">info.ractive</h3>
+<p>This property holds a reference to the Ractive instance that controls the node represented by this info object.</p>
+<h3 id="info-resolve-keypath-ractive-">info.resolve( [keypath][, ractive] )</h3>
+<p>Resolves the given keypath to a full keypath. If a <code>ractive</code> instance is supplied, the resolved path will also account for any mappings defined for the instance. This is the method used to resolve relative keypaths for all of the other info methods.</p>
+<h3 id="info-reverse-keypath-">info.reverse( keypath )</h3>
+<p>Reverses the array at the given keypath. See <a href="ractive-reverse">ractive.reverse()</a>.</p>
+<h3 id="info-set-keypath-value-">info.set( keypath, value )</h3>
+<p>Sets the given keypath to the given value. See <a href="ractive-set">ractive.set()</a>.</p>
+<h3 id="info-setbinding-value-">info.setBinding( value )</h3>
+<p>If the node represented by this info object has a two-way binding, this sets the binding to the given value.</p>
+<h3 id="info-shift-keypath-">info.shift( [keypath] )</h3>
+<p>Shifts a value from the array at the given keypath. See <a href="ractive-shift">ractive.shift()</a>.</p>
+<h3 id="info-splice-keypath-index-drop-add-">info.splice( keypath, index, drop, ...add )</h3>
+<p>Splices the array at the given keypath. See <a href="ractive-splice">ractive.splice()</a>.</p>
+<h3 id="info-sort-keypath-">info.sort( keypath )</h3>
+<p>Sorts the array at the given keypath. See <a href="ractive-sort">ractive.sort()</a>.</p>
+<h3 id="info-subtract-keypath-number-">info.subtract( [keypath][, number] )</h3>
+<p>Decrements the given keypath by the given value, which defaults to <code>1</code>. See <a href="ractive-subtract">ractive.subtract()</a>.</p>
+<h3 id="info-toggle-keypath-">info.toggle( [keypath] )</h3>
+<p>Toggles the given keypath. See <a href="ractive-toggle">ractive.toggle()</a>.</p>
+<h3 id="info-unlink-destination-">info.unlink( destination )</h3>
+<p>Removes the given link. See <a href="ractive-unlink">ractive.unlink()</a>.</p>
+<h3 id="info-unshift-keypath-values-">info.unshift( keypath, ...values )</h3>
+<p>Unshifts the given values onto the array at the given keypath. See <a href="ractive-unshift">ractive.unshift()</a>.</p>
+<h3 id="info-update-keypath-">info.update( [keypath] )</h3>
+<p>Triggers an update on the given keypath. See <a href="ractive-update">ractive.update()</a>.</p>
+<h3 id="info-updatemodel-keypath-">info.updateModel( [keypath] )</h3>
+<p>Triggers an update on the given keypath from its bindings. See <a href="ractive-updatemodel">ractive.updateModel()</a>.</p>
+</blockquote>
+
+		</div>
+
+		<aside class="left-nav">
+			<section>
+	<h1>Specific versions</h1>
+
+	<ul>
+		<li><a href='../0.8'>0.8</a></li>
+		<li><a href='../0.7'>0.7</a></li>
+		<li><a href='../0.6'>0.6</a></li>
+		<li><a href='../0.5'>0.5</a></li>
+		<li><a href='../0.4.0'>0.4.0</a></li>
+		<li><a href='../0.3.9'>0.3.9</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Introduction</h1>
+	<ul>
+		<li><a href="get-started">Get started</a></li>
+		<li><a href="overview">Overview</a></li>
+		<li><a href="known-issues-faqs-and-tips">Known issues, FAQs, and Tips</a></li>
+		<li><a href="get-support">Get support</a></li>
+		<li><a href="contributing">Contributing</a></li>
+		<li><a href="get-started-with-node-js">Get started with node.js</a></li>
+		<li><a href="migrating">Migrating from previous versions</a></li>
+	</ul>
+</section>
+
+<section>
+	<h1>Configuration</h1>
+	<ul>
+		<li><a href="options">Options</a></li>
+		<li><a href="ractive-defaults">Defaults</a></li>
+		<li><a href="advanced-configuration">Advanced configuration</a></li>
+	</ul>
+</section>
+<section>
+	<h1>Core Concepts</h1>
+	<h2>Templates</h2>
+	<ul>
+		<li><a href="templates">Templates</a></li>
+		<li><a href="elements">Elements</a></li>
+		<li><a href="mustaches">Mustaches</a></li>
+		<li><a href="references">References</a></li>
+		<li><a href="expressions">Expressions</a></li>
+		<li><a href="keypaths">Keypaths</a></li>
+		<li><a href="partials">Partials</a></li>
+		<li><a href="decorators">Decorators</a></li>
+	</ul>
+	<h2>Data & Binding</h2>
+	<ul>
+		<li><a href="two-way-binding">Two-way binding</a></li>
+		<li><a href="magic-mode">Magic mode</a></li>
+		<li><a href="dependants">Dependants</a></li>
+		<li><a href="array-modification">Array modification</a></li>
+		<li><a href="computed-properties">Computed Properties</a></li>
+		<li><a href="observers">Observers</a></li>
+		<li><a href="adaptors">Adaptors</a></li>
+		<li><a href="parallel-dom">Parallel DOM</a></li>
+	</ul>
+	<h2>Events</h2>
+	<ul>
+		<li><a href="events-overview">Overview</a></li>
+		<li><a href="event-directives">Event directives</a></li>
+		<li><a href="proxy-events">Proxy events</a></li>
+		<li><a href="method-calls">Method calls</a></li>
+		<li><a href="publish-subscribe">Publish/subscribe</a></li>
+		<li><a href="event-bubbling">Event bubbling</a></li>
+		<li><a href="lifecycle-events">Lifecycle events</a></li>
+	</ul>
+	<h2>Transitions and Animations</h2>
+	<ul>
+		<li><a href="transitions">Transitions</a></li>
+		<li><a href="promises">Promises</a></li>
+		<li><a href="ractive-easing">Easings</a></li>
+	</ul>
+	<h2>Components</h2>
+	<ul>
+		<li><a href="components">Components</a></li>
+	</ul>
+</section>
+<section>
+	<h1>API Reference</h1>
+	<h2>Constructor</h2>
+	<ul>
+		<li><a href="new-ractive">new Ractive(...)</a></li>
+	</ul>
+	<h2>Instance methods</h2>
+	<ul>
+		<li><a href="ractive-add">ractive.add()</a></li>
+		<li><a href="ractive-animate">ractive.animate()</a></li>
+		<li><a href="ractive-detach">ractive.detach()</a></li>
+		<li><a href="ractive-find">ractive.find()</a></li>
+		<li><a href="ractive-findall">ractive.findAll()</a></li>
+		<li><a href="ractive-findallcomponents">ractive.findAllComponents()</a></li>
+		<li><a href="ractive-findcomponent">ractive.findComponent()</a></li>
+		<li><a href="ractive-findcontainer">ractive.findContainer()</a></li>
+		<li><a href="ractive-findparent">ractive.findParent()</a></li>
+		<li><a href="ractive-fire">ractive.fire()</a></li>
+		<li><a href="ractive-get">ractive.get()</a></li>
+		<li><a href="instance-getnodeinfo">ractive.getNodeInfo()</a></li>
+		<li><a href="ractive-insert">ractive.insert()</a></li>
+		<li><a href="ractive-link">ractive.link()</a></li>
+		<li><a href="ractive-merge">ractive.merge()</a></li>
+		<li><a href="ractive-observe">ractive.observe()</a></li>
+		<li><a href="ractive-observeonce">ractive.observeOnce()</a></li>
+		<li><a href="ractive-off">ractive.off()</a></li>
+		<li><a href="ractive-on">ractive.on()</a></li>
+		<li><a href="ractive-once">ractive.once()</a></li>
+		<li><a href="ractive-pop">ractive.pop()</a></li>
+		<li><a href="ractive-push">ractive.push()</a></li>
+		<li><a href="ractive-render">ractive.render()</a></li>
+		<li><a href="ractive-reset">ractive.reset()</a></li>
+		<li><a href="ractive-resetpartial">ractive.resetPartial()</a></li>
+		<li><a href="ractive-reverse">ractive.reverse()</a></li>
+		<li><a href="ractive-set">ractive.set()</a></li>
+		<li><a href="ractive-shift">ractive.shift()</a></li>
+		<li><a href="ractive-sort">ractive.sort()</a></li>
+		<li><a href="ractive-splice">ractive.splice()</a></li>
+		<li><a href="ractive-subtract">ractive.subtract()</a></li>
+		<li><a href="ractive-teardown">ractive.teardown()</a></li>
+		<li><a href="ractive-tocss">ractive.toCSS()</a></li>
+		<li><a href="ractive-toggle">ractive.toggle()</a></li>
+		<li><a href="ractive-tohtml">ractive.toHTML()</a></li>
+		<li><a href="ractive-transition">ractive.transition()</a></li>
+		<li><a href="ractive-unlink">ractive.unlink()</a></li>
+		<li><a href="ractive-unrender">ractive.unrender()</a></li>
+		<li><a href="ractive-unshift">ractive.unshift()</a></li>
+		<li><a href="ractive-update">ractive.update()</a></li>
+		<li><a href="ractive-updatemodel">ractive.updateModel()</a></li>
+	</ul>
+	<h2>Instance properties</h2>
+	<ul>
+		<li><a href="ractive-container">ractive.container</a></li>
+		<li><a href="ractive-nodes">ractive.nodes</a></li>
+		<li><a href="ractive-transitions-instance">ractive.transitions</a></li>
+		<li><a href="ractive-parent">ractive.parent</a></li>
+		<li><a href="ractive-partials-instance">ractive.partials</a></li>
+		<li><a href="ractive-root">ractive.root</a></li>
+	</ul>
+	<h2>Static methods</h2>
+	<ul>
+		<li><a href="ractive-escapekey">Ractive.escapeKey()</a></li>
+		<li><a href="ractive-extend">Ractive.extend()</a></li>
+		<li><a href="ractive-getcss">Ractive.getCSS()</a></li>
+		<li><a href="ractive-getnodeinfo">Ractive.getNodeInfo()</a></li>
+		<li><a href="ractive-joinkeys">Ractive.joinKeys()</a></li>
+		<li><a href="ractive-parse">Ractive.parse()</a></li>
+		<li><a href="ractive-splitkeypath">Ractive.splitKeypath()</a></li>
+		<li><a href="ractive-unescapekey">Ractive.unescapeKey()</a></li>
+	</ul>
+	<h2>Static properties</h2>
+	<ul>
+		<li><a href="ractive-defaults">Ractive.defaults</a></li>
+		<li><a href="ractive-easing">Ractive.easing</a></li>
+	</ul>
+</ul>
+</section>
+<section>
+	<h1>Plugins</h1>
+	<h2>Using</h2>
+	<ul>
+		<li><a href="plugins">List of plugins</a></li>
+	</ul>
+	<h2>Writing</h2>
+	<ul>
+		<li><a href="writing-adaptor-plugins">Adaptors</a></li>
+		<li><a href="writing-decorator-plugins">Decorators</a></li>
+		<li><a href="writing-event-plugins">Events</a></li>
+		<li><a href="writing-transition-plugins">Transitions</a></li>
+	</ul>
+</section>
+
+
+
+		</aside>
+	</main>
+
+	<footer>
+	<p>Ractive.js is a free and open source project released under the MIT license.</p>
+</footer>
+
+
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-5602942-6', 'ractivejs.org');
+	ga('send', 'pageview');
+</script>
+
+
+	<script src='../assets/nav.js'></script>
+
+</body>
+</html>
