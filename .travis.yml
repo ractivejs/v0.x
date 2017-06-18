@@ -5,4 +5,22 @@ node_js:
 branches:
   only:
     - master
-script: npm run deploy
+script: |
+  set -e
+  npm run build
+  cd build
+  git init
+  git config user.name "${GIT_NAME}"
+  git config user.email "${GIT_EMAIL}"
+  git remote add gh-remote "https://${GH_TOKEN}@github.com/ractivejs/v0.x.git"
+  git add .
+  git commit -m "Deployed to Github Pages"
+  git push --force --quiet gh-remote master:gh-pages > /dev/null 2>&1
+env:
+  global:
+  # GIT_NAME
+  - secure: V5Cgw6p6ExNc/xMpY+4RKDDSW8uq/KBrh+ZSIKO/0l18CqKdvXqsgW26lQ53o94KiB9/B53biT0pN2CKYXvVPgPhz/uywlivKG5NL2i9cLnbz0aUci7ymj8BoLAezmurmQvCRV5AYBoz93CKBUhMUwdAMCNsdiJYPSLCUXXTzQU=
+  # GIT_EMAIL
+  - secure: FEKKlnp3ntE8IdnR+atbOBwLiCLtOee82prBI9olQrYhwIFWShRI9pH5U9/gw1S7WBr0COzHGGPGAlrqaazFgY1Q+uvx4PjXabtDufpNWKR449XICOGDpwXXUcE0mgRzImvz8ITFiKN3w/+UB5eGC8/JxUfI/Mo11WXKvDQnTfs=
+  # GH_TOKEN
+  - secure: NELxwWYhnjnLwBqw/pKh+m9CPV3s7PB3OSZmlm3OIbDm80bHB0orUapMLemPRdm0oN37DILTsIASyjzlItAbResjQJoGJiE7GwPGmkPk8OoYOZo04RBHFnGofDIfaZf7FPHaMj8K+xpDrbctlIByBDhmRwbN658Dw6BZbnLSNX8=
