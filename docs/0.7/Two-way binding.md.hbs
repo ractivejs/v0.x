@@ -59,6 +59,28 @@ Radio buttons can be controlled in the same way as checkboxes. However the chanc
 
 In the example above, the value of `color` will initially be `'red'` (because that input is checked in the template), and will update as and when the user selects another option.
 
+Where there are multiple groups of similarly named radio buttons that should be segregated, for example when they appear in a repeated component. They should be wrapped within an html <form>.
+If your template is:
+```html
+<script id='statements' type='text/ractive'>
+  {{#statements}}
+    <form>
+      <label>{{statement}}</label>
+      <input type='radio' name='\{{agree}}' value='true'>True</input>
+      <input type='radio' name='\{{agree}}' value='false'>True</input>
+    </form>
+  {{/statements}}
+</script>
+```
+and your javascript is:
+```js
+new Ractive({
+  el : '#container',
+  template : "#statements",
+  data:{statements :[{statement : "art is long", agree : 'false'},{statement: "life is short", agree : 'true'}]}
+})
+```
+Then the checkboxes will be correctly rendered and initialized, and the 'agree' property will be properly modified when the radio buttons are clicked. 
 
 ## `<textarea>` elements
 
