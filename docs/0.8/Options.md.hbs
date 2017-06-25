@@ -29,6 +29,7 @@ ractive.myMethod(); // triggers the alert
 | [csp](#csp)                                       | [parsing](#parsing)                    | output CSP compatible (inline functions for expressions) templates |
 | [css](#css)                                       | [templating](#templating)              | component only css to include on render |
 | [data](#data)                                     | [data](#data-binding)                  | the data to bind to the template |
+| [debug](#debug)                                   | [configuration](#configuration)        | debug information output to the console |
 | [decorators](#decorators)                         | [templating](#templating)              | decorators to include for use by the template |
 | [delimiters](#delimiters)                         | [parsing](#parsing)                    | delimiters to use when parsing the template |
 | [easing](#easing)                                 | [transitions](#transitions-animations) | easing functions to use in transitions |
@@ -66,6 +67,15 @@ ractive.myMethod(); // triggers the alert
 | [twoway](#twoway)                                 | [binding](#data-binding)               | prevent updates from the view back to the model |
 
 
+
+## Configuration
+
+> <a id="debug"></a>
+> ### debug *`Boolean`*
+> Defaults to `true`. This setting outputs debugging information to the console, applied globally. Set before the first Ractive instance is created. Throwing the following in your code will automagically set debug to `false` for minified files.
+> ```js
+> Ractive.DEBUG = /unminified/.test(function(){/*unminified*/});
+> ```
 
 ## Templating
 
