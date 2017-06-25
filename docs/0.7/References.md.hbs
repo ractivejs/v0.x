@@ -165,7 +165,7 @@ By using `../../name` instead of `name`, we're saying 'go up one level (to `post
 
 ### Root references
 
-You can also navigate directly from the top of the data hierarchy with `~/`. Note that this is the root of the ractive instance in which the template appears, not the entire view hierarchy of nested components.
+You can also navigate directly from the top of the data hierarchy with `~/`. 
 
 The above example could also use a root reference:
 
@@ -178,4 +178,6 @@ The above example could also use a root reference:
   \{{/posts}}
 </ul>
 ```
+Note that if you are in a component, the `~/` denotes the root of the component, not the enclosing ractive instance.
+
 
