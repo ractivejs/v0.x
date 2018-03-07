@@ -1,5 +1,5 @@
 {
-  "name": "docs.ractivejs.org",
+  "name": "v0.x",
   "author": "Rich Harris",
   "version": "0.8.0",
   "devDependencies": {
@@ -18,7 +18,7 @@
   "scripts": {
     "build": "grunt build",
     "predeploy": "npm run build",
-    "deploy": "surge build docs.ractivejs.org",
+    "deploy": "surge build v0.x",
     "grunt": "./node_modules/.bin/grunt"
   }
 }
