@@ -1,7 +1,7 @@
-docs.ractivejs.org
+v0.x
 ==================
 
-The documentation for [Ractive.js](http://ractivejs.org).
+The documentation for [Ractive.js](http://ractive.js.org).
 
 
 Building
@@ -9,8 +9,8 @@ Building
 
 ```
 # clone the repo
-$ git clone https://github.com/RactiveJS/docs.ractivejs.org.git
-$ cd docs.ractivejs.org
+$ git clone https://github.com/RactiveJS/v0.x.git
+$ cd v0.x
 
 # install dev dependencies (grunt and friends)
 $ npm install
@@ -29,7 +29,7 @@ Open `localhost` on the port specified (usually `8080`), and it should redirect 
 Contributing
 ------------
 
-If you see something wrong, out of date, or missing from this documentation, please [raise an issue on GitHub](https://github.com/RactiveJS/docs.ractivejs.org/issues) or - even better - submit a pull request. Your fellow Ractive users will thank you!
+If you see something wrong, out of date, or missing from this documentation, please [raise an issue on GitHub](https://github.com/RactiveJS/v0.x/issues) or - even better - submit a pull request. Your fellow Ractive users will thank you!
 
 In lieu of formal contribution guidelines, take care to follow the existing structure and conventions. Send pull requests to the `master` branch, not `gh-pages` (which is a snapshot of the `build` folder in `master`).
 

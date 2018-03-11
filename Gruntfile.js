@@ -43,7 +43,7 @@ module.exports = function ( grunt ) {
 
 		getEditLink: function ( file ) {
 			var source = grunt.editLinkReverseMapping[ file ];
-			return 'https://github.com/ractivejs/docs.ractivejs.org/edit/master/docs/' + source;
+			return 'https://github.com/ractivejs/v0.x/edit/master/docs/' + source;
 		}
 	};
 
